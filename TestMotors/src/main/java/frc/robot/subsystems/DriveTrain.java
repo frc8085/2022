@@ -29,8 +29,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public DriveTrain() {
-    motorRight2.setInverted(true);
-    motorLeft2.setInverted(true);
+
   }
 
   @Override
