@@ -51,7 +51,7 @@ public class RobotContainer {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new ArcadeDriver(
-            m_robotDrive, joystick_Driver::getLeftY, joystick_Driver::getRightX));
+            m_robotDrive, joystick_Driver::getRightX, joystick_Driver::getLeftY));
 
   }
 
