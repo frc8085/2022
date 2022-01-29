@@ -8,6 +8,9 @@ import frc.robot.Constants;
 import frc.robot.Robot;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
@@ -15,15 +18,21 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 public class ArcadeDriver extends CommandBase {
   @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
   private final DriveTrain m_driveTrain;
+  private final DoubleSupplier m_left_Y;
+  private final DoubleSupplier m_right_X;
+
 
   /**
    * Creates a new ArcadeDriver.
    *
    * @param subsystem The subsystem used by this command.
    */
-  public ArcadeDriver(DriveTrain subsystem) {
+
+public ArcadeDriver(DriveTrain subsystem, DoubleSupplier left_Y, DoubleSupplier right_X) {
     m_driveTrain = subsystem;
-    // Use addRequirements() here to declare subsystem dependencies.
+    m_left_Y = left_Y;
+    m_right_X = right_X;
+    // Use addRequiremets() here to declare subsystem dependencies.
     addRequirements(subsystem);
   }
 
@@ -35,7 +44,7 @@ public class ArcadeDriver extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_driveTrain.ArcadeDrive(Robot.m_robotContainer.SpeedAxis(), Robot.m_robotContainer.RotationAxis());
+    m_driveTrain.ArcadeDrive(m_left_Y.getAsDouble(), m_right_X.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.

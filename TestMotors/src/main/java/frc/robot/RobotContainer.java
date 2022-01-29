@@ -7,7 +7,9 @@ package frc.robot;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.ArcadeDriver;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 
@@ -27,6 +29,7 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   private final Joystick joystick_Driver = new Joystick(Constants.DRIVER_JOYSTICK_ID);
+  private final DriveTrain m_robotDrive = new DriveTrain();
 
   public double SpeedAxis() {
     return joystick_Driver.getRawAxis(Constants.DRIVER_LJOYSTICK_UP_DOWN);
@@ -42,6 +45,14 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+
+
+    m_robotDrive.setDefaultCommand(
+        // A split-stick arcade command, with forward/backward controlled by the left
+        // hand, and turning controlled by the right.
+        new ArcadeDriver(
+            m_robotDrive, joystick_Driver::getX, joystick_Driver::getY));
+
   }
 
   /**
