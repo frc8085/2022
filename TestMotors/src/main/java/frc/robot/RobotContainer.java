@@ -28,7 +28,7 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final Joystick joystick_Driver = new Joystick(Constants.DRIVER_JOYSTICK_ID);
+  private final XboxController joystick_Driver = new XboxController(Constants.DRIVER_JOYSTICK_ID);
   private final DriveTrain m_robotDrive = new DriveTrain();
 
   public double SpeedAxis() {
@@ -51,7 +51,7 @@ public class RobotContainer {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new ArcadeDriver(
-            m_robotDrive, joystick_Driver::getX, joystick_Driver::getTwist));
+            m_robotDrive, joystick_Driver::getLeftY, joystick_Driver::getRightX));
 
   }
 
