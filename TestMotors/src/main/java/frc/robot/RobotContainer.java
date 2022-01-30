@@ -33,6 +33,7 @@ public class RobotContainer {
 
   private final XboxController m_driverController = new XboxController(Constants.OIConstants.kDriverControllerPort);
   private final DriveTrain m_robotDrive = new DriveTrain();
+  private final Shooter m_shooter = new Shooter();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -50,19 +51,36 @@ public class RobotContainer {
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-   * it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings.
    */
   private void configureButtonBindings() {
+    // Spin up the shooter when the 'A' button is pressed
+    new JoystickButton(m_driverController, Button.kA.value)
+        .whenPressed(new InstantCommand(m_shooter::enable, m_shooter));
+
+    // Turn off the shooter when the 'B' button is pressed
+    new JoystickButton(m_driverController, Button.kB.value)
+        .whenPressed(new InstantCommand(m_shooter::disable, m_shooter));
+
+    // Run the feeder when the 'X' button is held, but only if the shooter is at
+    // speed
+    new JoystickButton(m_driverController, Button.kX.value)
+        .whenPressed(
+            new ConditionalCommand(
+                // Run the feeder
+                new InstantCommand(m_shooter::runFeeder, m_shooter),
+                // Do nothing
+                new InstantCommand(),
+                // Determine which of the above to do based on whether the shooter has reached
+                // the
+                // desired speed
+                m_shooter::atSetpoint))
+        .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
+   * 
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
