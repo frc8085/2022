@@ -10,24 +10,32 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
+import frc.robot.Constants.DriveConstants;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
 
-  private final CANSparkMax motorLeft1 = new CANSparkMax(Constants.MOTOR_LEFT_1_ID, MotorType.kBrushless);
-  private final CANSparkMax motorLeft2 = new CANSparkMax(Constants.MOTOR_LEFT_2_ID, MotorType.kBrushless);
-  private final CANSparkMax motorRight1 = new CANSparkMax(Constants.MOTOR_RIGHT_1_ID, MotorType.kBrushless);
-  private final CANSparkMax motorRight2 = new CANSparkMax(Constants.MOTOR_RIGHT_2_ID, MotorType.kBrushless);
+  // Left motors
+  private final MotorControllerGroup m_leftMotors = new MotorControllerGroup(
+      new CANSparkMax(DriveConstants.kLeftMotor1Port,
+          MotorType.kBrushless),
+      new CANSparkMax(DriveConstants.kLeftMotor2Port,
+          MotorType.kBrushless));
 
-  private final MotorControllerGroup leftMotors = new MotorControllerGroup(motorLeft1, motorLeft2);
-  private final MotorControllerGroup rightMotors = new MotorControllerGroup(motorRight1, motorRight2);
+  // Right motors
+  private final MotorControllerGroup m_rightMotors = new MotorControllerGroup(
+      new CANSparkMax(DriveConstants.kRightMotor1Port,
+          MotorType.kBrushless),
+      new CANSparkMax(DriveConstants.kRightMotor2Port,
+          MotorType.kBrushless));
 
-  private final DifferentialDrive m_robotDrive = new DifferentialDrive(
-      leftMotors, rightMotors);
+  // The robot's drive
+  private final DifferentialDrive m_drive = new DifferentialDrive(
+      m_leftMotors, m_rightMotors);
 
+  // Drive the robot using ArcadeDrive command
   public void ArcadeDrive(double speed, double rotation) {
-    m_robotDrive.arcadeDrive(speed, rotation);
+    m_drive.arcadeDrive(speed, rotation);
   }
 
   public DriveTrain() {
