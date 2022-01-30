@@ -4,19 +4,21 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.motorcontrol.PWMSparkMax;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
 
-  private final PWMSparkMax motorLeft1 = new PWMSparkMax(Constants.MOTOR_LEFT_1_ID);
-  private final PWMSparkMax motorLeft2 = new PWMSparkMax(Constants.MOTOR_LEFT_2_ID);
-  private final PWMSparkMax motorRight1 = new PWMSparkMax(Constants.MOTOR_RIGHT_1_ID);
-  private final PWMSparkMax motorRight2 = new PWMSparkMax(Constants.MOTOR_RIGHT_2_ID);
+  private final CANSparkMax motorLeft1 = new CANSparkMax(Constants.MOTOR_LEFT_1_ID, MotorType.kBrushless);
+  private final CANSparkMax motorLeft2 = new CANSparkMax(Constants.MOTOR_LEFT_2_ID, MotorType.kBrushless);
+  private final CANSparkMax motorRight1 = new CANSparkMax(Constants.MOTOR_RIGHT_1_ID, MotorType.kBrushless);
+  private final CANSparkMax motorRight2 = new CANSparkMax(Constants.MOTOR_RIGHT_2_ID, MotorType.kBrushless);
 
   private final MotorControllerGroup leftMotors = new MotorControllerGroup(motorLeft1, motorLeft2);
   private final MotorControllerGroup rightMotors = new MotorControllerGroup(motorRight1, motorRight2);
