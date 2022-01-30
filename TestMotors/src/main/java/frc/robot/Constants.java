@@ -16,21 +16,28 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-  public static final int MOTOR_RIGHT_1_ID = 0;
-  public static final int MOTOR_RIGHT_2_ID = 1;
+  public static final class DriveConstants {
+    public static final int kRightMotor1Port = 2;
+    public static final int kRightMotor2Port = 4;
+    public static final int kLeftMotor1Port = 1;
+    public static final int kLeftMotor2Port = 3;
 
-  public static final int MOTOR_LEFT_1_ID = 2;
-  public static final int MOTOR_LEFT_2_ID = 3;
+    public static final int[] kRightEncoderPorts = new int[] { 2, 4 };
+    public static final int[] kLeftEncoderPorts = new int[] { 1, 3 };
 
-  public static final int DRIVER_JOYSTICK_ID = 0;
-  public static final int OPERATOR_JOYSTICK_ID = 1;
+    public static final boolean kLeftEncoderReversed = false;
+    public static final boolean kRightEncoderReversed = true;
 
-  public static final int DRIVER_RJOYSTICK_LEFT_RIGHT = 4;
-  public static final int DRIVER_RJOYSTICK_UP_DOWN = 5;
-  public static final int DRIVER_RJOYSTICK_TRIGGER = 3;
+    public static final int kEncoderCPR = 1024;
+    public static final double kWheelDiameterInches = 6;
+    public static final double kEncoderDistancePerPulse =
+        // Assumes the encoders are directly mounted on the wheel shafts
+        (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
+  }
 
-  public static final int DRIVER_LJOYSTICK_LEFT_RIGHT = 1;
-  public static final int DRIVER_LJOYSTICK_UP_DOWN = 0;
-  public static final int DRIVER_LJOYSTICK_TRIGGER = 2;
+  public static final class OIConstants {
+    public static final int kDriverControllerPort = 0;
+    public static final int kOperatorControllerPort = 1;
+  }
 
 }

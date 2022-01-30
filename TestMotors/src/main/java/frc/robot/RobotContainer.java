@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArcadeDriver;
 import frc.robot.commands.ExampleCommand;
@@ -25,19 +23,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
-  private final XboxController joystick_Driver = new XboxController(Constants.DRIVER_JOYSTICK_ID);
+  private final XboxController m_driverController = new XboxController(Constants.OIConstants.kDriverControllerPort);
   private final DriveTrain m_robotDrive = new DriveTrain();
-
-  public double SpeedAxis() {
-    return joystick_Driver.getRawAxis(Constants.DRIVER_LJOYSTICK_UP_DOWN);
-  }
-
-  public double RotationAxis() {
-    return joystick_Driver.getRawAxis(Constants.DRIVER_RJOYSTICK_LEFT_RIGHT);
-  }
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -46,29 +35,23 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-
     m_robotDrive.setDefaultCommand(
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new ArcadeDriver(
-            m_robotDrive, joystick_Driver::getRightX, joystick_Driver::getLeftY));
+            m_robotDrive, m_driverController::getRightX, m_driverController::getLeftY));
 
   }
 
   /**
-   * Use this method to define your button->command mappings. Buttons can be
-   * created by
-   * instantiating a {@link GenericHID} or one of its subclasses ({@link
-   * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then passing
-   * it to a {@link
-   * edu.wpi.first.wpilibj2.command.button.JoystickButton}.
+   * Use this method to define your button->command mappings.
    */
   private void configureButtonBindings() {
   }
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
+   * 
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
