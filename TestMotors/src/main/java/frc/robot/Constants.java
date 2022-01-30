@@ -17,13 +17,13 @@ package frc.robot;
  */
 public final class Constants {
   public static final class DriveConstants {
-    public static final int kRightMotor1Port = 0;
-    public static final int kRightMotor2Port = 1;
-    public static final int kLeftMotor1Port = 2;
+    public static final int kRightMotor1Port = 2;
+    public static final int kRightMotor2Port = 4;
+    public static final int kLeftMotor1Port = 1;
     public static final int kLeftMotor2Port = 3;
 
-    public static final int[] kRightEncoderPorts = new int[] { 0, 1 };
-    public static final int[] kLeftEncoderPorts = new int[] { 2, 3 };
+    public static final int[] kRightEncoderPorts = new int[] { 2, 4 };
+    public static final int[] kLeftEncoderPorts = new int[] { 1, 3 };
 
     public static final boolean kLeftEncoderReversed = false;
     public static final boolean kRightEncoderReversed = true;
@@ -36,15 +36,15 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int[] kEncoderPorts = new int[] { 4, 5 };
+    public static final int[] kEncoderPorts = new int[] { 7 };
     public static final boolean kEncoderReversed = false;
     public static final int kEncoderCPR = 1024;
     public static final double kEncoderDistancePerPulse =
         // Distance units will be rotations
         1.0 / (double) kEncoderCPR;
 
-    public static final int kShooterMotorPort = 4;
-    public static final int kFeederMotorPort = 5;
+    public static final int kShooterMotorPort = 7;
+    public static final int kFeederMotorPort = 6;
 
     public static final double kShooterFreeRPS = 5300;
     public static final double kShooterTargetRPS = 4000;
