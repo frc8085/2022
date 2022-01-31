@@ -23,7 +23,7 @@ public class Shooter extends PIDSubsystem {
 
   private final Encoder m_shooterEncoder = new Encoder(
       ShooterConstants.kEncoderPorts[0],
-      ShooterConstants.kEncoderPorts[1],
+      1, // ShooterConstants.kEncoderPorts[1],
       ShooterConstants.kEncoderReversed);
 
   private final SimpleMotorFeedforward m_shooterFeedforward = new SimpleMotorFeedforward(
@@ -31,7 +31,8 @@ public class Shooter extends PIDSubsystem {
 
   /** The shooter subsystem for the robot. */
   public Shooter() {
-    super(new PIDController(ShooterConstants.kP, ShooterConstants.kI, ShooterConstants.kD));
+    super(new PIDController(ShooterConstants.kP,
+        ShooterConstants.kI, ShooterConstants.kD));
     getController().setTolerance(ShooterConstants.kShooterToleranceRPS);
     m_shooterEncoder.setDistancePerPulse(ShooterConstants.kEncoderDistancePerPulse);
     setSetpoint(ShooterConstants.kShooterTargetRPS);
@@ -52,11 +53,11 @@ public class Shooter extends PIDSubsystem {
   }
 
   public void runFeeder() {
-    m_feederMotor.set(ShooterConstants.kFeederSpeed);
+    // m_feederMotor.set(ShooterConstants.kFeederSpeed);
   }
 
   public void stopFeeder() {
-    m_feederMotor.set(0);
+    // m_feederMotor.set(0);
   }
 
   @Override
