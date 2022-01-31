@@ -23,7 +23,7 @@ public class Shooter extends PIDSubsystem {
 
   private final Encoder m_shooterEncoder = new Encoder(
       ShooterConstants.kEncoderPorts[0],
-      1, // ShooterConstants.kEncoderPorts[1],
+      ShooterConstants.kEncoderPorts[1],
       ShooterConstants.kEncoderReversed);
 
   private final SimpleMotorFeedforward m_shooterFeedforward = new SimpleMotorFeedforward(
