@@ -23,8 +23,9 @@ public class Shooter extends PIDSubsystem {
   // PWMSparkMax(ShooterConstants.kFeederMotorPort);
   private final Encoder m_shooterEncoder = new Encoder(
       ShooterConstants.kEncoderPorts[0],
-      ShooterConstants.kEncoderPorts[1],
+      1, // Replace this later with ShooterConstants.kEncoderPorts[0],
       ShooterConstants.kEncoderReversed);
+
   private final SimpleMotorFeedforward m_shooterFeedforward = new SimpleMotorFeedforward(
       ShooterConstants.kSVolts, ShooterConstants.kVVoltSecondsPerRotation);
 
