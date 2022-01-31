@@ -19,9 +19,11 @@ public class Shooter extends PIDSubsystem {
   private final CANSparkMax m_shooterMotor = new CANSparkMax(ShooterConstants.kShooterMotorPort,
       MotorType.kBrushless);
 
+  private final CANSparkMax m_feederMotor = new CANSparkMax(ShooterConstants.kFeederMotorPort, MotorType.kBrushless);
+
   private final Encoder m_shooterEncoder = new Encoder(
       ShooterConstants.kEncoderPorts[0],
-      1, // Replace this later with ShooterConstants.kEncoderPorts[0],
+      ShooterConstants.kEncoderPorts[1],
       ShooterConstants.kEncoderReversed);
 
   private final SimpleMotorFeedforward m_shooterFeedforward = new SimpleMotorFeedforward(
@@ -50,12 +52,11 @@ public class Shooter extends PIDSubsystem {
   }
 
   public void runFeeder() {
-
-    // m_feederMotor.set(ShooterConstants.kFeederSpeed);
+    m_feederMotor.set(ShooterConstants.kFeederSpeed);
   }
 
   public void stopFeeder() {
-    // m_feederMotor.set(0);
+    m_feederMotor.set(0);
   }
 
   @Override

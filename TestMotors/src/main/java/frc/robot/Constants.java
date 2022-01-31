@@ -36,7 +36,7 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int[] kEncoderPorts = new int[] { 7 };
+    public static final int[] kEncoderPorts = new int[] { 7, 6 };
     public static final boolean kEncoderReversed = false;
     public static final int kEncoderCPR = 1024;
     public static final double kEncoderDistancePerPulse =
