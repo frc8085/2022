@@ -46,7 +46,7 @@ public class RobotContainer {
         // A split-stick arcade command, with forward/backward controlled by the left
         // hand, and turning controlled by the right.
         new ArcadeDriver(
-            m_robotDrive, m_driverController::getRightX, m_operatorController::getLeftY));
+            m_robotDrive, m_driverController::getRightX, m_driverController::getLeftY));
 
   }
 
@@ -56,11 +56,16 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Spin up the shooter when the 'A' button is pressed
     new JoystickButton(m_operatorController, Button.kA.value)
-        .whenPressed(new InstantCommand(m_shooter::enable, m_shooter));
+        .whenPressed(() -> System.out.println("Button A was pressed"));
+
+    // new InstantCommand(m_shooter::enable, m_shooter));
 
     // Turn off the shooter when the 'B' button is pressed
+    // new JoystickButton(m_operatorController, Button.kB.value)
+    // .whenPressed(new InstantCommand(m_shooter::disable, m_shooter));
+
     new JoystickButton(m_operatorController, Button.kB.value)
-        .whenPressed(new InstantCommand(m_shooter::disable, m_shooter));
+        .whenPressed(() -> System.out.println("Button B was pressed"));
 
     // Run the feeder when the 'X' button is held, but only if the shooter is at
     // speed
