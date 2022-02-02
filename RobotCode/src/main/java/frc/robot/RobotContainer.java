@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.commands.ArcadeDriver;
@@ -32,6 +31,7 @@ public class RobotContainer {
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   private final XboxController m_driverController = new XboxController(Constants.OIConstants.kDriverControllerPort);
+  private final XboxController m_operatorController = new XboxController(Constants.OIConstants.kOperatorControllerPort);
   private final DriveTrain m_robotDrive = new DriveTrain();
   private final Shooter m_shooter = new Shooter();
 
@@ -55,27 +55,26 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Spin up the shooter when the 'A' button is pressed
-    new JoystickButton(m_driverController, Button.kA.value)
+    new JoystickButton(m_operatorController, Button.kA.value)
         .whenPressed(new InstantCommand(m_shooter::enable, m_shooter));
 
     // Turn off the shooter when the 'B' button is pressed
-    new JoystickButton(m_driverController, Button.kB.value)
+    new JoystickButton(m_operatorController, Button.kB.value)
         .whenPressed(new InstantCommand(m_shooter::disable, m_shooter));
 
     // Run the feeder when the 'X' button is held, but only if the shooter is at
     // speed
-    new JoystickButton(m_driverController, Button.kX.value)
-        .whenPressed(
-            new ConditionalCommand(
-                // Run the feeder
-                new InstantCommand(m_shooter::runFeeder, m_shooter),
-                // Do nothing
-                new InstantCommand(),
-                // Determine which of the above to do based on whether the shooter has reached
-                // the
-                // desired speed
-                m_shooter::atSetpoint))
-        .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
+    // new JoystickButton(m_operatorController, Button.kX.value)
+    // .whenPressed(
+    // new ConditionalCommand(
+    // // Run the feeder
+    // new InstantCommand(m_shooter::runFeeder, m_shooter),
+    // // Do nothing
+    // new InstantCommand(),
+    // // Determine which of the above to do based on whether the shooter has
+    // // reached the desired speed
+    // m_shooter::atSetpoint))
+    // .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
   }
 
   /**

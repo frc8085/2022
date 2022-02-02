@@ -17,14 +17,13 @@ public class ArcadeDriver extends CommandBase {
   private final DoubleSupplier m_left_Y;
   private final DoubleSupplier m_right_X;
 
-
   /**
    * Creates a new ArcadeDriver.
    *
    * @param subsystem The subsystem used by this command.
    */
 
-public ArcadeDriver(DriveTrain subsystem, DoubleSupplier left_Y, DoubleSupplier right_X) {
+  public ArcadeDriver(DriveTrain subsystem, DoubleSupplier left_Y, DoubleSupplier right_X) {
     m_driveTrain = subsystem;
     m_left_Y = left_Y;
     m_right_X = right_X;
