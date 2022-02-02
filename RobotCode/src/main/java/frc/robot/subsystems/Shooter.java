@@ -59,7 +59,6 @@ public class Shooter extends PIDSubsystem {
 
   public void stopFeeder() {
     // m_feederMotor.set(0);
-  }q
+  }
 
- 
 }
