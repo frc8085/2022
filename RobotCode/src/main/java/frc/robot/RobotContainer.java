@@ -66,16 +66,14 @@ public class RobotContainer {
     // speed
     new JoystickButton(m_operatorController, Button.kX.value)
         .whenPressed(
-            // new ConditionalCommand(
-            // Run the feeder
-            new InstantCommand(m_shooter::runFeeder, m_shooter)
-        // Do nothing
-        // new InstantCommand(),
-        // Determine which of the above to do based on whether the shooter has
-        // reached the desired speed
-        // m_shooter::atSetpoint
-        )
-
+            new ConditionalCommand(
+                // Run the feeder
+                new InstantCommand(m_shooter::runFeeder, m_shooter),
+                // Do nothing
+                new InstantCommand(),
+                // Determine which of the above to do based on whether the shooter has
+                // reached the desired speed
+                m_shooter::atSetpoint))
         .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
   }
 
