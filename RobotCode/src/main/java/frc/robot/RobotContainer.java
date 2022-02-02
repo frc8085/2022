@@ -65,7 +65,7 @@ public class RobotContainer {
     // Run the feeder when the 'X' button is held, but only if the shooter is at
     // speed
     new JoystickButton(m_operatorController, Button.kX.value)
-        .whenPressed(
+        .whenHeld(
             new ConditionalCommand(
                 // Run the feeder
                 new InstantCommand(m_shooter::runFeeder, m_shooter),
