@@ -40,6 +40,12 @@ public class Shooter extends PIDSubsystem {
 
   @Override
   public void useOutput(double output, double setpoint) {
+    final double calculated = output + m_shooterFeedforward.calculate(setpoint);
+    System.out.printf("...Output: " + output);
+    System.out.printf("...Setpoint: " + setpoint);
+    System.out.printf("...Get measurement: " + m_shooterEncoder.getRate());
+    System.out.printf("...Calculated voltage: " + calculated);
+
     m_shooterMotor.setVoltage(output + m_shooterFeedforward.calculate(setpoint));
   }
 
