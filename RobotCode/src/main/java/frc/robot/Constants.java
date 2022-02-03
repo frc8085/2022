@@ -35,6 +35,13 @@ public final class Constants {
         (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
   }
 
+  public static final class IntakeConstants {
+    public static final int kIntakeMotorPort = 99;
+    public static final int kConveyorMotorPort = 98;
+    public static double kIntakeSpeed = 0.5;
+    public static double kConveyorSpeed = 0.5;
+  }
+
   public static final class ShooterConstants {
     public static final int[] kEncoderPorts = new int[] { 7, 6 };
     public static final boolean kEncoderReversed = false;

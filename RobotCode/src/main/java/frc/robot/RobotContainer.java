@@ -10,6 +10,7 @@ import frc.robot.commands.ArcadeDriver;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -34,6 +35,7 @@ public class RobotContainer {
   private final XboxController m_operatorController = new XboxController(Constants.OIConstants.kOperatorControllerPort);
   private final DriveTrain m_robotDrive = new DriveTrain();
   private final Shooter m_shooter = new Shooter();
+  private final Intake m_intake = new Intake();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -43,10 +45,10 @@ public class RobotContainer {
     configureButtonBindings();
 
     // m_robotDrive.setDefaultCommand(
-    //     // A split-stick arcade command, with forward/backward controlled by the left
-    //     // hand, and turning controlled by the right.
-    //     new ArcadeDriver(
-    //         m_robotDrive, m_driverController::getRightX, m_driverController::getLeftY));
+    // // A split-stick arcade command, with forward/backward controlled by the left
+    // // hand, and turning controlled by the right.
+    // new ArcadeDriver(
+    // m_robotDrive, m_driverController::getRightX, m_driverController::getLeftY));
 
   }
 
@@ -61,6 +63,11 @@ public class RobotContainer {
     // Turn off the shooter when the 'B' button is pressed
     new JoystickButton(m_operatorController, Button.kB.value)
         .whenPressed(new InstantCommand(m_shooter::disable, m_shooter));
+
+    // Turn off the shooter when the 'B' button is pressed
+    new JoystickButton(m_operatorController, Button.kLeftBumper.value)
+        .whileHeld(new InstantCommand(m_intake::runIntake, m_shooter))
+        .whenReleased(new InstantCommand(m_intake::stopIntake, m_shooter));
 
     // Run the feeder when the 'X' button is held, but only if the shooter is at
     // speed
