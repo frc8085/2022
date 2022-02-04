@@ -64,10 +64,10 @@ public class RobotContainer {
     new JoystickButton(m_operatorController, Button.kB.value)
         .whenPressed(new InstantCommand(m_shooter::disable, m_shooter));
 
-    // Turn off the shooter when the 'B' button is pressed
+    // Turn off the shooter when the 'Left bumper is pressed' button is pressed
     new JoystickButton(m_operatorController, Button.kLeftBumper.value)
-        .whileHeld(new InstantCommand(m_intake::runIntake, m_shooter))
-        .whenReleased(new InstantCommand(m_intake::stopIntake, m_shooter));
+        .whileHeld(new InstantCommand(m_intake::runIntake, m_intake))
+        .whenReleased(new InstantCommand(m_intake::stopIntake, m_intake));
 
     // Run the feeder when the 'X' button is held, but only if the shooter is at
     // speed
