@@ -28,14 +28,14 @@ public class Intake extends SubsystemBase {
 
   // Run the intake
   public void runIntake() {
-    System.out.println("<RunIntake/> ******");
+    System.out.println("<RunIntake> at speed ***" + IntakeConstants.kIntakeSpeed + "******");
     m_IntakeMotor.set(IntakeConstants.kIntakeSpeed);
     // m_ConveyorMotors.set(IntakeConstants.kConveyorSpeed);
   }
 
   // Stop the intake the intake
   public void stopIntake() {
-    System.out.println("<stopIntake/> ******");
+    System.out.println("</StopIntake> ******");
     m_IntakeMotor.set(0);
     // m_ConveyorMotors.set(0);
   }
