@@ -71,8 +71,7 @@ public class RobotContainer {
                 new InstantCommand(),
                 // Determine which of the above to do based on whether the shooter has
                 // reached the desired speed
-                // m_shooter::atSetpoint
-                () -> true))
+                m_shooter::atSetpoint))
         .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
   }
 

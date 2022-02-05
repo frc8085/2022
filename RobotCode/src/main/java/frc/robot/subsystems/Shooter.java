@@ -123,7 +123,13 @@ public class Shooter extends SubsystemBase {
   public boolean atSetpoint() {
     double encoderValue = m_encoder.getVelocity();
     double tolerance = ShooterConstants.kShooterToleranceRPM;
-    return true;
+    double setpoint = ShooterConstants.kShooterTargetRPM;
+    double minLimit = setpoint - tolerance;
+    double maxLimit = setpoint + tolerance;
+
+    boolean withinLimits = encoderValue >= minLimit && encoderValue <= maxLimit;
+
+    return withinLimits;
   }
 
   public void stopShooter() {
