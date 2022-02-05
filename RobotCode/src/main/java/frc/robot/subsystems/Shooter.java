@@ -30,12 +30,11 @@ public class Shooter extends SubsystemBase {
 
     // PID coefficients
     // kP = 6e-5;
-    kP = 0;
+    kP = 0.0001;
     kI = 0;
-    kD = 0;
+    kD = 0.001;
     kIz = 0;
-    kFF = 0.000178;
-    // kFF = 2000;
+    kFF = 0.0001761804087;
     kMaxOutput = 0;
     kMinOutput = -1;
     maxRPM = -5700;
@@ -126,11 +125,7 @@ public class Shooter extends SubsystemBase {
     double setpoint = ShooterConstants.kShooterTargetRPM;
     double minLimit = setpoint - tolerance;
     double maxLimit = setpoint + tolerance;
-
-    System.out.println("**** MinLimit: " + minLimit + "    MaxLimit    " + maxLimit);
-
     boolean withinLimits = encoderValue >= minLimit && encoderValue <= maxLimit;
-    System.out.println("**** EncoderValue: " + encoderValue + "    WithinLimits?    " + withinLimits);
 
     return withinLimits;
   }

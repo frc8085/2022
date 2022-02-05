@@ -39,7 +39,12 @@ public final class Constants {
     public static final int kShooterMotorPort = 7;
     public static final int kFeederMotorPort = 6;
 
-    public static final double kShooterTargetRPM = -2300;
+    // Low shot
+    // public static final double kShooterTargetRPM = -2300;
+
+    // High Shot
+    public static final double kShooterTargetRPM = -3200;
+
     public static final double kShooterToleranceRPM = Math.abs(0.05 * kShooterTargetRPM);
 
     public static final double kFeederSpeed = 0.5;
