@@ -30,6 +30,8 @@ public class Shooter extends SubsystemBase {
 
   /** The shooter subsystem for the robot. */
   public Shooter() {
+    m_shooterMotor.restoreFactoryDefaults();
+
     // PID coefficients
     // kP = 6e-5;
     kP = 0;
@@ -129,11 +131,9 @@ public class Shooter extends SubsystemBase {
     double minLimit = setpoint - tolerance;
     double maxLimit = setpoint + tolerance;
 
-    System.out.println("**** MinLimit: " +  minLimit+  "    MaxLimit    " + maxLimit );
+    System.out.println("**** MinLimit: " + minLimit + "    MaxLimit    " + maxLimit);
 
     boolean withinLimits = encoderValue >= minLimit && encoderValue <= maxLimit;
-
-    
 
     return withinLimits;
   }
