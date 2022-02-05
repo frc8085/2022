@@ -6,13 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.commands.ArcadeDriver;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.ShooterSparkPID;
+import frc.robot.subsystems.Shooter;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -28,20 +30,27 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  // Drive train and driver controller
+  private final XboxController m_driverController = new XboxController(Constants.OIConstants.kDriverControllerPort);
+  private final DriveTrain m_robotDrive = new DriveTrain();
+
   private final XboxController m_operatorController = new XboxController(Constants.OIConstants.kOperatorControllerPort);
-  private final ShooterSparkPID m_shooter = new ShooterSparkPID();
+  private final Shooter m_shooter = new Shooter();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
     configureButtonBindings();
+
+    m_robotDrive.setDefaultCommand(
+        // A split-stick arcade command.
+        // Forward/backward controlled by the left joystick
+        // Turning controlled by the right joystick
+        new ArcadeDriver(
+            m_robotDrive, m_driverController::getRightX, m_driverController::getLeftY));
   }
 
-  /**
-   * Use this method to define your button->command mappings.
-   */
   private void configureButtonBindings() {
     // Spin up the shooter when the 'A' button is pressed
     new JoystickButton(m_operatorController, Button.kA.value)
