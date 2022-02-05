@@ -50,7 +50,7 @@ public final class Constants {
     // TargetRPS - Low Shot against hub = -5.25
 
     public static final double kShooterFreeRPS = 95;
-    public static final double kShooterTargetRPS = -5.25;
+    public static final double kShooterTargetRPS = -5250;
     public static final double kShooterToleranceRPS = Math.abs(1 * kShooterTargetRPS);
 
     // These are not real PID gains, and will have to be tuned for your specific

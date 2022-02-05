@@ -29,14 +29,15 @@ public class ShooterSparkPID extends SubsystemBase {
   /** The shooter subsystem for the robot. */
   public ShooterSparkPID() {
     // PID coefficients
-    kP = 6e-5;
+    // kP = 6e-5;
+    kP = 1;
     kI = 0;
     kD = 0;
     kIz = 0;
     kFF = 0.000015;
     kMaxOutput = 1;
     kMinOutput = -1;
-    maxRPM = 5700;
+    maxRPM = -5700;
 
     // set PID coefficients
     m_pidController.setP(kP);
