@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ShooterSparkPID extends SubsystemBase {
+public class Shooter extends SubsystemBase {
   private final CANSparkMax m_shooterMotor = new CANSparkMax(ShooterConstants.kShooterMotorPort,
       MotorType.kBrushless);
   private final CANSparkMax m_feederMotor = new CANSparkMax(ShooterConstants.kFeederMotorPort, MotorType.kBrushless);
@@ -27,10 +27,10 @@ public class ShooterSparkPID extends SubsystemBase {
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
   /** The shooter subsystem for the robot. */
-  public ShooterSparkPID() {
+  public Shooter() {
     // PID coefficients
     // kP = 6e-5;
-    kP = 1;
+    kP = 0;
     kI = 0;
     kD = 0;
     kIz = 0;
@@ -109,15 +109,15 @@ public class ShooterSparkPID extends SubsystemBase {
      * parameters:
      * com.revrobotics.CANSparkMax.ControlType.kDutyCycle
      * com.revrobotics.CANSparkMax.ControlType.kPosition
-     * com.revrobotics.CANSparkMax.ControlType.kVelocity
      * com.revrobotics.CANSparkMax.ControlType.kVoltage
+     * com.revrobotics.CANSparkMax.ControlType.kVelocity
      */
 
     SmartDashboard.putNumber("Encoder Velocity", m_encoder.getVelocity());
   }
 
   public void setSetpoint() {
-    m_pidController.setReference(ShooterConstants.kShooterTargetRPS, CANSparkMax.ControlType.kVoltage);
+    m_pidController.setReference(ShooterConstants.kShooterTargetRPS, CANSparkMax.ControlType.kVelocity);
   }
 
   // public boolean atSetpoint() {
@@ -125,7 +125,7 @@ public class ShooterSparkPID extends SubsystemBase {
   // }
 
   public void stopShooter() {
-    m_pidController.setReference(0, CANSparkMax.ControlType.kVoltage);
+    m_pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
   }
 
   public void runFeeder() {
