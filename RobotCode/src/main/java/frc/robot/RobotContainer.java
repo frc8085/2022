@@ -31,9 +31,11 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
+  // Drive train and driver controller
   private final XboxController m_driverController = new XboxController(Constants.OIConstants.kDriverControllerPort);
-  private final XboxController m_operatorController = new XboxController(Constants.OIConstants.kOperatorControllerPort);
   private final DriveTrain m_robotDrive = new DriveTrain();
+
+  private final XboxController m_operatorController = new XboxController(Constants.OIConstants.kOperatorControllerPort);
   private final Shooter m_shooter = new Shooter();
   private final Intake m_intake = new Intake();
 
@@ -41,28 +43,24 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
-    // Configure the button bindings
     configureButtonBindings();
 
-    // m_robotDrive.setDefaultCommand(
-    // // A split-stick arcade command, with forward/backward controlled by the left
-    // // hand, and turning controlled by the right.
-    // new ArcadeDriver(
-    // m_robotDrive, m_driverController::getRightX, m_driverController::getLeftY));
-
+    m_robotDrive.setDefaultCommand(
+        // A split-stick arcade command.
+        // Forward/backward controlled by the left joystick
+        // Turning controlled by the right joystick
+        new ArcadeDriver(
+            m_robotDrive, m_driverController::getRightX, m_driverController::getLeftY));
   }
 
-  /**
-   * Use this method to define your button->command mappings.
-   */
   private void configureButtonBindings() {
     // Spin up the shooter when the 'A' button is pressed
     new JoystickButton(m_operatorController, Button.kA.value)
-        .whenPressed(new InstantCommand(m_shooter::enable, m_shooter));
+        .whenPressed(new InstantCommand(m_shooter::setSetpoint, m_shooter));
 
     // Turn off the shooter when the 'B' button is pressed
     new JoystickButton(m_operatorController, Button.kB.value)
-        .whenPressed(new InstantCommand(m_shooter::disable, m_shooter));
+        .whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter));
 
     // Turn off the shooter when the 'Left bumper is pressed' button is pressed
     new JoystickButton(m_operatorController, Button.kLeftBumper.value)
@@ -71,17 +69,17 @@ public class RobotContainer {
 
     // Run the feeder when the 'X' button is held, but only if the shooter is at
     // speed
-    // new JoystickButton(m_operatorController, Button.kX.value)
-    // .whenPressed(
-    // new ConditionalCommand(
-    // // Run the feeder
-    // new InstantCommand(m_shooter::runFeeder, m_shooter),
-    // // Do nothing
-    // new InstantCommand(),
-    // // Determine which of the above to do based on whether the shooter has
-    // // reached the desired speed
-    // m_shooter::atSetpoint))
-    // .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
+    new JoystickButton(m_operatorController, Button.kX.value)
+        .whenPressed(
+            new ConditionalCommand(
+                // Run the feeder
+                new InstantCommand(m_shooter::runFeeder, m_shooter),
+                // Do nothing
+                new InstantCommand(),
+                // Determine which of the above to do based on whether the shooter has
+                // reached the desired speed
+                m_shooter::atSetpoint))
+        .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
   }
 
   /**
