@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.ShooterConstants;
 
 import com.revrobotics.CANSparkMax;
@@ -40,17 +39,11 @@ public class Shooter extends PIDSubsystem {
 
   @Override
   public void useOutput(double output, double setpoint) {
-    double calculated = output + m_shooterFeedforward.calculate(setpoint);
-    System.out.println("...Output: " + output);
-    System.out.println("...Setpoint: " + setpoint);
-    System.out.println("...Calculated voltage: " + calculated);
-
     m_shooterMotor.setVoltage(output + m_shooterFeedforward.calculate(setpoint));
   }
 
   @Override
   public double getMeasurement() {
-    System.out.println(".....Measurement gotten: " + m_shooterEncoder.getRate());
     return m_shooterEncoder.getRate();
   }
 
