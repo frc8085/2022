@@ -117,7 +117,7 @@ public class ShooterSparkPID extends SubsystemBase {
   }
 
   public void setSetpoint() {
-    m_pidController.setReference(0, CANSparkMax.ControlType.kVoltage);
+    m_pidController.setReference(ShooterConstants.kShooterTargetRPS, CANSparkMax.ControlType.kVoltage);
   }
 
   // public boolean atSetpoint() {
