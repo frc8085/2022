@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import frc.robot.Constants.ShooterConstants;
@@ -56,11 +57,11 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     // Spin up the shooter when the 'A' button is pressed
-    new JoystickButton(m_operatorController, Button.kA.value)
-        .whenPressed(new InstantCommand(m_shooter::setSetpoint, m_shooter));
+    // new JoystickButton(m_operatorController, Button.kA.value)
+    // .whenPressed(new InstantCommand(m_shooter::setSetpoint, m_shooter));
 
     // Turn off the shooter when the 'B' button is pressed
-    new JoystickButton(m_operatorController, Button.kA.value)
+    new JoystickButton(m_operatorController, Button.kB.value)
         .whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter));
 
     // Run the feeder when the 'X' button is held, but only if the shooter is at

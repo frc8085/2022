@@ -34,8 +34,8 @@ public class ShooterSparkPID extends SubsystemBase {
     kI = 0;
     kD = 0;
     kIz = 0;
-    // kFF = 0.000015;
-    kFF = 2000;
+    kFF = 0.000015;
+    // kFF = 2000;
     kMaxOutput = 1;
     kMinOutput = -1;
     maxRPM = -5700;
@@ -58,7 +58,6 @@ public class ShooterSparkPID extends SubsystemBase {
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
     SmartDashboard.putNumber("SETPOINT", kSetpoint);
-    SmartDashboard.putNumber("ENCODER", m_encoder.getVelocity());
 
   }
 
@@ -77,7 +76,7 @@ public class ShooterSparkPID extends SubsystemBase {
     // if PID coefficients on SmartDashboard have changed, write new values to
     // controller
     if ((setpoint != kSetpoint)) {
-      m_pidController.setReference(setpoint, CANSparkMax.ControlType.kVelocity);
+      m_pidController.setReference(setpoint, CANSparkMax.ControlType.kVoltage);
       kSetpoint = setpoint;
     }
     if ((p != kP)) {
@@ -121,11 +120,11 @@ public class ShooterSparkPID extends SubsystemBase {
      * com.revrobotics.CANSparkMax.ControlType.kVoltage
      */
 
-    SmartDashboard.putNumber("ProcessVariable", m_encoder.getVelocity());
+    SmartDashboard.putNumber("Encoder Velocity", m_encoder.getVelocity());
   }
 
-  public void setSetpoint() {
-    m_pidController.setReference(kSetpoint, CANSparkMax.ControlType.kVelocity);
+  public void setSetpoint(double setpoint) {
+    m_shooterMotor.set(setpoint);
   }
 
   // public boolean atSetpoint() {
@@ -135,7 +134,7 @@ public class ShooterSparkPID extends SubsystemBase {
   public void stopShooter() {
     kSetpoint = 0;
     setpoint = 0;
-    m_pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
+    m_pidController.setReference(0, CANSparkMax.ControlType.kVoltage);
   }
 
   public void runFeeder() {
