@@ -22,20 +22,9 @@ public class Shooter extends SubsystemBase {
   private final CANSparkMax m_shooterMotor = new CANSparkMax(ShooterConstants.kShooterMotorPort,
       MotorType.kBrushless);
   private final CANSparkMax m_feederMotor = new CANSparkMax(ShooterConstants.kFeederMotorPort, MotorType.kBrushless);
-<<<<<<< HEAD
-
-  private final Encoder m_shooterEncoder = new Encoder(
-      ShooterConstants.kEncoderPorts[0],
-      ShooterConstants.kEncoderPorts[1],
-      ShooterConstants.kEncoderReversed);
-
-  private final SimpleMotorFeedforward m_shooterFeedforward = new SimpleMotorFeedforward(
-      ShooterConstants.kSVolts, ShooterConstants.kVVoltSecondsPerRotation);
-=======
   private SparkMaxPIDController m_pidController = m_shooterMotor.getPIDController();
   private RelativeEncoder m_encoder = m_shooterMotor.getEncoder();
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
->>>>>>> main
 
   /** The shooter subsystem for the robot. */
   public Shooter() {
@@ -128,12 +117,14 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setSetpoint() {
-    m_pidController.setReference(ShooterConstants.kShooterTargetRPS, CANSparkMax.ControlType.kVelocity);
+    m_pidController.setReference(ShooterConstants.kShooterTargetRPM, CANSparkMax.ControlType.kVelocity);
   }
 
-  // public boolean atSetpoint() {
-  // return false
-  // }
+  public boolean atSetpoint() {
+    double encoderValue = m_encoder.getVelocity();
+    double tolerance = ShooterConstants.kShooterToleranceRPM;
+    return true;
+  }
 
   public void stopShooter() {
     m_pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
