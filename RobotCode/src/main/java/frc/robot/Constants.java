@@ -36,21 +36,21 @@ public final class Constants {
   }
 
   public static final class ShooterConstants {
-    public static final int[] kEncoderPorts = new int[] { 7, 6 };
+    public static final int[] kEncoderPorts = new int[] { 6, 7 };
     public static final boolean kEncoderReversed = false;
     public static final int kEncoderCPR = 1024;
     public static final double kEncoderDistancePerPulse =
         // Distance units will be rotations
         1.0 / (double) kEncoderCPR;
 
-    public static final int kShooterMotorPort = 7;
-    public static final int kFeederMotorPort = 6;
+    public static final int kShooterMotorPort = 6;
+    public static final int kFeederMotorPort = 7;
 
     // TargetRPS - High Shot against hub = -7.5
     // TargetRPS - Low Shot against hub = -5.25
 
     public static final double kShooterFreeRPS = 95;
-    public static final double kShooterTargetRPS = -5250;
+    public static final double kShooterTargetRPS = -2000;
     public static final double kShooterToleranceRPS = Math.abs(1 * kShooterTargetRPS);
 
     // These are not real PID gains, and will have to be tuned for your specific

@@ -24,7 +24,7 @@ public class ShooterSparkPID extends SubsystemBase {
   private final CANSparkMax m_feederMotor = new CANSparkMax(ShooterConstants.kFeederMotorPort, MotorType.kBrushless);
   private SparkMaxPIDController m_pidController = m_shooterMotor.getPIDController();
   private RelativeEncoder m_encoder = m_shooterMotor.getEncoder();
-  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, kSetpoint;
+  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, kSetpoint, setpoint;
 
   /** The shooter subsystem for the robot. */
   public ShooterSparkPID() {
@@ -34,11 +34,12 @@ public class ShooterSparkPID extends SubsystemBase {
     kI = 0;
     kD = 0;
     kIz = 0;
-    kFF = 0.000015;
+    // kFF = 0.000015;
+    kFF = 2000;
     kMaxOutput = 1;
     kMinOutput = -1;
     maxRPM = -5700;
-    kSetpoint = -5250;
+    kSetpoint = -2000;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -57,6 +58,7 @@ public class ShooterSparkPID extends SubsystemBase {
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
     SmartDashboard.putNumber("SETPOINT", kSetpoint);
+    SmartDashboard.putNumber("ENCODER", m_encoder.getVelocity());
 
   }
 
@@ -70,7 +72,7 @@ public class ShooterSparkPID extends SubsystemBase {
     double ff = SmartDashboard.getNumber("Feed Forward", 0);
     double max = SmartDashboard.getNumber("Max Output", 0);
     double min = SmartDashboard.getNumber("Min Output", 0);
-    double setpoint = SmartDashboard.getNumber("SETPOINT", 0);
+    setpoint = SmartDashboard.getNumber("SETPOINT", 0);
 
     // if PID coefficients on SmartDashboard have changed, write new values to
     // controller
@@ -132,11 +134,9 @@ public class ShooterSparkPID extends SubsystemBase {
 
   public void stopShooter() {
     kSetpoint = 0;
+    setpoint = 0;
     m_pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
   }
-
-  // public boolean atSetpoint() {
-  // }
 
   public void runFeeder() {
     m_feederMotor.set(ShooterConstants.kFeederSpeed);
