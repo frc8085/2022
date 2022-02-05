@@ -36,7 +36,7 @@ public final class Constants {
   }
 
   public static final class IntakeConstants {
-    public static final int kIntakeMotorPort = 0;
+    public static final int kIntakeMotorPort = 5;
     // public static final int kConveyorMotorPort1 = 98;
     // public static final int kConveyorMotorPort2 = 97;
 
