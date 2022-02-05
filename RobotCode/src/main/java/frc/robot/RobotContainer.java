@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import frc.robot.commands.ArcadeDriver;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
@@ -34,6 +37,7 @@ public class RobotContainer {
   private final XboxController m_operatorController = new XboxController(Constants.OIConstants.kOperatorControllerPort);
   private final DriveTrain m_robotDrive = new DriveTrain();
   private final Shooter m_shooter = new Shooter();
+  private NetworkTableEntry m_HighShooterSpeed;
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -48,6 +52,13 @@ public class RobotContainer {
     // new ArcadeDriver(
     // m_robotDrive, m_driverController::getRightX, m_driverController::getLeftY));
 
+    m_HighShooterSpeed =
+        Shuffleboard.getTab("Speed configuration")
+            .add("Target RPS", Constants.ShooterConstants.kShooterTargetRPS)
+            .withWidget("Number Slider")
+            .withPosition(1, 1)
+            .withSize(2, 1)
+            .getEntry();
   }
 
   /**
@@ -56,7 +67,9 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Spin up the shooter when the 'A' button is pressed
     new JoystickButton(m_operatorController, Button.kA.value)
-        .whenPressed(new InstantCommand(m_shooter::enable, m_shooter));
+        .whenPressed(
+          new InstantCommand(m_shooter::enable, m_shooter)
+        .andThen(() -> m_shooter.setSetpoint(m_HighShooterSpeed.getDouble(1.0))));
 
     // Turn off the shooter when the 'B' button is pressed
     new JoystickButton(m_operatorController, Button.kB.value)
