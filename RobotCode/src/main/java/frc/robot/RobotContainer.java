@@ -35,7 +35,7 @@ public class RobotContainer {
   private final XboxController m_driverController = new XboxController(Constants.OIConstants.kDriverControllerPort);
   private final XboxController m_operatorController = new XboxController(Constants.OIConstants.kOperatorControllerPort);
   private final DriveTrain m_robotDrive = new DriveTrain();
-  private final ShooterSparkPID m_shooter = new ShooterSparkPID();
+  // private final ShooterSparkPID m_shooter = new ShooterSparkPID();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -61,23 +61,23 @@ public class RobotContainer {
     // .whenPressed(new InstantCommand(m_shooter::setSetpoint, m_shooter));
 
     // Turn off the shooter when the 'B' button is pressed
-    new JoystickButton(m_operatorController, Button.kB.value)
-        .whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter));
+    // new JoystickButton(m_operatorController, Button.kB.value)
+    // .whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter));
 
     // Run the feeder when the 'X' button is held, but only if the shooter is at
     // speed
-    new JoystickButton(m_operatorController, Button.kX.value)
-        .whenPressed(
-            new ConditionalCommand(
-                // Run the feeder
-                new InstantCommand(m_shooter::runFeeder, m_shooter),
-                // Do nothing
-                new InstantCommand(),
-                // Determine which of the above to do based on whether the shooter has
-                // reached the desired speed
-                // m_shooter::atSetpoint
-                () -> true))
-        .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
+    // new JoystickButton(m_operatorController, Button.kX.value)
+    // .whenPressed(
+    // new ConditionalCommand(
+    // // Run the feeder
+    // new InstantCommand(m_shooter::runFeeder, m_shooter),
+    // // Do nothing
+    // new InstantCommand(),
+    // // Determine which of the above to do based on whether the shooter has
+    // // reached the desired speed
+    // // m_shooter::atSetpoint
+    // () -> true))
+    // .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
   }
 
   /**
