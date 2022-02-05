@@ -6,6 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.ArcadeDriver;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
@@ -14,7 +15,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSparkPID;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -33,7 +34,7 @@ public class RobotContainer {
   private final XboxController m_driverController = new XboxController(Constants.OIConstants.kDriverControllerPort);
   private final XboxController m_operatorController = new XboxController(Constants.OIConstants.kOperatorControllerPort);
   private final DriveTrain m_robotDrive = new DriveTrain();
-  private final Shooter m_shooter = new Shooter();
+  private final ShooterSparkPID m_shooter = new ShooterSparkPID();
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -56,11 +57,11 @@ public class RobotContainer {
   private void configureButtonBindings() {
     // Spin up the shooter when the 'A' button is pressed
     new JoystickButton(m_operatorController, Button.kA.value)
-        .whenPressed(new InstantCommand(m_shooter::enable, m_shooter));
+        .whenPressed(new InstantCommand(m_shooter::setSetpoint, m_shooter));
 
     // Turn off the shooter when the 'B' button is pressed
-    new JoystickButton(m_operatorController, Button.kB.value)
-        .whenPressed(new InstantCommand(m_shooter::disable, m_shooter));
+    new JoystickButton(m_operatorController, Button.kA.value)
+        .whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter));
 
     // Run the feeder when the 'X' button is held, but only if the shooter is at
     // speed
