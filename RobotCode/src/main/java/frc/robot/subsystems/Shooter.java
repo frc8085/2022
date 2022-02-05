@@ -6,31 +6,27 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants.ShooterConstants;
 
-import javax.swing.text.Style;
-
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
-  private final CANSparkMax m_shooterMotor = new CANSparkMax(ShooterConstants.kShooterMotorPort,
-      MotorType.kBrushless);
+  private final CANSparkMax m_shooterMotor;
   private final CANSparkMax m_feederMotor = new CANSparkMax(ShooterConstants.kFeederMotorPort, MotorType.kBrushless);
-  private SparkMaxPIDController m_pidController = m_shooterMotor.getPIDController();
-  private RelativeEncoder m_encoder = m_shooterMotor.getEncoder();
+  private SparkMaxPIDController m_pidController;
+  private RelativeEncoder m_encoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
   /** The shooter subsystem for the robot. */
   public Shooter() {
+    m_shooterMotor = new CANSparkMax(ShooterConstants.kShooterMotorPort,
+        MotorType.kBrushless);
     m_shooterMotor.restoreFactoryDefaults();
+    m_encoder = m_shooterMotor.getEncoder();
+    m_pidController = m_shooterMotor.getPIDController();
 
     // PID coefficients
     // kP = 6e-5;
@@ -134,6 +130,7 @@ public class Shooter extends SubsystemBase {
     System.out.println("**** MinLimit: " + minLimit + "    MaxLimit    " + maxLimit);
 
     boolean withinLimits = encoderValue >= minLimit && encoderValue <= maxLimit;
+    System.out.println("**** EncoderValue: " + encoderValue + "    WithinLimits?    " + withinLimits);
 
     return withinLimits;
   }
