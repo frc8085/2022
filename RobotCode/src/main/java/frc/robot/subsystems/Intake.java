@@ -19,20 +19,23 @@ public class Intake extends SubsystemBase {
   private final Spark m_IntakeMotor = new Spark(IntakeConstants.kIntakeMotorPort);
 
   // Conveyor motors
-  // private final MotorControllerGroup m_ConveyorMotors = new MotorControllerGroup(
-  //     new CANSparkMax(IntakeConstants.kConveyorMotorPort1,
-  //         MotorType.kBrushless),
-  //     new CANSparkMax(IntakeConstants.kConveyorMotorPort2,
-  //         MotorType.kBrushless));
+  // private final MotorControllerGroup m_ConveyorMotors = new
+  // MotorControllerGroup(
+  // new CANSparkMax(IntakeConstants.kConveyorMotorPort1,
+  // MotorType.kBrushless),
+  // new CANSparkMax(IntakeConstants.kConveyorMotorPort2,
+  // MotorType.kBrushless));
 
   // Run the intake
   public void runIntake() {
+    System.out.println("<RunIntake/> ******");
     m_IntakeMotor.set(IntakeConstants.kIntakeSpeed);
     // m_ConveyorMotors.set(IntakeConstants.kConveyorSpeed);
   }
 
   // Stop the intake the intake
   public void stopIntake() {
+    System.out.println("<stopIntake/> ******");
     m_IntakeMotor.set(0);
     // m_ConveyorMotors.set(0);
   }
