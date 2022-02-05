@@ -39,8 +39,8 @@ public final class Constants {
     public static final int kShooterMotorPort = 7;
     public static final int kFeederMotorPort = 6;
 
-    public static final double kShooterTargetRPM = -2000;
-    public static final double kShooterToleranceRPM = Math.abs(0.2 * kShooterTargetRPM);
+    public static final double kShooterTargetRPM = -2300;
+    public static final double kShooterToleranceRPM = Math.abs(0.05 * kShooterTargetRPM);
 
     public static final double kFeederSpeed = 0.5;
   }

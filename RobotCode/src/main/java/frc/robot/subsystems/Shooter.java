@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import frc.robot.Constants.ShooterConstants;
 
+import javax.swing.text.Style;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -34,7 +36,7 @@ public class Shooter extends SubsystemBase {
     kI = 0;
     kD = 0;
     kIz = 0;
-    kFF = 0.000015;
+    kFF = 0.000178;
     // kFF = 2000;
     kMaxOutput = 0;
     kMinOutput = -1;
@@ -127,7 +129,11 @@ public class Shooter extends SubsystemBase {
     double minLimit = setpoint - tolerance;
     double maxLimit = setpoint + tolerance;
 
+    System.out.println("**** MinLimit: " +  minLimit+  "    MaxLimit    " + maxLimit );
+
     boolean withinLimits = encoderValue >= minLimit && encoderValue <= maxLimit;
+
+    
 
     return withinLimits;
   }
