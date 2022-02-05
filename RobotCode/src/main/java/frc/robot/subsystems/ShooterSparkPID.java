@@ -24,7 +24,7 @@ public class ShooterSparkPID extends SubsystemBase {
   private final CANSparkMax m_feederMotor = new CANSparkMax(ShooterConstants.kFeederMotorPort, MotorType.kBrushless);
   private SparkMaxPIDController m_pidController = m_shooterMotor.getPIDController();
   private RelativeEncoder m_encoder = m_shooterMotor.getEncoder();
-  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM, kSetpoint, setpoint;
+  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
   /** The shooter subsystem for the robot. */
   public ShooterSparkPID() {
@@ -36,10 +36,9 @@ public class ShooterSparkPID extends SubsystemBase {
     kIz = 0;
     kFF = 0.000015;
     // kFF = 2000;
-    kMaxOutput = 1;
+    kMaxOutput = 0;
     kMinOutput = -1;
     maxRPM = -5700;
-    kSetpoint = -2000;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -57,7 +56,6 @@ public class ShooterSparkPID extends SubsystemBase {
     SmartDashboard.putNumber("Feed Forward", kFF);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
     SmartDashboard.putNumber("Min Output", kMinOutput);
-    SmartDashboard.putNumber("SETPOINT", kSetpoint);
 
   }
 
@@ -71,14 +69,9 @@ public class ShooterSparkPID extends SubsystemBase {
     double ff = SmartDashboard.getNumber("Feed Forward", 0);
     double max = SmartDashboard.getNumber("Max Output", 0);
     double min = SmartDashboard.getNumber("Min Output", 0);
-    setpoint = SmartDashboard.getNumber("SETPOINT", 0);
 
     // if PID coefficients on SmartDashboard have changed, write new values to
     // controller
-    if ((setpoint != kSetpoint)) {
-      m_pidController.setReference(setpoint, CANSparkMax.ControlType.kVoltage);
-      kSetpoint = setpoint;
-    }
     if ((p != kP)) {
       m_pidController.setP(p);
       kP = p;
@@ -123,8 +116,8 @@ public class ShooterSparkPID extends SubsystemBase {
     SmartDashboard.putNumber("Encoder Velocity", m_encoder.getVelocity());
   }
 
-  public void setSetpoint(double setpoint) {
-    m_shooterMotor.set(setpoint);
+  public void setSetpoint() {
+    m_pidController.setReference(0, CANSparkMax.ControlType.kVoltage);
   }
 
   // public boolean atSetpoint() {
@@ -132,8 +125,6 @@ public class ShooterSparkPID extends SubsystemBase {
   // }
 
   public void stopShooter() {
-    kSetpoint = 0;
-    setpoint = 0;
     m_pidController.setReference(0, CANSparkMax.ControlType.kVoltage);
   }
 
