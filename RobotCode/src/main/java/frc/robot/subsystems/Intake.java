@@ -14,7 +14,7 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
 
   // Intake motor
-  private final CANSparkMax m_IntakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, MotorType.kBrushless);
+  private final CANSparkMax m_IntakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, MotorType.kBrushed);
   // Conveyor motors
   // private final MotorControllerGroup m_ConveyorMotors = new
   // MotorControllerGroup(
