@@ -10,6 +10,7 @@ import frc.robot.commands.ArcadeDriver;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -37,6 +38,7 @@ public class RobotContainer {
 
   private final XboxController m_operatorController = new XboxController(Constants.OIConstants.kOperatorControllerPort);
   private final Shooter m_shooter = new Shooter();
+  private final Feeder m_feeder = new Feeder();
   private final Intake m_intake = new Intake();
 
   /**
@@ -73,13 +75,13 @@ public class RobotContainer {
         .whenPressed(
             new ConditionalCommand(
                 // Run the feeder
-                new InstantCommand(m_shooter::runFeeder, m_shooter),
+                new InstantCommand(m_feeder::runFeeder, m_feeder),
                 // Do nothing
                 new InstantCommand(),
                 // Determine which of the above to do based on whether the shooter has
                 // reached the desired speed
                 m_shooter::atSetpoint))
-        .whenReleased(new InstantCommand(m_shooter::stopFeeder, m_shooter));
+        .whenReleased(new InstantCommand(m_feeder::stopFeeder, m_feeder));
   }
 
   /**

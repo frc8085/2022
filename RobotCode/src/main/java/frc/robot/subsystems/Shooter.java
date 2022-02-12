@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
   private final CANSparkMax m_shooterMotor;
-  private final CANSparkMax m_feederMotor = new CANSparkMax(ShooterConstants.kFeederMotorPort, MotorType.kBrushless);
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
   private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
@@ -133,13 +132,4 @@ public class Shooter extends SubsystemBase {
   public void stopShooter() {
     m_pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
   }
-
-  public void runFeeder() {
-    m_feederMotor.set(ShooterConstants.kFeederSpeed);
-  }
-
-  public void stopFeeder() {
-    m_feederMotor.set(0);
-  }
-
 }
