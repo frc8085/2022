@@ -40,7 +40,7 @@ public final class Constants {
     // public static final int kConveyorMotorPort1 = 98;
     // public static final int kConveyorMotorPort2 = 97;
 
-    public static final double kIntakeSpeed = 0.5;
+    public static final double kIntakeSpeed = -0.75;
     public static final double kConveyorSpeed = 0.5;
   }
 
