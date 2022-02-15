@@ -17,7 +17,7 @@ public class Shooter extends SubsystemBase {
   private final CANSparkMax m_shooterMotor;
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
-  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+  private double kPHigh, kIHigh, kDHigh, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
   /** The shooter subsystem for the robot. */
   public Shooter() {
@@ -29,9 +29,9 @@ public class Shooter extends SubsystemBase {
 
     // PID coefficients
     // kP = 6e-5;
-    kP = 0.0001;
-    kI = 0;
-    kD = 0.001;
+    kPHigh = 0.0001;
+    kIHigh = 0;
+    kDHigh = 0.001;
     kIz = 0;
     kFF = 0.0001761804087;
     kMaxOutput = 1;
@@ -39,17 +39,17 @@ public class Shooter extends SubsystemBase {
     maxRPM = 5700;
 
     // set PID coefficients
-    m_pidController.setP(kP);
-    m_pidController.setI(kI);
-    m_pidController.setD(kD);
+    m_pidController.setP(kPHigh);
+    m_pidController.setI(kIHigh);
+    m_pidController.setD(kDHigh);
     m_pidController.setIZone(kIz);
     m_pidController.setFF(kFF);
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("P Gain", kP);
-    SmartDashboard.putNumber("I Gain", kI);
-    SmartDashboard.putNumber("D Gain", kD);
+    SmartDashboard.putNumber("P Gain", kPHigh);
+    SmartDashboard.putNumber("I Gain", kIHigh);
+    SmartDashboard.putNumber("D Gain", kDHigh);
     SmartDashboard.putNumber("I Zone", kIz);
     SmartDashboard.putNumber("Feed Forward", kFF);
     SmartDashboard.putNumber("Max Output", kMaxOutput);
@@ -70,17 +70,17 @@ public class Shooter extends SubsystemBase {
 
     // if PID coefficients on SmartDashboard have changed, write new values to
     // controller
-    if ((p != kP)) {
+    if ((p != kPHigh)) {
       m_pidController.setP(p);
-      kP = p;
+      kPHigh = p;
     }
-    if ((i != kI)) {
+    if ((i != kIHigh)) {
       m_pidController.setI(i);
-      kI = i;
+      kIHigh = i;
     }
-    if ((d != kD)) {
+    if ((d != kDHigh)) {
       m_pidController.setD(d);
-      kD = d;
+      kDHigh = d;
     }
     if ((iz != kIz)) {
       m_pidController.setIZone(iz);
@@ -115,13 +115,13 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setSetpoint() {
-    m_pidController.setReference(ShooterConstants.kShooterTargetRPM, CANSparkMax.ControlType.kVelocity);
+    m_pidController.setReference(ShooterConstants.kShooterHighTargetRPM, CANSparkMax.ControlType.kVelocity);
   }
 
   public boolean atSetpoint() {
     double encoderValue = m_encoder.getVelocity();
-    double tolerance = ShooterConstants.kShooterToleranceRPM;
-    double setpoint = ShooterConstants.kShooterTargetRPM;
+    double tolerance = ShooterConstants.kShooterHighToleranceRPM;
+    double setpoint = ShooterConstants.kShooterHighTargetRPM;
     double minLimit = setpoint - tolerance;
     double maxLimit = setpoint + tolerance;
     boolean withinLimits = encoderValue >= minLimit && encoderValue <= maxLimit;

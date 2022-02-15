@@ -51,10 +51,11 @@ public final class Constants {
     // Low shot
     // public static final double kShooterTargetRPM = -2300;
 
-    // High Shot
-    public static final double kShooterTargetRPM = 3200;
 
-    public static final double kShooterToleranceRPM = Math.abs(0.05 * kShooterTargetRPM);
+    // High Shot
+    public static final double kShooterHighTargetRPM = 3200;
+
+    public static final double kShooterHighToleranceRPM = Math.abs(0.05 * kShooterHighTargetRPM);
 
     public static final double kFeederSpeed = -0.5;
   }
