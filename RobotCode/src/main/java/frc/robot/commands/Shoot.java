@@ -17,9 +17,9 @@ public class Shoot extends SequentialCommandGroup {
          * Run the feeder to shoot, but only
          * if the shooter is at set point
          */
-        new ConditionalCommand(
+        addCommands(new ConditionalCommand(
                 new InstantCommand(feeder::runFeeder, feeder),
                 new InstantCommand(),
-                shooter::atSetpoint);
+                shooter::atSetpoint));
     }
 }

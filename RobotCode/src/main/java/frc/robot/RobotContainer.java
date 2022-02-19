@@ -105,7 +105,7 @@ public class RobotContainer {
 
         private void configureButtonBindings() {
                 // Create some buttons
-                final JoystickButton shootButton = new JoystickButton(m_operatorController, Axis.kRightTrigger.value);
+                final JoystickButton shootButton = new JoystickButton(m_operatorController, Button.kRightBumper.value);
                 final JoystickButton shooterOffButton = new JoystickButton(m_operatorController, Button.kX.value);
                 final JoystickButton setTargetHighNearButton = new JoystickButton(m_operatorController,
                                 Button.kY.value);
@@ -113,8 +113,9 @@ public class RobotContainer {
                 final JoystickButton setTargetLowButton = new JoystickButton(m_operatorController, Button.kA.value);
                 final JoystickButton cargoLoadButton = new JoystickButton(m_operatorController,
                                 Button.kLeftBumper.value);
-                final JoystickButton cargoEjectButton = new JoystickButton(m_operatorController,
-                                Axis.kLeftTrigger.value);
+                // final JoystickButton cargoEjectButton = new
+                // JoystickButton(m_operatorController,
+                // Axis.kLeftTrigger.value);
 
                 // TODO. How do we map DPAD buttons??
                 // final JoystickButton dpadUp = new JoystickButton(m_operatorController, 5);
@@ -144,7 +145,8 @@ public class RobotContainer {
                 // TODO: Set time to automatically turn off the shooter motor
                 // See Timer.getFPGATimestamp
 
-                shootButton.whenPressed(new Shoot(m_intake, m_feeder, m_shooter))
+                shootButton.whenPressed(
+                                new Shoot(m_intake, m_feeder, m_shooter))
                                 .whenReleased(new InstantCommand(m_feeder::stopFeeder, m_feeder));
 
                 shooterOffButton.whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter)
@@ -171,11 +173,11 @@ public class RobotContainer {
                  * Close the intake hatch after N seconds without ejecting cargo
                  */
 
-                cargoEjectButton.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
-                                .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
-                                                .andThen(new WaitCommand(3)
-                                                                .andThen(new InstantCommand(m_hatch::closeIntake,
-                                                                                m_hatch))));
+                // cargoEjectButton.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
+                // .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
+                // .andThen(new WaitCommand(3)
+                // .andThen(new InstantCommand(m_hatch::closeIntake,
+                // m_hatch))));
 
         }
 
