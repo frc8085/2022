@@ -12,6 +12,7 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
+// TODO: Before running shooter make sure to run feeder in reverse slightly
 public class Shoot extends SequentialCommandGroup {
     public Shoot(Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
         /**
@@ -20,7 +21,7 @@ public class Shoot extends SequentialCommandGroup {
          */
         addCommands(new ConditionalCommand(
                 new InstantCommand(feeder::runFeeder, feeder).alongWith(
-                new InstantCommand(conveyor::runConveyor, conveyor)),
+                        new InstantCommand(conveyor::runConveyor, conveyor)),
                 new InstantCommand(),
                 shooter::atSetpoint));
     }

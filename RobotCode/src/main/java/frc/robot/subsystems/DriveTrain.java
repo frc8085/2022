@@ -37,7 +37,7 @@ public class DriveTrain extends SubsystemBase {
         // TODO:
         // https://codedocs.revrobotics.com/java/com/revrobotics/cansparkmax#setOpenLoopRampRate(double
         public void ArcadeDrive(double speed, double rotation) {
-                m_drive.arcadeDrive(-1 * (Math.pow(speed, 3)), -rotation);
+                m_drive.arcadeDrive(-1 * (Math.pow(speed, 3) * .5), -rotation * .5);
         }
 
         public DriveTrain() {
