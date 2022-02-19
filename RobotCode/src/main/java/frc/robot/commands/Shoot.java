@@ -4,7 +4,7 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Intake;
@@ -12,13 +12,14 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
 public class Shoot extends SequentialCommandGroup {
-    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-
     public Shoot(Intake intake, Feeder feeder, Shooter shooter) {
-        // addCommands(
-        // new OpenClaw(claw),
-        // parallel(new SetWristSetpoint(0, wrist), new SetElevatorSetpoint(0,
-        // elevator)));
+        /**
+         * Run the feeder to shoot, but only
+         * if the shooter is at set point
+         */
+        new ConditionalCommand(
+                new InstantCommand(feeder::runFeeder, feeder),
+                new InstantCommand(),
+                shooter::atSetpoint);
     }
-
 }

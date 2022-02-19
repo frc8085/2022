@@ -10,14 +10,19 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
+  private NetworkTableEntry readyToShoot;
+
   private final CANSparkMax m_shooterMotor;
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
-  private double kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+  private double kSetPoint, kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
 
   /** The shooter subsystem for the robot. */
   public Shooter() {
@@ -37,6 +42,7 @@ public class Shooter extends SubsystemBase {
     kMaxOutput = 1;
     kMinOutput = 0;
     maxRPM = 5700;
+    kSetPoint = ShooterConstants.kShooterTargetRPM;
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -47,54 +53,60 @@ public class Shooter extends SubsystemBase {
     m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
     // display PID coefficients on SmartDashboard
-    SmartDashboard.putNumber("P Gain", kP);
-    SmartDashboard.putNumber("I Gain", kI);
-    SmartDashboard.putNumber("D Gain", kD);
-    SmartDashboard.putNumber("I Zone", kIz);
-    SmartDashboard.putNumber("Feed Forward", kFF);
-    SmartDashboard.putNumber("Max Output", kMaxOutput);
-    SmartDashboard.putNumber("Min Output", kMinOutput);
+    // SmartDashboard.putNumber("P Gain", kP);
+    // SmartDashboard.putNumber("I Gain", kI);
+    // SmartDashboard.putNumber("D Gain", kD);
+    // SmartDashboard.putNumber("I Zone", kIz);
+    // SmartDashboard.putNumber("Feed Forward", kFF);
+    // SmartDashboard.putNumber("Max Output", kMaxOutput);
+    // SmartDashboard.putNumber("Min Output", kMinOutput);
+    readyToShoot = Shuffleboard.getTab("Shooter")
+        .add("Ready to shoot", atSetpoint())
+        .withPosition(2, 0)
+        .withSize(2, 1)
+        .getEntry();
 
   }
 
   @Override
   public void periodic() {
+
     // read PID coefficients from SmartDashboard
-    double p = SmartDashboard.getNumber("P Gain", 0);
-    double i = SmartDashboard.getNumber("I Gain", 0);
-    double d = SmartDashboard.getNumber("D Gain", 0);
-    double iz = SmartDashboard.getNumber("I Zone", 0);
-    double ff = SmartDashboard.getNumber("Feed Forward", 0);
-    double max = SmartDashboard.getNumber("Max Output", 0);
-    double min = SmartDashboard.getNumber("Min Output", 0);
+    // double p = SmartDashboard.getNumber("P Gain", 0);
+    // double i = SmartDashboard.getNumber("I Gain", 0);
+    // double d = SmartDashboard.getNumber("D Gain", 0);
+    // double iz = SmartDashboard.getNumber("I Zone", 0);
+    // double ff = SmartDashboard.getNumber("Feed Forward", 0);
+    // double max = SmartDashboard.getNumber("Max Output", 0);
+    // double min = SmartDashboard.getNumber("Min Output", 0);
 
     // if PID coefficients on SmartDashboard have changed, write new values to
     // controller
-    if ((p != kP)) {
-      m_pidController.setP(p);
-      kP = p;
-    }
-    if ((i != kI)) {
-      m_pidController.setI(i);
-      kI = i;
-    }
-    if ((d != kD)) {
-      m_pidController.setD(d);
-      kD = d;
-    }
-    if ((iz != kIz)) {
-      m_pidController.setIZone(iz);
-      kIz = iz;
-    }
-    if ((ff != kFF)) {
-      m_pidController.setFF(ff);
-      kFF = ff;
-    }
-    if ((max != kMaxOutput) || (min != kMinOutput)) {
-      m_pidController.setOutputRange(min, max);
-      kMinOutput = min;
-      kMaxOutput = max;
-    }
+    // if ((p != kP)) {
+    // m_pidController.setP(p);
+    // kP = p;
+    // }
+    // if ((i != kI)) {
+    // m_pidController.setI(i);
+    // kI = i;
+    // }
+    // if ((d != kD)) {
+    // m_pidController.setD(d);
+    // kD = d;
+    // }
+    // if ((iz != kIz)) {
+    // m_pidController.setIZone(iz);
+    // kIz = iz;
+    // }
+    // if ((ff != kFF)) {
+    // m_pidController.setFF(ff);
+    // kFF = ff;
+    // }
+    // if ((max != kMaxOutput) || (min != kMinOutput)) {
+    // m_pidController.setOutputRange(min, max);
+    // kMinOutput = min;
+    // kMaxOutput = max;
+    // }
 
     /**
      * PIDController objects are commanded to a set point using the
@@ -110,21 +122,31 @@ public class Shooter extends SubsystemBase {
      * com.revrobotics.CANSparkMax.ControlType.kVoltage
      * com.revrobotics.CANSparkMax.ControlType.kVelocity
      */
-
     SmartDashboard.putNumber("Encoder Velocity", m_encoder.getVelocity());
+    SmartDashboard.putNumber("Setpoint", kSetPoint);
+    readyToShoot.setBoolean(atSetpoint());
   }
 
-  public void setSetpoint() {
-    m_pidController.setReference(ShooterConstants.kShooterTargetRPM, CANSparkMax.ControlType.kVelocity);
+  public void setSetpoint(double setPoint) {
+    kSetPoint = setPoint;
+    m_pidController.setReference(kSetPoint, CANSparkMax.ControlType.kVelocity);
   }
 
   public boolean atSetpoint() {
     double encoderValue = m_encoder.getVelocity();
     double tolerance = ShooterConstants.kShooterToleranceRPM;
-    double setpoint = ShooterConstants.kShooterTargetRPM;
+    double setpoint = kSetPoint;
     double minLimit = setpoint - tolerance;
     double maxLimit = setpoint + tolerance;
-    boolean withinLimits = encoderValue >= minLimit && encoderValue <= maxLimit;
+
+    boolean withinLimits = encoderValue >= minLimit
+        && encoderValue <= maxLimit
+        /**
+         * Make sure the encoder is not exactly the setpoint
+         * because the encoder artificially equals setpoint when
+         * we first run the motor
+         */
+        && encoderValue != setpoint;
 
     return withinLimits;
   }

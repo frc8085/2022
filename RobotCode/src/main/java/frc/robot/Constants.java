@@ -65,6 +65,7 @@ public final class Constants {
     public static final int kTargetHighNear = 1;
     public static final int kTargetHighFar = 2;
     public static final int kTargetLow = 3;
+    public static final int kShooterOff = -1;
   }
 
 }
