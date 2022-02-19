@@ -37,34 +37,34 @@ public final class Constants {
 
   public static final class IntakeConstants {
     public static final int kIntakeMotorPort = 5;
-    // public static final int kConveyorMotorPort1 = 8;
-    // public static final int kConveyorMotorPort2 = 9;
+    public static final int kConveyorMotorPort1 = 8;
+    public static final int kConveyorMotorPort2 = 9;
 
     public static final double kIntakeSpeed = -0.75;
     public static final double kConveyorSpeed = 0.5;
+
+  }
+
+  public static final class HatchConstants {
+    public static final int[] kHatchSolenoidPorts = new int[] { 6, 7 };
+
   }
 
   public static final class ShooterConstants {
     public static final int kShooterMotorPort = 7;
     public static final int kFeederMotorPort = 6;
 
-    // Low shot
-    // public static final double kShooterTargetRPM = -2300;
-
-    // High Shot
-    public static final double kShooterTargetRPM = 3200;
-
-    public static final double kShooterToleranceRPM = Math.abs(0.05 * kShooterTargetRPM);
-
+    public static final double kShooterToleranceRPMPercent = 0.05;
     public static final double kFeederSpeed = -0.5;
+    public static final int[] kShooterTargetRPM = new int[] { 3200, 1000, 500 };
   }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
-    public static final int kTargetHighNear = 1;
-    public static final int kTargetHighFar = 2;
-    public static final int kTargetLow = 3;
+    public static final int kTargetHighNear = 0;
+    public static final int kTargetHighFar = 1;
+    public static final int kTargetLow = 2;
     public static final int kShooterOff = -1;
   }
 

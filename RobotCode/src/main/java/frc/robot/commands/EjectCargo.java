@@ -12,9 +12,12 @@ import frc.robot.subsystems.Intake;
 
 // Run feeder and conveyor in the same direction at a set speed.
 // Make sure that the feeder is not running
-public class HoldCargo extends SequentialCommandGroup {
-    public HoldCargo(Intake intake, Conveyor conveyor, Feeder feeder) {
-        addCommands(new InstantCommand(intake::stopIntake, intake)
-                .alongWith(new InstantCommand(conveyor::stopConveyor, conveyor)));
+public class EjectCargo extends SequentialCommandGroup {
+    public EjectCargo(Intake intake, Conveyor conveyor, Feeder feeder) {
+        addCommands(
+                new InstantCommand(feeder::stopFeeder, feeder),
+                new InstantCommand(intake::reverseIntake, intake),
+                new InstantCommand(conveyor::reverseConveyor, conveyor));
     }
+
 }

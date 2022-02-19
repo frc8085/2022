@@ -42,7 +42,7 @@ public class Shooter extends SubsystemBase {
     kMaxOutput = 1;
     kMinOutput = 0;
     maxRPM = 5700;
-    kSetPoint = ShooterConstants.kShooterTargetRPM;
+    kSetPoint = ShooterConstants.kShooterTargetRPM[0];
 
     // set PID coefficients
     m_pidController.setP(kP);
@@ -134,7 +134,7 @@ public class Shooter extends SubsystemBase {
 
   public boolean atSetpoint() {
     double encoderValue = m_encoder.getVelocity();
-    double tolerance = ShooterConstants.kShooterToleranceRPM;
+    double tolerance = Math.abs(ShooterConstants.kShooterToleranceRPMPercent * kSetPoint);
     double setpoint = kSetPoint;
     double minLimit = setpoint - tolerance;
     double maxLimit = setpoint + tolerance;
