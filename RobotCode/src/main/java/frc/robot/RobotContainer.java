@@ -150,8 +150,9 @@ public class RobotContainer {
                 // See Timer.getFPGATimestamp
 
                 shootButton.whenPressed(
-                                new Shoot(m_intake, m_feeder, m_shooter))
-                                .whenReleased(new InstantCommand(m_feeder::stopFeeder, m_feeder));
+                                new Shoot(m_intake, m_feeder, m_shooter, m_conveyor))
+                                .whenReleased(new InstantCommand(m_feeder::stopFeeder, m_feeder)
+                                                .alongWith(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)));
 
                 shooterOffButton.whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter)
                                 .andThen(() -> setShootingMode(OIConstants.kShooterOff)));
@@ -163,9 +164,9 @@ public class RobotContainer {
                  * Close the intake hatch after N seconds without loading cargo
                  */
 
-                cargoLoadButton.whenPressed(new LoadCargo(m_intake, m_hatch, m_conveyor, m_feeder))
+                cargoLoadButton.whenPressed(new LoadCargo(m_intake, m_hatch, m_conveyor, m_feeder, m_shooter))
                                 .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
-                                                .andThen(new WaitCommand(3)
+                                                .andThen(new WaitCommand(2)
                                                                 .andThen(new InstantCommand(m_hatch::closeIntake,
                                                                                 m_hatch))));
 
@@ -179,7 +180,7 @@ public class RobotContainer {
 
                 cargoEjectButton.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
                                 .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
-                                                .andThen(new WaitCommand(3)
+                                                .andThen(new WaitCommand(2)
                                                                 .andThen(new InstantCommand(m_hatch::closeIntake,
                                                                                 m_hatch))));
 

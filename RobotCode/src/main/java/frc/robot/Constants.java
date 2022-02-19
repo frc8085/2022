@@ -41,7 +41,7 @@ public final class Constants {
     public static final int kConveyorMotorPort2 = 9;
 
     public static final double kIntakeSpeed = -0.75;
-    public static final double kConveyorSpeed = 0.5;
+    public static final double kConveyorSpeed = 0.75;
 
   }
 
@@ -54,9 +54,9 @@ public final class Constants {
     public static final int kShooterMotorPort = 7;
     public static final int kFeederMotorPort = 6;
 
-    public static final double kShooterToleranceRPMPercent = 0.05;
+    public static final double kShooterToleranceRPMPercent = 0.15;
     public static final double kFeederSpeed = -0.5;
-    public static final int[] kShooterTargetRPM = new int[] { 3200, 4000, 2300 };
+    public static final int[] kShooterTargetRPM = new int[] { 0, 3200, 4000, 2300 };
   }
 
   public static final class ClimberConstants {
@@ -67,10 +67,10 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
-    public static final int kTargetHighNear = 0;
-    public static final int kTargetHighFar = 1;
-    public static final int kTargetLow = 2;
-    public static final int kShooterOff = -1;
+    public static final int kTargetHighNear = 1;
+    public static final int kTargetHighFar = 2;
+    public static final int kTargetLow = 3;
+    public static final int kShooterOff = 0;
   }
 
 }

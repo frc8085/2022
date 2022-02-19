@@ -6,20 +6,25 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Shooter;
 
 // Run feeder and conveyor in the same direction at a set speed.
 // Make sure that the feeder is not running
 public class LoadCargo extends SequentialCommandGroup {
-    public LoadCargo(Intake intake, Hatch hatch, Conveyor conveyor, Feeder feeder) {
+    public LoadCargo(Intake intake, Hatch hatch, Conveyor conveyor, Feeder feeder, Shooter shooter) {
         addCommands(
-                new InstantCommand(hatch::openIntake, hatch),
-                new InstantCommand(feeder::stopFeeder, feeder),
-                new InstantCommand(intake::runIntake, intake),
-                new InstantCommand(conveyor::runConveyor, conveyor));
+                new InstantCommand(hatch::openIntake, hatch)
+                        .alongWith((new InstantCommand(shooter::stopShooter, shooter)))
+
+                        .andThen(new WaitCommand(0.5))
+
+                        .andThen(new InstantCommand(intake::runIntake, intake))
+                        .andThen(new InstantCommand(conveyor::runConveyor, conveyor)));
     }
 
 }
