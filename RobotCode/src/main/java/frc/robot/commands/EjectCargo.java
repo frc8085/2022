@@ -15,9 +15,9 @@ import frc.robot.subsystems.Intake;
 public class EjectCargo extends SequentialCommandGroup {
     public EjectCargo(Intake intake, Conveyor conveyor, Feeder feeder) {
         addCommands(
-                new InstantCommand(feeder::stopFeeder, feeder),
-                new InstantCommand(intake::reverseIntake, intake),
-                new InstantCommand(conveyor::reverseConveyor, conveyor));
+                new InstantCommand(feeder::reverseFeeder, feeder),
+                new InstantCommand(conveyor::reverseConveyor, conveyor),
+                new InstantCommand(intake::reverseIntake, intake));
     }
 
 }

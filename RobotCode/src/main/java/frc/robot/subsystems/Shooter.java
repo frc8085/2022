@@ -140,13 +140,13 @@ public class Shooter extends SubsystemBase {
     double maxLimit = setpoint + tolerance;
 
     boolean withinLimits = encoderValue >= minLimit
-        && encoderValue <= maxLimit
-        /**
-         * Make sure the encoder is not exactly the setpoint
-         * because the encoder artificially equals setpoint when
-         * we first run the motor
-         */
-        && encoderValue != setpoint;
+        && encoderValue <= maxLimit;
+    /**
+     * Make sure the encoder is not exactly the setpoint
+     * because the encoder artificially equals setpoint when
+     * we first run the motor
+     */
+    // && encoderValue != setpoint;
 
     return withinLimits;
   }

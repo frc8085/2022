@@ -24,6 +24,10 @@ public class Feeder extends SubsystemBase {
         m_feederMotor.set(ShooterConstants.kFeederSpeed);
     }
 
+    public void reverseFeeder() {
+        m_feederMotor.set(-ShooterConstants.kFeederSpeed);
+    }
+
     public void stopFeeder() {
         m_feederMotor.set(0);
     }

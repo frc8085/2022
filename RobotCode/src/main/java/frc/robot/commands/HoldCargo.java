@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import java.time.Instant;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Conveyor;
@@ -15,6 +17,7 @@ import frc.robot.subsystems.Intake;
 public class HoldCargo extends SequentialCommandGroup {
     public HoldCargo(Intake intake, Conveyor conveyor, Feeder feeder) {
         addCommands(new InstantCommand(intake::stopIntake, intake)
+                .alongWith(new InstantCommand(feeder::stopFeeder, feeder))
                 .alongWith(new InstantCommand(conveyor::stopConveyor, conveyor)));
     }
 }

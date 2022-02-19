@@ -56,7 +56,12 @@ public final class Constants {
 
     public static final double kShooterToleranceRPMPercent = 0.05;
     public static final double kFeederSpeed = -0.5;
-    public static final int[] kShooterTargetRPM = new int[] { 3200, 1000, 500 };
+    public static final int[] kShooterTargetRPM = new int[] { 3200, 4000, 2300 };
+  }
+
+  public static final class ClimberConstants {
+    public static final int kClimberMotorPort = 14;
+    public static double kClimberMotorSpeed = 0.5;
   }
 
   public static final class OIConstants {

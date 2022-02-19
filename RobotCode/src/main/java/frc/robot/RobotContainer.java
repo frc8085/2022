@@ -92,8 +92,8 @@ public class RobotContainer {
                                 // Turning controlled by the right joystick
                                 new ArcadeDriver(
                                                 m_robotDrive,
-                                                m_driverController::getRightX,
-                                                m_driverController::getLeftY));
+                                                m_driverController::getLeftY,
+                                                m_driverController::getRightX));
 
                 shootingModeDisplay = Shuffleboard.getTab("Shooter")
                                 .add("Shooting Mode", shootingMode.get(shootMode))
@@ -113,9 +113,13 @@ public class RobotContainer {
                 final JoystickButton setTargetLowButton = new JoystickButton(m_operatorController, Button.kA.value);
                 final JoystickButton cargoLoadButton = new JoystickButton(m_operatorController,
                                 Button.kLeftBumper.value);
-                // final JoystickButton cargoEjectButton = new
-                // JoystickButton(m_operatorController,
-                // Axis.kLeftTrigger.value);
+
+                // TODO: Figure out how to use triggers
+                // https: //
+                // github.com/Team319/frc319-2019/blob/master/src/main/java/org/usfirst/frc/team319/controllers/BobAxisButton.java
+
+                final JoystickButton cargoEjectButton = new JoystickButton(m_operatorController,
+                                Button.kBack.value);
 
                 // TODO. How do we map DPAD buttons??
                 // final JoystickButton dpadUp = new JoystickButton(m_operatorController, 5);
@@ -173,11 +177,11 @@ public class RobotContainer {
                  * Close the intake hatch after N seconds without ejecting cargo
                  */
 
-                // cargoEjectButton.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
-                // .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
-                // .andThen(new WaitCommand(3)
-                // .andThen(new InstantCommand(m_hatch::closeIntake,
-                // m_hatch))));
+                cargoEjectButton.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
+                                .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
+                                                .andThen(new WaitCommand(3)
+                                                                .andThen(new InstantCommand(m_hatch::closeIntake,
+                                                                                m_hatch))));
 
         }
 
