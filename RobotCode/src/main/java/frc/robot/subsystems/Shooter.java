@@ -139,19 +139,18 @@ public class Shooter extends SubsystemBase {
     double minLimit = setpoint - tolerance;
     double maxLimit = setpoint + tolerance;
 
-    boolean withinLimits = encoderValue >= minLimit
-        && encoderValue <= maxLimit;
-    /**
-     * Make sure the encoder is not exactly the setpoint
-     * because the encoder artificially equals setpoint when
-     * we first run the motor
-     */
-    // && encoderValue != setpoint;
+    boolean withinLimits =
+        // Don't consider us at setpoint for the 'motor off' case
+        setpoint != 0 &&
+        // Otherwise check if we're within limits
+            encoderValue >= minLimit
+            && encoderValue <= maxLimit;
 
     return withinLimits;
   }
 
   public void stopShooter() {
     m_pidController.setReference(0, CANSparkMax.ControlType.kVelocity);
+    m_shooterMotor.set(0);
   }
 }
