@@ -12,17 +12,22 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
-// TODO: Before running shooter make sure to run feeder in reverse slightly
+/**
+ * Run the feeder and conveyor to shoot, but only if the shooter is up to speed
+ */
+
 public class Shoot extends SequentialCommandGroup {
-    public Shoot(Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
-        /**
-         * Run the feeder to shoot, but only
-         * if the shooter is at set point
-         */
-        addCommands(new ConditionalCommand(
-                new InstantCommand(feeder::runFeeder, feeder).alongWith(
-                        new InstantCommand(conveyor::runConveyor, conveyor)),
+  public Shoot(Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
+    addCommands(
+        // Before running the shooter, run feeder in reverse for 0.25 seconds
+        new InstantCommand(feeder::reverseFeeder, feeder).withTimeout(0.25)
+            .andThen(new ConditionalCommand(
+                // If shooter is up to speed, run the feeder & conveyor
+                new InstantCommand(feeder::runFeeder, feeder)
+                    .alongWith(new InstantCommand(conveyor::runConveyor, conveyor)),
+                // If shooter is NOT up to speed, do nothing
                 new InstantCommand(),
-                shooter::atSetpoint));
-    }
+                // Check if shooter is up to speed
+                shooter::atSetpoint)));
+  }
 }
