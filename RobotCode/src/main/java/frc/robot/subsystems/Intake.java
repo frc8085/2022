@@ -32,7 +32,8 @@ public class Intake extends SubsystemBase {
   }
 
   public Intake() {
-
+    // m_IntakeMotor.setSecondaryCurrentLimit(IntakeConstants.kPeakCurrent);
+    m_IntakeMotor.setOpenLoopRampRate(IntakeConstants.kRampRate);
   }
 
 }

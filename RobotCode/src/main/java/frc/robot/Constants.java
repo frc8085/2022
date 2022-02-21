@@ -21,6 +21,8 @@ public final class Constants {
     public static final int kRightMotor2Port = 4;
     public static final int kLeftMotor1Port = 1;
     public static final int kLeftMotor2Port = 3;
+    // TODO. Decide ramp rate (seconds) for drive motors
+    // rate = Time in seconds to go from 0 to full throttle.
     public static final double kRampRate = 0.5;
 
     public static final int[] kRightEncoderPorts = new int[] { 2, 4 };
@@ -43,6 +45,12 @@ public final class Constants {
 
     public static final double kIntakeSpeed = -0.75;
     public static final double kConveyorSpeed = 0.75;
+
+    // TODO. Decide peak current in AMPs for the intake motor
+    public static final double kPeakCurrent = 10;
+    // TODO. Decide ramp rate (seconds) for intake motor
+    // rate = Time in seconds to go from 0 to full throttle.
+    public static final double kRampRate = 0.25;
 
   }
 
