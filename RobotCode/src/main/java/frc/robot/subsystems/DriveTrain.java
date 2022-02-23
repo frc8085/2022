@@ -17,7 +17,7 @@ public class DriveTrain extends SubsystemBase {
 
   // Left motors
   private final CANSparkMax left1 = new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless);
-  private final CANSparkMax left2 = new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless);
+  private final CANSparkMax left2 = new CANSparkMax(DriveConstants.kLeftMotor2Port, MotorType.kBrushless);
 
   // Right motors
   private final CANSparkMax right1 = new CANSparkMax(DriveConstants.kRightMotor1Port,
