@@ -14,7 +14,7 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
 
   // Intake motor
-  private final CANSparkMax m_IntakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, MotorType.kBrushed);
+  private final CANSparkMax m_IntakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, MotorType.kBrushless);
 
   // Run the intake forward
   public void runIntake() {
