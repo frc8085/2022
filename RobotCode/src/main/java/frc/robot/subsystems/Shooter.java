@@ -39,8 +39,8 @@ public class Shooter extends SubsystemBase {
     kD = 0.001;
     kIz = 0;
     kFF = 0.0001761804087;
-    kMaxOutput = 1;
-    kMinOutput = 0;
+    kMaxOutput = 0;
+    kMinOutput = -1;
     maxRPM = 5700;
     kSetPoint = ShooterConstants.kShooterTargetRPM[0];
 

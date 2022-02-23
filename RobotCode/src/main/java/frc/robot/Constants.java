@@ -43,7 +43,7 @@ public final class Constants {
     public static final int kConveyorMotorPort1 = 8;
     public static final int kConveyorMotorPort2 = 9;
 
-    public static final double kIntakeSpeed = -0.75;
+    public static final double kIntakeSpeed = -.75;
     public static final double kConveyorSpeed = 0.75;
 
     // TODO. Decide peak current in AMPs for the intake motor
@@ -65,7 +65,7 @@ public final class Constants {
 
     public static final double kShooterToleranceRPMPercent = 0.15;
     public static final double kFeederSpeed = -0.5;
-    public static final int[] kShooterTargetRPM = new int[] { 0, 3200, 4000, 2300 };
+    public static final int[] kShooterTargetRPM = new int[] { 0, -3200, -4000, -2300 };
   }
 
   public static final class ClimberConstants {
