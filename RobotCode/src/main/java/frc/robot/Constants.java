@@ -36,6 +36,10 @@ public final class Constants {
     public static final double kEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
+
+    // Limits the rate of change of the signal (Joystick input) to
+    // {kSlewRateLimit} units per second
+    public static double kSlewRateLimit = 0.5;
   }
 
   public static final class IntakeConstants {

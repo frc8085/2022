@@ -7,6 +7,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -33,9 +34,14 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDrive m_drive = new DifferentialDrive(
       m_leftMotors, m_rightMotors);
 
+  // Creates a SlewRateLimiter that limits
+  // the rate of change of the signal to 0.5
+  // units per second
+  SlewRateLimiter filter = new SlewRateLimiter(DriveConstants.kSlewRateLimit);
+
   // Drive the robot using ArcadeDrive command
   public void ArcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive(-.75 * (Math.pow(speed, 3)), -rotation);
+    m_drive.arcadeDrive(-1 * (filter.calculate(speed)), -rotation);
   }
 
   public DriveTrain() {
