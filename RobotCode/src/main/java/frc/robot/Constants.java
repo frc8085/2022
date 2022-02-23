@@ -63,9 +63,9 @@ public final class Constants {
     public static final int kShooterMotorPort = 7;
     public static final int kFeederMotorPort = 6;
 
-    public static final double kShooterToleranceRPMPercent = 0.15;
+    public static final double kShooterToleranceRPMPercent = 0.10;
     public static final double kFeederSpeed = -0.5;
-    public static final int[] kShooterTargetRPM = new int[] { 0, -3200, -4000, -2300 };
+    public static final int[] kShooterTargetRPM = new int[] { 0, -3200, -3800, -2300 };
   }
 
   public static final class ClimberConstants {
