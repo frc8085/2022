@@ -21,9 +21,15 @@ public final class Constants {
     public static final int kRightMotor2Port = 4;
     public static final int kLeftMotor1Port = 1;
     public static final int kLeftMotor2Port = 3;
+
     // TODO. Decide ramp rate (seconds) for drive motors
-    // rate = Time in seconds to go from 0 to full throttle.
-    public static final double kRampRate = 0.5;
+    // {kRampRate} = Time in seconds to go from 0 to full throttle.
+    public static final double kRampRate = 2.5;
+
+    // Limits the rate of change of the signal (Joystick input) to
+    // {kSlewRateLimit} units per second
+    public static double kRotationSlewRateLimit = 0.25;
+    public static double kSpeedSlewRateLimit = 0.25;
 
     public static final int[] kRightEncoderPorts = new int[] { 2, 4 };
     public static final int[] kLeftEncoderPorts = new int[] { 1, 3 };
@@ -37,9 +43,6 @@ public final class Constants {
         // Assumes the encoders are directly mounted on the wheel shafts
         (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
 
-    // Limits the rate of change of the signal (Joystick input) to
-    // {kSlewRateLimit} units per second
-    public static double kSlewRateLimit = 0.5;
   }
 
   public static final class IntakeConstants {

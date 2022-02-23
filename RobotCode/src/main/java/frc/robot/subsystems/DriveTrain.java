@@ -34,14 +34,16 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDrive m_drive = new DifferentialDrive(
       m_leftMotors, m_rightMotors);
 
-  // Creates a SlewRateLimiter that limits
-  // the rate of change of the signal to 0.5
-  // units per second
-  SlewRateLimiter filter = new SlewRateLimiter(DriveConstants.kSlewRateLimit);
+  // Creates a SlewRateLimiter that limits the rate of change
+  // of the signal to {kSlewRateLimit} units per second
+  SlewRateLimiter speedFilter = new SlewRateLimiter(DriveConstants.kSpeedSlewRateLimit);
+  SlewRateLimiter rotationFilter = new SlewRateLimiter(DriveConstants.kRotationSlewRateLimit);
 
   // Drive the robot using ArcadeDrive command
   public void ArcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive(-1 * (filter.calculate(speed)), -rotation);
+    m_drive.arcadeDrive(
+        -1 * (speedFilter.calculate(speed)),
+        -1 * (rotationFilter.calculate(rotation)));
   }
 
   public DriveTrain() {
