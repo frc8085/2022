@@ -35,7 +35,7 @@ public class DriveTrain extends SubsystemBase {
 
   // Drive the robot using ArcadeDrive command
   public void ArcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive(-1 * (Math.pow(speed, 3)), -rotation);
+    m_drive.arcadeDrive(-.75 * (Math.pow(speed, 3)), -rotation);
   }
 
   public DriveTrain() {
