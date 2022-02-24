@@ -36,6 +36,7 @@ public class DriveTrain extends SubsystemBase {
 
   // Creates a SlewRateLimiter that limits the rate of change
   // of the signal to {kSlewRateLimit} units per second
+  // TODO: Seperate rate limit for speed up vs slow down.
   SlewRateLimiter speedFilter = new SlewRateLimiter(DriveConstants.kSpeedSlewRateLimit);
   SlewRateLimiter rotationFilter = new SlewRateLimiter(DriveConstants.kRotationSlewRateLimit);
 
