@@ -86,11 +86,11 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_robotDrive.setDefaultCommand(
-        // Forward/backward controlled by the left joystick
-        // Turning controlled by the right joystick
         new ArcadeDriver(
             m_robotDrive,
-            m_driverController::getLeftY,
+            // speed. forward/backward
+            m_driverController::getRightY,
+            // rotation. turning
             m_driverController::getRightX));
 
     shootingModeDisplay = Shuffleboard.getTab("Shooter")
@@ -98,7 +98,6 @@ public class RobotContainer {
         .withPosition(0, 0)
         .withSize(2, 1)
         .getEntry();
-
   }
 
   private void configureButtonBindings() {

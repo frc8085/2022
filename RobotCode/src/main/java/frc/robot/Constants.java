@@ -24,7 +24,7 @@ public final class Constants {
 
     // TODO. Decide ramp rate (seconds) for drive motors
     // {kRampRate} = Time in seconds to go from 0 to full throttle.
-    public static final double kRampRate = 2.5;
+    public static final double kRampRate = 1;
 
     // Limits the rate of change of the signal (Joystick input) to
     // {kSlewRateLimit} units per second
