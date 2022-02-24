@@ -28,20 +28,20 @@ public final class Constants {
 
     // Limits the rate of change of the signal (Joystick input) to
     // {kSlewRateLimit} units per second
-    public static double kRotationSlewRateLimit = 0.25;
-    public static double kSpeedSlewRateLimit = 0.25;
+    public static double kSpeedSlewRateLimit = 10;
+    public static double kRotationSlewRateLimit = 10;
 
     public static final int[] kRightEncoderPorts = new int[] { 2, 4 };
     public static final int[] kLeftEncoderPorts = new int[] { 1, 3 };
 
-    public static final boolean kLeftEncoderReversed = false;
-    public static final boolean kRightEncoderReversed = true;
+    // public static final boolean kLeftEncoderReversed = false;
+    // public static final boolean kRightEncoderReversed = true;
 
-    public static final int kEncoderCPR = 1024;
-    public static final double kWheelDiameterInches = 6;
-    public static final double kEncoderDistancePerPulse =
-        // Assumes the encoders are directly mounted on the wheel shafts
-        (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
+    // public static final int kEncoderCPR = 1024;
+    // public static final double kWheelDiameterInches = 6;
+    // public static final double kEncoderDistancePerPulse =
+    // // Assumes the encoders are directly mounted on the wheel shafts
+    // (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
 
   }
 

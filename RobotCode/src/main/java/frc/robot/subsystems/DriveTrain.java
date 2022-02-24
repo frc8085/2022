@@ -43,7 +43,7 @@ public class DriveTrain extends SubsystemBase {
   public void ArcadeDrive(double speed, double rotation) {
     m_drive.arcadeDrive(
         -1 * (speedFilter.calculate(speed)),
-        -1 * (rotationFilter.calculate(rotation)));
+        -0.5 * (rotationFilter.calculate(rotation)));
   }
 
   public DriveTrain() {
