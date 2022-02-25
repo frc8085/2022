@@ -9,14 +9,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Axis;
 
 public class GTADrive extends SubsystemBase {
-  private XboxController stick;
-  private int leftTriggerPort;
-  private int rightTriggerPort;
-  private int leftYAxis;
-  private int rightXAxis;
+  private XboxController m_driverController;
   private double speed;
   private double turnRotation;
 
@@ -46,29 +41,23 @@ public class GTADrive extends SubsystemBase {
    * Right Josytick Right --- Move right
    */
 
-  public GTADrive(XboxController m_driverController) {
-    stick = m_driverController;
-
-    leftTriggerPort = Axis.kLeftTrigger.value;
-    rightTriggerPort = Axis.kRightTrigger.value;
-
-    leftYAxis = Axis.kLeftY.value;
-    rightXAxis = Axis.kRightX.value;
+  public GTADrive(XboxController driverController) {
+    m_driverController = driverController;
   }
 
   public void driveRobot() {
-    double leftTrigger = stick.getRawAxis(leftTriggerPort);
-    double rightTrigger = stick.getRawAxis(rightTriggerPort);
+    double leftTrigger = m_driverController.getLeftTriggerAxis();
+    double rightTrigger = m_driverController.getRightTriggerAxis();
     if (isStopped(leftTrigger, rightTrigger)) {
       m_drive.tankDrive(0, 0);
     } else {
 
-      speed = stick.getRawAxis(leftYAxis);
+      speed = m_driverController.getLeftY();
       speed *= -.5;
       speed += .5;
       speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
 
-      turnRotation = stick.getRawAxis(rightXAxis) * -1;
+      turnRotation = m_driverController.getRightX() * -1;
       m_drive.arcadeDrive(speed, turnRotation);
 
       SmartDashboard.putNumber("Speed", speed);
