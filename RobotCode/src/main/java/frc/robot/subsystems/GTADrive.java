@@ -43,6 +43,7 @@ public class GTADrive extends SubsystemBase {
 
   public GTADrive(XboxController driverController) {
     m_driverController = driverController;
+    m_leftMotors.setInverted(true);
   }
 
   public void driveRobot() {
@@ -53,8 +54,12 @@ public class GTADrive extends SubsystemBase {
     } else {
 
       speed = m_driverController.getLeftY();
+      // Up is fast. Down is slow.
       speed *= -.5;
+
+      // Zero is half speed
       speed += .5;
+
       speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
 
       turnRotation = m_driverController.getRightX() * -1;
@@ -92,7 +97,7 @@ public class GTADrive extends SubsystemBase {
    * @return The value of the speed with the direction applied
    */
   private double applyDirection(double speed, double leftTrigger, double rightTrigger) {
-    return (isForward(leftTrigger, rightTrigger)) ? speed * 1 : speed * -1;
+    return (isForward(leftTrigger, rightTrigger)) ? speed * -1 : speed * 1;
   }
 
 }
