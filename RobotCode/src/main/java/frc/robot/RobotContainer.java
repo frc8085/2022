@@ -12,30 +12,24 @@ import java.util.Map;
 // Inputs
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // Commands
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.ArcadeDriver;
+import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HoldCargo;
 import frc.robot.commands.LoadCargo;
 import frc.robot.commands.Shoot;
-import frc.robot.commands.ShootHighFar;
-import frc.robot.commands.ShootHighNear;
-import frc.robot.commands.ShootLow;
 
 // Subsystems
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Feeder;
+import frc.robot.subsystems.GTADrive;
 import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
@@ -43,7 +37,6 @@ import frc.robot.subsystems.Conveyor;
 
 // Displays
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class RobotContainer {
@@ -53,9 +46,9 @@ public class RobotContainer {
 
   // Drive train and driver controller
   private final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  private final DriveTrain m_robotDrive = new DriveTrain();
+  private final GTADrive m_robotDrive = new GTADrive(m_driverController);
 
-  // OPerator controller and subsystems
+  // Operator controller and subsystems
   private final XboxController m_operatorController = new XboxController(
       OIConstants.kOperatorControllerPort);
   private final Shooter m_shooter = new Shooter();
@@ -66,8 +59,8 @@ public class RobotContainer {
 
   /**
    * Shooting Mode definition
-   * shootMode is an integer corresponding to the three types of tragets
-   * (High Near, High Far, Low)
+   * shootMode is an integer corresponding to the 4 types of targets
+   * (Stopped, High Near, High Far, Low)
    * shootingMode translates the integer into a string so we can display it
    * in the Shuffleboard entry shottingModeDisplay
    */
@@ -85,13 +78,7 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    m_robotDrive.setDefaultCommand(
-        new ArcadeDriver(
-            m_robotDrive,
-            // speed. forward/backward
-            m_driverController::getRightY,
-            // rotation. turning
-            m_driverController::getRightX));
+    m_robotDrive.setDefaultCommand(new Drive(m_robotDrive));
 
     shootingModeDisplay = Shuffleboard.getTab("Shooter")
         .add("Shooting Mode", shootingMode.get(shootMode))
