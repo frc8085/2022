@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // Commands
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.OIConstants;
@@ -70,6 +71,8 @@ public class RobotContainer {
    */
   private NetworkTableEntry shootingModeDisplay;
   private int shootMode = OIConstants.kShooterOff;
+  private boolean shootLow = false;
+
   private static final Map<Integer, String> shootingMode = new HashMap<Integer, String>() {
     {
       put(OIConstants.kShooterOff, "Shooting mode not selected");
@@ -101,12 +104,14 @@ public class RobotContainer {
     // Create some buttons
     final JoystickButton shootButton = new JoystickButton(m_operatorController, Button.kRightBumper.value);
     final JoystickButton shooterOffButton = new JoystickButton(m_operatorController, Button.kX.value);
-    final JoystickButton setTargetHighNearButton = new JoystickButton(m_operatorController,
-        Button.kY.value);
-    final JoystickButton setTargetHighFarButton = new JoystickButton(m_operatorController, Button.kB.value);
-    final JoystickButton setTargetLowButton = new JoystickButton(m_operatorController, Button.kA.value);
-    final JoystickButton cargoLoadButton = new JoystickButton(m_operatorController,
-        Button.kLeftBumper.value);
+    final JoystickButton setTargetFar = new JoystickButton(m_operatorController, Button.kY.value);
+    final JoystickButton setTargetAngled = new JoystickButton(m_operatorController, Button.kB.value);
+    final JoystickButton setTargetNear = new JoystickButton(m_operatorController, Button.kA.value);
+    final JoystickButton setLowTarget = new JoystickButton(m_operatorController, Button.kLeftBumper.value);
+
+    // final JoystickButton cargoLoadButton = new
+    // JoystickButton(m_operatorController,
+    // Button.kLeftBumper.value);
     // final JoystickButton cargoEjectButton = new
     // JoystickButton(m_operatorController,
     // Button.kBack.value);
@@ -126,12 +131,28 @@ public class RobotContainer {
      * SET SHOOTING TARGET
      * Setting the shooting target will update the shooter motor setpoint
      */
-    setTargetHighNearButton.whenPressed(
-        new InstantCommand(() -> setShootingMode(OIConstants.kTargetHighNear)));
-    setTargetHighFarButton.whenPressed(
-        new InstantCommand(() -> setShootingMode(OIConstants.kTargetHighFar)));
-    setTargetLowButton.whenPressed(
-        new InstantCommand(() -> setShootingMode(OIConstants.kTargetLowNear)));
+
+    setLowTarget.whenHeld(
+        new InstantCommand(() -> shootLow = true))
+        .whenReleased(new InstantCommand(() -> shootLow = false));
+
+    setTargetFar.whenPressed(
+        new ConditionalCommand(
+            new InstantCommand(() -> setShootingMode(OIConstants.kTargetLowFar)),
+            new InstantCommand(() -> setShootingMode(OIConstants.kTargetHighFar)),
+            () -> shootLow));
+
+    setTargetAngled.whenPressed(
+        new ConditionalCommand(
+            new InstantCommand(() -> setShootingMode(OIConstants.kTargetLowAngled)),
+            new InstantCommand(() -> setShootingMode(OIConstants.kTargetHighAngled)),
+            () -> shootLow));
+
+    setTargetNear.whenPressed(
+        new ConditionalCommand(
+            new InstantCommand(() -> setShootingMode(OIConstants.kTargetLowNear)),
+            new InstantCommand(() -> setShootingMode(OIConstants.kTargetHighNear)),
+            () -> shootLow));
 
     /**
      * SHOOT ACTION
@@ -158,11 +179,12 @@ public class RobotContainer {
      * Close the intake hatch after 2 seconds without loading cargo
      */
 
-    cargoLoadButton.whenPressed(new LoadCargo(m_intake, m_hatch, m_conveyor, m_feeder, m_shooter))
-        .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
-            .andThen(new WaitCommand(2)
-                .andThen(new InstantCommand(m_hatch::closeIntake,
-                    m_hatch))));
+    // cargoLoadButton.whenPressed(new LoadCargo(m_intake, m_hatch, m_conveyor,
+    // m_feeder, m_shooter))
+    // .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
+    // .andThen(new WaitCommand(2)
+    // .andThen(new InstantCommand(m_hatch::closeIntake,
+    // m_hatch))));
 
     /**
      * EJECT CARGO
