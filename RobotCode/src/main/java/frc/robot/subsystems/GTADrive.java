@@ -5,7 +5,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.XboxController;
@@ -49,24 +48,22 @@ public class GTADrive extends SubsystemBase {
   public void driveRobot() {
     double leftTrigger = m_driverController.getLeftTriggerAxis();
     double rightTrigger = m_driverController.getRightTriggerAxis();
-    if (isStopped(leftTrigger, rightTrigger)) {
-      m_drive.tankDrive(0, 0);
-    } else {
 
+    // Transform the turn rotation based on Right Joystick X
+    turnRotation = Math.pow(m_driverController.getRightX(), 3) * -0.5;
+
+    if (isStopped(leftTrigger, rightTrigger)) {
+      // Even if it's stopped, let it turn
+      m_drive.curvatureDrive(0, turnRotation, true);
+    } else {
       speed = m_driverController.getLeftY();
       // Up is fast. Down is slow.
       speed *= -.5;
-
       // Zero is half speed
       speed += .5;
 
       speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
-
-      turnRotation = m_driverController.getRightX() * -1;
       m_drive.curvatureDrive(speed, turnRotation, true);
-
-      SmartDashboard.putNumber("Speed", speed);
-      SmartDashboard.putNumber("Rotation", turnRotation);
     }
   }
 
