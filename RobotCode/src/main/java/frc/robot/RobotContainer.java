@@ -88,7 +88,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_robotDrive.setDefaultCommand(new Drive(m_robotDrive));
-    m_climber.setDefaultCommand(new Climb(m_climber));
+    m_climber.setDefaultCommand(new Climb(m_climber, m_hatch));
 
     shootingModeDisplay = Shuffleboard.getTab("Shooter")
         .add("Shooting Mode", shootingMode.get(shootMode))
@@ -107,14 +107,14 @@ public class RobotContainer {
     final JoystickButton setTargetLowButton = new JoystickButton(m_operatorController, Button.kA.value);
     final JoystickButton cargoLoadButton = new JoystickButton(m_operatorController,
         Button.kLeftBumper.value);
-    final JoystickButton cargoEjectButton = new JoystickButton(m_operatorController,
+    // final JoystickButton cargoEjectButton = new
+    // JoystickButton(m_operatorController,
+    // Button.kBack.value);
+    final JoystickButton unlockClimberButton = new JoystickButton(m_operatorController,
         Button.kBack.value);
 
-       
     // TODO: Figure out how to use triggers
     // https://github.com/Team319/frc319-2019/blob/master/src/main/java/org/usfirst/frc/team319/controllers/BobAxisButton.java
-
-
 
     // TODO. How do we map DPAD buttons??
     // final JoystickButton dpadUp = new JoystickButton(m_operatorController, 5);
@@ -168,9 +168,11 @@ public class RobotContainer {
      * EJECT CARGO
      * When you release cargo eject, hold any remaining cargo by stopping all motors
      */
-    cargoEjectButton.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
-        .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder));
+    // cargoEjectButton.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
+    // .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder));
 
+    /** UNLOCK CLIMBER */
+    unlockClimberButton.whenPressed(new InstantCommand(m_climber::unlockClimber, m_climber));
   }
 
   private void setShootingMode(int mode) {
