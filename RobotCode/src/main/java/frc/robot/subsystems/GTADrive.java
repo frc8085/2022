@@ -50,7 +50,7 @@ public class GTADrive extends SubsystemBase {
     double rightTrigger = m_driverController.getRightTriggerAxis();
 
     // Transform the turn rotation based on Right Joystick X
-    turnRotation = Math.pow(m_driverController.getRightX(), 3)  * -1;
+    turnRotation = Math.pow(m_driverController.getRightX(), 3) * -0.5;
 
     if (isStopped(leftTrigger, rightTrigger)) {
       // Even if it's stopped, let it turn
