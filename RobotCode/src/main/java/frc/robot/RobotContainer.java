@@ -69,9 +69,14 @@ public class RobotContainer {
   private static final Map<Integer, String> shootingMode = new HashMap<Integer, String>() {
     {
       put(OIConstants.kShooterOff, "Shooting mode not selected");
-      put(OIConstants.kTargetHighNear, "High->Near");
-      put(OIConstants.kTargetHighFar, "High----------------------------->Far");
-      put(OIConstants.kTargetLow, "Low");
+
+      put(OIConstants.kTargetHighNear, "HIGH ▔ Near");
+      put(OIConstants.kTargetHighFar, "HIGH ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ Far");
+      put(OIConstants.kTargetHighAngled, "HIGH ▔▔angled▔▔");
+
+      put(OIConstants.kTargetLowNear, "LOW _ Near");
+      put(OIConstants.kTargetLowFar, "LOW ___________________________ Far");
+      put(OIConstants.kTargetLowAngled, "LOW __angled__");
     }
   };
 
@@ -120,7 +125,7 @@ public class RobotContainer {
     setTargetHighFarButton.whenPressed(
         new InstantCommand(() -> setShootingMode(OIConstants.kTargetHighFar)));
     setTargetLowButton.whenPressed(
-        new InstantCommand(() -> setShootingMode(OIConstants.kTargetLow)));
+        new InstantCommand(() -> setShootingMode(OIConstants.kTargetLowNear)));
 
     /**
      * SHOOT ACTION

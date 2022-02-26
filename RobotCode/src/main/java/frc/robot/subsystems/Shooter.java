@@ -63,7 +63,7 @@ public class Shooter extends SubsystemBase {
     readyToShoot = Shuffleboard.getTab("Shooter")
         .add("Ready to shoot", atSetpoint())
         .withPosition(2, 0)
-        .withSize(2, 1)
+        .withSize(4, 2)
         .getEntry();
 
   }

@@ -83,10 +83,20 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
+
+    // Shooter off preset
+    public static final int kShooterOff = 0;
+
+    // High shot presets
     public static final int kTargetHighNear = 1;
     public static final int kTargetHighFar = 2;
-    public static final int kTargetLow = 3;
-    public static final int kShooterOff = 0;
+    public static final int kTargetHighAngled = 3;
+
+    // Low shot presets
+    public static final int kTargetLowNear = 4;
+    public static final int kTargetLowFar = 5;
+    public static final int kTargetLowAngled = 6;
+
   }
 
 }
