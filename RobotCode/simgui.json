@@ -3,6 +3,7 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/Climber": "Subsystem",
+      "/LiveWindow/ColorSensor": "Subsystem",
       "/LiveWindow/Conveyor": "Subsystem",
       "/LiveWindow/DriveTrain": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",

@@ -18,10 +18,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 // Commands
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PerpetualCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.Climb;
+import frc.robot.commands.DetectColor;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
 import frc.robot.commands.ExampleCommand;
@@ -36,6 +38,7 @@ import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.ColorSensor;
 import frc.robot.subsystems.Conveyor;
 
 // Displays
@@ -59,6 +62,7 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Conveyor m_conveyor = new Conveyor();
   private final Hatch m_hatch = new Hatch();
+  private final ColorSensor m_colorSensor = new ColorSensor();
   private final Climber m_climber = new Climber(m_operatorController);
 
   /**
@@ -84,6 +88,7 @@ public class RobotContainer {
 
     m_robotDrive.setDefaultCommand(new Drive(m_robotDrive));
     m_climber.setDefaultCommand(new Climb(m_climber, m_hatch));
+    m_colorSensor.setDefaultCommand(new DetectColor(m_colorSensor));
 
     shootingModeDisplay = Shuffleboard.getTab("Shooter")
         .add("Shooting Mode", shootingMode.get(shootMode))

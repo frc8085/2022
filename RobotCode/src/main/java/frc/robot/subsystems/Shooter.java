@@ -54,7 +54,7 @@ public class Shooter extends SubsystemBase {
 
     // display PID coefficients on SmartDashboard
     // SmartDashboard.putNumber("P Gain", kP);
-    // SmartDashboard.putNumber("I Gain", kI);
+    // board.putNumber("I Gain", kI);
     // SmartDashboard.putNumber("D Gain", kD);
     // SmartDashboard.putNumber("I Zone", kIz);
     // SmartDashboard.putNumber("Feed Forward", kFF);
