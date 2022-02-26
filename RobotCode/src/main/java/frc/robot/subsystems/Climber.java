@@ -26,7 +26,6 @@ public class Climber extends SubsystemBase {
   /*
    * Unlocks the climber
    */
-
   public void unlockClimber() {
     isUnlocked = true;
   }
@@ -36,10 +35,9 @@ public class Climber extends SubsystemBase {
    */
   public void climb() {
     double rightY = m_peratorController.getRightY();
-
     // Only climb if unlocked
     if (isUnlocked) {
-      m_climberMotor.set(rightY * .08);
+      m_climberMotor.set(rightY);
     } else {
       stopClimb();
     }
