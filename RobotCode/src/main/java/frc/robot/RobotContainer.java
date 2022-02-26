@@ -109,14 +109,22 @@ public class RobotContainer {
     final JoystickButton setTargetNear = new JoystickButton(m_operatorController, Button.kA.value);
     final JoystickButton setLowTarget = new JoystickButton(m_operatorController, Button.kLeftBumper.value);
 
+    final JoystickButton unlockClimberButton = new JoystickButton(m_operatorController,
+        Button.kBack.value);
+    final JoystickButton lockClimberButton = new JoystickButton(m_operatorController,
+        Button.kStart.value);
+
     // final JoystickButton cargoLoadButton = new
     // JoystickButton(m_operatorController,
     // Button.kLeftBumper.value);
+
+    // TODO: Figure out how to use triggers
+    // https: //
+    // github.com/Team319/frc319-2019/blob/master/src/main/java/org/usfirst/frc/team319/controllers/BobAxisButton.java
+
     // final JoystickButton cargoEjectButton = new
     // JoystickButton(m_operatorController,
     // Button.kBack.value);
-    final JoystickButton unlockClimberButton = new JoystickButton(m_operatorController,
-        Button.kBack.value);
 
     // TODO: Figure out how to use triggers
     // https://github.com/Team319/frc319-2019/blob/master/src/main/java/org/usfirst/frc/team319/controllers/BobAxisButton.java
@@ -131,7 +139,6 @@ public class RobotContainer {
      * SET SHOOTING TARGET
      * Setting the shooting target will update the shooter motor setpoint
      */
-
     setLowTarget.whenHeld(
         new InstantCommand(() -> shootLow = true))
         .whenReleased(new InstantCommand(() -> shootLow = false));
@@ -193,8 +200,9 @@ public class RobotContainer {
     // cargoEjectButton.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
     // .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder));
 
-    /** UNLOCK CLIMBER */
+    /** LOCK AND UNLOCK CLIMBER */
     unlockClimberButton.whenPressed(new InstantCommand(m_climber::unlockClimber, m_climber));
+    lockClimberButton.whenPressed(new InstantCommand(m_climber::lockClimber, m_climber));
   }
 
   private void setShootingMode(int mode) {

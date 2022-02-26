@@ -13,8 +13,9 @@ import frc.robot.Constants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
   private XboxController m_peratorController;
+
   // Climber is locked by default
-  private boolean isUnlocked = false;
+  private boolean isLocked = true;
 
   private final CANSparkMax m_climberMotor = new CANSparkMax(ClimberConstants.kClimberMotorPort, MotorType.kBrushless);
 
@@ -23,11 +24,14 @@ public class Climber extends SubsystemBase {
     m_peratorController = operatorController;
   }
 
-  /*
-   * Unlocks the climber
-   */
+  /* Lock the climber */
+  public void lockClimber() {
+    isLocked = true;
+  }
+
+  /* Unlock the climber */
   public void unlockClimber() {
-    isUnlocked = true;
+    isLocked = false;
   }
 
   /*
@@ -35,11 +39,12 @@ public class Climber extends SubsystemBase {
    */
   public void climb() {
     double rightY = m_peratorController.getRightY();
+
     // Only climb if unlocked
-    if (isUnlocked) {
-      m_climberMotor.set(rightY);
-    } else {
+    if (isLocked) {
       stopClimb();
+    } else {
+      m_climberMotor.set(rightY * 0.3);
     }
   }
 
