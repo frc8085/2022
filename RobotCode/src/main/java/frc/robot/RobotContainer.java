@@ -83,7 +83,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_robotDrive.setDefaultCommand(new Drive(m_robotDrive));
-    m_climber.setDefaultCommand(new Climb(m_climber));
+    m_climber.setDefaultCommand(new Climb(m_climber, m_hatch));
 
     shootingModeDisplay = Shuffleboard.getTab("Shooter")
         .add("Shooting Mode", shootingMode.get(shootMode))
@@ -105,11 +105,8 @@ public class RobotContainer {
     final JoystickButton cargoEjectButton = new JoystickButton(m_operatorController,
         Button.kBack.value);
 
-       
     // TODO: Figure out how to use triggers
     // https://github.com/Team319/frc319-2019/blob/master/src/main/java/org/usfirst/frc/team319/controllers/BobAxisButton.java
-
-
 
     // TODO. How do we map DPAD buttons??
     // final JoystickButton dpadUp = new JoystickButton(m_operatorController, 5);
