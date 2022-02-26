@@ -2,9 +2,13 @@
   "NTProvider": {
     "types": {
       "/FMSInfo": "FMSInfo",
+      "/LiveWindow/Climber": "Subsystem",
+      "/LiveWindow/Conveyor": "Subsystem",
       "/LiveWindow/DriveTrain": "Subsystem",
       "/LiveWindow/ExampleSubsystem": "Subsystem",
       "/LiveWindow/Feeder": "Subsystem",
+      "/LiveWindow/GTADrive": "Subsystem",
+      "/LiveWindow/Hatch": "Subsystem",
       "/LiveWindow/Intake": "Subsystem",
       "/LiveWindow/Shooter": "Subsystem",
       "/LiveWindow/Ungrouped/DifferentialDrive[1]": "DifferentialDrive",
