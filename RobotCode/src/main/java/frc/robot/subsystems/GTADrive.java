@@ -63,7 +63,8 @@ public class GTADrive extends SubsystemBase {
       speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
 
       turnRotation = m_driverController.getRightX() * -1;
-      m_drive.arcadeDrive(speed, turnRotation);
+      // m_drive.arcadeDrive(speed, turnRotation);
+      m_drive.curvatureDrive(speed, Math.pow(turnRotation, 3), true);
 
       SmartDashboard.putNumber("Speed", speed);
       SmartDashboard.putNumber("Rotation", turnRotation);
