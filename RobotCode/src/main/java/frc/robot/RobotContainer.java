@@ -11,6 +11,7 @@ import java.util.Map;
 
 // Inputs
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Axis;
 import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -21,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
 import frc.robot.commands.ExampleCommand;
@@ -34,6 +36,7 @@ import frc.robot.subsystems.GTADrive;
 import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 
 // Displays
@@ -57,6 +60,7 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final Conveyor m_conveyor = new Conveyor();
   private final Hatch m_hatch = new Hatch();
+  private final Climber m_climber = new Climber(m_operatorController);
 
   /**
    * Shooting Mode definition
@@ -87,6 +91,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_robotDrive.setDefaultCommand(new Drive(m_robotDrive));
+    m_climber.setDefaultCommand(new Climb(m_climber, m_hatch));
 
     shootingModeDisplay = Shuffleboard.getTab("Shooter")
         .add("Shooting Mode", shootingMode.get(shootMode))
@@ -115,6 +120,9 @@ public class RobotContainer {
 
     final JoystickButton cargoEjectButton = new JoystickButton(m_operatorController,
         Button.kBack.value);
+
+    // TODO: Figure out how to use triggers
+    // https://github.com/Team319/frc319-2019/blob/master/src/main/java/org/usfirst/frc/team319/controllers/BobAxisButton.java
 
     // TODO. How do we map DPAD buttons??
     // final JoystickButton dpadUp = new JoystickButton(m_operatorController, 5);
