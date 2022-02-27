@@ -54,7 +54,7 @@ public final class Constants {
     public static final double kConveyorSpeed = 0.75;
 
     // TODO. Decide peak current in AMPs for the intake motor
-    public static final double kPeakCurrent = 10;
+    // public static final double kPeakCurrent = 10;
     // TODO. Decide ramp rate (seconds) for intake motor
     // rate = Time in seconds to go from 0 to full throttle.
     public static final double kRampRate = 0.25;
