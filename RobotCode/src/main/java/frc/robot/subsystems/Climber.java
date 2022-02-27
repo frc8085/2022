@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
-  private XboxController m_peratorController;
+  private XboxController m_OperatorController;
 
   // Climber is locked by default
   private boolean isLocked = true;
@@ -21,7 +21,7 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climber. */
   public Climber(XboxController operatorController) {
-    m_peratorController = operatorController;
+    m_OperatorController = operatorController;
   }
 
   /* Lock the climber */
