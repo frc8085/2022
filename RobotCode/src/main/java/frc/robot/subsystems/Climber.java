@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants;
 
 public class Climber extends SubsystemBase {
-  private XboxController m_OperatorController;
+  private XboxController m_operatorController;
 
   // Climber is locked by default
   private boolean isLocked = true;
@@ -21,7 +21,7 @@ public class Climber extends SubsystemBase {
 
   /** Creates a new Climber. */
   public Climber(XboxController operatorController) {
-    m_OperatorController = operatorController;
+    m_operatorController = operatorController;
   }
 
   /* Lock the climber */
@@ -38,7 +38,7 @@ public class Climber extends SubsystemBase {
    * Will run the climber as long as it's unlocked
    */
   public void climb() {
-    double rightY = m_peratorController.getRightY();
+    double rightY = m_operatorController.getRightY();
 
     // Only climb if unlocked
     if (isLocked) {
