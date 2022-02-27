@@ -22,7 +22,7 @@ public class LoadCargo extends SequentialCommandGroup {
                 new InstantCommand(hatch::openIntake, hatch)
                         .alongWith((new InstantCommand(shooter::stopShooter, shooter)))
 
-                        .andThen(new WaitCommand(1.25))
+                        .andThen(new WaitCommand(1))
 
                         .andThen(new InstantCommand(intake::runIntake, intake))
                         .andThen(new InstantCommand(conveyor::runConveyor, conveyor)));
