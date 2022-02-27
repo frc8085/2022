@@ -72,27 +72,48 @@ public final class Constants {
 
     public static final double kShooterToleranceRPMPercent = 0.10;
     public static final double kFeederSpeed = -0.5;
-    public static final int[] kShooterTargetRPM = new int[] { 0, -3200, -3800, -2300 };
+
+    // Shooter off speed
+    public static final int kShooterOffSpeed = 0;
+
+    // High shot speeds
+    public static final int kHighNearSpeed = -3200;
+    public static final int kHighFarSpeed = -3800;
+    public static final int kHighAngledSpeed = -3200;
+
+    // Low shot speeds
+    public static final int kLowNearSpeed = -2300;
+    public static final int kLowFarSpeed = -3200;
+    public static final int kLowAngledSpeed = -2300;
+
+    public static final int[] kShooterTargetRPM = new int[] {
+        kShooterOffSpeed, // 0, kShooterOff
+        kHighNearSpeed, // 1, kTargetHighNear
+        kHighFarSpeed, // 2, kTargetHighFar
+        kHighAngledSpeed, // 3, kTargetHighAngled
+        kLowNearSpeed, // 4, kTargetLowNear
+        kLowFarSpeed, // 6, kTargetLowFar
+        kLowAngledSpeed// 6, kTargetLowAngled
+    };
   }
 
   public static final class ClimberConstants {
     public static final int kClimberMotorPort = 14;
-    public static double kClimberMotorSpeed = 0.5;
   }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;
 
-    // Shooter off preset
+    /** Shooter off index in { @see ShooterConstants.kShooterTargetRPM } */
     public static final int kShooterOff = 0;
 
-    // High shot presets
+    /** High shot indices in { @see ShooterConstants.kShooterTargetRPM } */
     public static final int kTargetHighNear = 1;
     public static final int kTargetHighFar = 2;
     public static final int kTargetHighAngled = 3;
 
-    // Low shot presets
+    /** Low shot indices in { @see ShooterConstants.kShooterTargetRPM } */
     public static final int kTargetLowNear = 4;
     public static final int kTargetLowFar = 5;
     public static final int kTargetLowAngled = 6;
