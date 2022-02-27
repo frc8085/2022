@@ -115,12 +115,16 @@ public class RobotContainer {
     final JoystickButton setTargetAngled = new JoystickButton(m_operatorController, Button.kB.value);
     final JoystickButton setTargetNear = new JoystickButton(m_operatorController, Button.kA.value);
     final JoystickButton setLowTarget = new JoystickButton(m_operatorController, Button.kLeftBumper.value);
+
     // Create fake button to correspond to right trigger pressed
-    final JoystickAxisButton shootButton = new JoystickAxisButton(m_operatorController.getRightTriggerAxis(), 0.25);
+    final JoystickAxisButton shootButton = new JoystickAxisButton("Shoot",
+        m_operatorController::getRightTriggerAxis, 0.5);
 
     // Create fake buttons to correspond to right joystick up / down
-    final JoystickAxisButton cargoLoadControl = new JoystickAxisButton(m_operatorController.getRightY(), -0.25);
-    final JoystickAxisButton cargoEjectControl = new JoystickAxisButton(m_operatorController.getRightY(), 0.25);
+    final JoystickAxisButton cargoLoadControl = new JoystickAxisButton("Load",
+        m_operatorController::getRightY, -0.25);
+    final JoystickAxisButton cargoEjectControl = new JoystickAxisButton("Eject",
+        m_operatorController::getRightY, 0.25);
 
     final JoystickButton unlockClimberButton = new JoystickButton(m_operatorController,
         Button.kBack.value);
@@ -184,8 +188,7 @@ public class RobotContainer {
      * Close the intake hatch after 2 seconds without loading cargo
      */
     cargoLoadControl.whenPressed(
-        new LoadCargo(m_intake, m_hatch, m_conveyor, m_feeder, m_shooter)
-            .andThen(() -> SmartDashboard.putString("CARGO", "LOADING")))
+        new LoadCargo(m_intake, m_hatch, m_conveyor, m_feeder, m_shooter))
         .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
             .andThen(new WaitCommand(2)
                 .andThen(new InstantCommand(m_hatch::closeIntake,
@@ -195,8 +198,7 @@ public class RobotContainer {
      * EJECT CARGO
      * When you release cargo eject, hold any remaining cargo by stopping all motors
      */
-    cargoEjectControl.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder)
-        .andThen(() -> SmartDashboard.putString("CARGO", "EJECTING")))
+    cargoEjectControl.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
         .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder));
 
     /** LOCK AND UNLOCK CLIMBER */
