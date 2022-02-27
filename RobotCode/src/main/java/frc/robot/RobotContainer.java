@@ -122,9 +122,9 @@ public class RobotContainer {
 
     // Create fake buttons to correspond to right joystick up / down
     final JoystickAxisButton cargoLoadControl = new JoystickAxisButton("Load",
-        m_operatorController::getRightY, -0.25);
+        m_operatorController::getLeftY, -0.25);
     final JoystickAxisButton cargoEjectControl = new JoystickAxisButton("Eject",
-        m_operatorController::getRightY, 0.25);
+        m_operatorController::getLeftY, 0.25);
 
     final JoystickButton unlockClimberButton = new JoystickButton(m_operatorController,
         Button.kBack.value);
