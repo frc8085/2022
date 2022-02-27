@@ -115,7 +115,7 @@ public class RobotContainer {
     final JoystickButton setTargetFar = new JoystickButton(m_operatorController, Button.kY.value);
     final JoystickButton setTargetAngled = new JoystickButton(m_operatorController, Button.kB.value);
     final JoystickButton setTargetNear = new JoystickButton(m_operatorController, Button.kA.value);
-    final JoystickButton setLowTarget = new JoystickButton(m_operatorController, Button.kLeftBumper.value);
+    final JoystickButton setLowTarget = new JoystickButton(m_operatorController, Button.kRightBumper.value);
 
     // Create fake button to correspond to right trigger pressed
     final JoystickAxisButton shootButton = new JoystickAxisButton("Shoot",
@@ -123,9 +123,9 @@ public class RobotContainer {
 
     // Create fake buttons to correspond to right joystick up / down
     final JoystickAxisButton cargoLoadControl = new JoystickAxisButton("Load",
-        m_operatorController::getLeftY, -0.25);
-    final JoystickAxisButton cargoEjectControl = new JoystickAxisButton("Eject",
         m_operatorController::getLeftY, 0.25);
+    final JoystickAxisButton cargoEjectControl = new JoystickAxisButton("Eject",
+        m_operatorController::getLeftY, -0.25);
 
     final JoystickButton unlockClimberButton = new JoystickButton(m_operatorController,
         Button.kBack.value);
