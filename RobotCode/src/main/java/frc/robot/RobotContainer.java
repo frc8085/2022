@@ -78,12 +78,12 @@ public class RobotContainer {
       put(OIConstants.kShooterOff, "Shooting mode not selected");
 
       put(OIConstants.kTargetHighNear, "HIGH ▔ Near");
-      put(OIConstants.kTargetHighFar, "HIGH ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ Far");
-      put(OIConstants.kTargetHighAngled, "HIGH ▔▔angled▔▔");
+      put(OIConstants.kTargetHighFar, "HIGH ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ Far");
+      put(OIConstants.kTargetHighAngled, "HIGH ▔▔/angled/▔▔");
 
       put(OIConstants.kTargetLowNear, "LOW _ Near");
-      put(OIConstants.kTargetLowFar, "LOW ___________________________ Far");
-      put(OIConstants.kTargetLowAngled, "LOW __angled__");
+      put(OIConstants.kTargetLowFar, "LOW ____________________ Far");
+      put(OIConstants.kTargetLowAngled, "LOW __/angled/__");
     }
   };
 
@@ -139,9 +139,9 @@ public class RobotContainer {
      * SET SHOOTING TARGET
      * Setting the shooting target will update the shooter motor setpoint
      */
-    setLowTarget.whenHeld(
-        new InstantCommand(() -> shootLow = true))
-        .whenReleased(new InstantCommand(() -> shootLow = false));
+    setLowTarget.whenPressed(
+        new InstantCommand(() -> setLow(shootMode)))
+        .whenReleased(new InstantCommand(() -> setHigh(shootMode)));
 
     setTargetFar.whenPressed(
         new ConditionalCommand(
@@ -209,6 +209,42 @@ public class RobotContainer {
     shootMode = mode;
     shootingModeDisplay.setString(shootingMode.get(shootMode));
     m_shooter.setSetpoint(ShooterConstants.kShooterTargetRPM[mode]);
+  }
+
+  private void setLow(int mode) {
+    shootLow = true;
+
+    switch (mode) {
+      case OIConstants.kTargetHighNear:
+        shootMode = OIConstants.kTargetLowNear;
+        break;
+      case OIConstants.kTargetHighFar:
+        shootMode = OIConstants.kTargetLowFar;
+        break;
+      case OIConstants.kTargetHighAngled:
+        shootMode = OIConstants.kTargetLowAngled;
+        break;
+    }
+
+    setShootingMode(shootMode);
+  }
+
+  private void setHigh(int mode) {
+    shootLow = false;
+
+    switch (mode) {
+      case OIConstants.kTargetLowNear:
+        shootMode = OIConstants.kTargetHighNear;
+        break;
+      case OIConstants.kTargetLowFar:
+        shootMode = OIConstants.kTargetHighFar;
+        break;
+      case OIConstants.kTargetLowAngled:
+        shootMode = OIConstants.kTargetHighAngled;
+        break;
+    }
+
+    setShootingMode(shootMode);
   }
 
   public Command getAutonomousCommand() {
