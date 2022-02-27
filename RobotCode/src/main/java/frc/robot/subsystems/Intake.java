@@ -16,6 +16,10 @@ public class Intake extends SubsystemBase {
   // Intake motor
   private final CANSparkMax m_IntakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, MotorType.kBrushless);
 
+  public Intake() {
+    m_IntakeMotor.setOpenLoopRampRate(IntakeConstants.kRampRate);
+  }
+
   // Run the intake forward
   public void runIntake() {
     m_IntakeMotor.set(IntakeConstants.kIntakeSpeed);
@@ -29,11 +33,6 @@ public class Intake extends SubsystemBase {
   // Stop the intake the intake
   public void stopIntake() {
     m_IntakeMotor.set(0);
-  }
-
-  public Intake() {
-    // m_IntakeMotor.setSecondaryCurrentLimit(IntakeConstants.kPeakCurrent);
-    m_IntakeMotor.setOpenLoopRampRate(IntakeConstants.kRampRate);
   }
 
 }
