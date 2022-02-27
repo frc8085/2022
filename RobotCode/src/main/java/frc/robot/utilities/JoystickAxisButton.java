@@ -1,8 +1,7 @@
-package frc.robot.subsystems;
+package frc.robot.utilities;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
@@ -63,13 +62,15 @@ public class JoystickAxisButton extends Button {
         if (THRESHOLD < 0) {
             // Return true if axis value is less than negative
             // threshold
-            SmartDashboard.putBoolean(m_label, m_joystick_value.getAsDouble() < THRESHOLD);
-            return m_joystick_value.getAsDouble() < THRESHOLD;
+            boolean pressed = m_joystick_value.getAsDouble() < THRESHOLD;
+            SmartDashboard.putBoolean(m_label, pressed);
+            return pressed;
         } else {
             // Return true if axis value is greater than
             // positive threshold
-            SmartDashboard.putBoolean(m_label, m_joystick_value.getAsDouble() > THRESHOLD);
-            return m_joystick_value.getAsDouble() > THRESHOLD;
+            boolean pressed = m_joystick_value.getAsDouble() > THRESHOLD;
+            SmartDashboard.putBoolean(m_label, pressed);
+            return pressed;
         }
     }
 

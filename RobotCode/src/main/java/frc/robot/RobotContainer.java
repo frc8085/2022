@@ -36,8 +36,9 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
 import frc.robot.subsystems.Hatch;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.JoystickAxisButton;
 import frc.robot.subsystems.Shooter;
+import frc.robot.utilities.DPadButton;
+import frc.robot.utilities.JoystickAxisButton;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 
@@ -131,11 +132,9 @@ public class RobotContainer {
     final JoystickButton lockClimberButton = new JoystickButton(m_operatorController,
         Button.kStart.value);
 
-    // TODO. How do we map DPAD buttons??
-    // final JoystickButton dpadUp = new JoystickButton(m_operatorController, 5);
-    // final JoystickButton dpadRight = new JoystickButton(m_operatorController, 6);
-    // final JoystickButton dpadDown = new JoystickButton(m_operatorController, 7);
-    // final JoystickButton dpadLeft = new JoystickButton(m_operatorController, 8);
+    // Create fake buttons from POV Dpad Values
+    final DPadButton closeHatchButton = new DPadButton("Close hatch", m_operatorController, DPadButton.Value.kDPadUp);
+    final DPadButton openHatchButton = new DPadButton("Open hatch", m_operatorController, DPadButton.Value.kDPadDown);
 
     /**
      * SET SHOOTING TARGET
@@ -200,6 +199,10 @@ public class RobotContainer {
      */
     cargoEjectControl.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
         .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder));
+
+    /** HATCH MANUAL OPEN/CLOSE */
+    openHatchButton.whenPressed(new InstantCommand(m_hatch::openIntake, m_hatch));
+    closeHatchButton.whenPressed(new InstantCommand(m_hatch::closeIntake, m_hatch));
 
     /** LOCK AND UNLOCK CLIMBER */
     unlockClimberButton.whenPressed(new InstantCommand(m_climber::unlockClimber, m_climber));
