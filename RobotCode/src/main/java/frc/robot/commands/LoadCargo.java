@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.IntakeCover;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
@@ -17,7 +17,7 @@ import frc.robot.subsystems.Shooter;
 // Make sure that the feeder is not running
 
 public class LoadCargo extends SequentialCommandGroup {
-    public LoadCargo(Intake intake, Hatch hatch, Conveyor conveyor, Feeder feeder, Shooter shooter) {
+    public LoadCargo(Intake intake, IntakeCover hatch, Conveyor conveyor, Feeder feeder, Shooter shooter) {
         addCommands(
                 new InstantCommand(hatch::openIntake, hatch)
                         .alongWith((new InstantCommand(shooter::stopShooter, shooter)))

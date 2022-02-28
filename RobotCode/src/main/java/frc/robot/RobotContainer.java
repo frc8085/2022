@@ -34,7 +34,7 @@ import frc.robot.commands.Shoot;
 // Subsystems
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
-import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.IntakeCover;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.DPadButton;
@@ -62,7 +62,7 @@ public class RobotContainer {
   private final Shooter m_shooter = new Shooter();
   private final Feeder m_feeder = new Feeder();
   private final Conveyor m_conveyor = new Conveyor();
-  private final Hatch m_hatch = new Hatch();
+  private final IntakeCover m_intakeCover = new IntakeCover();
   private final Intake m_intake = new Intake();
 
   // TODO: Is there a better way to do this?
@@ -100,7 +100,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_robotDrive.setDefaultCommand(new Drive(m_robotDrive));
-    m_climber.setDefaultCommand(new Climb(m_climber, m_hatch));
+    m_climber.setDefaultCommand(new Climb(m_climber, m_intakeCover));
 
     shootingModeDisplay = Shuffleboard.getTab("Shooter")
         .add("Shooting Mode", shootingMode.get(shootMode))
@@ -133,8 +133,10 @@ public class RobotContainer {
         Button.kStart.value);
 
     // Create fake buttons from POV Dpad Values
-    final DPadButton closeHatchButton = new DPadButton("Close hatch", m_operatorController, DPadButton.Value.kDPadUp);
-    final DPadButton openHatchButton = new DPadButton("Open hatch", m_operatorController, DPadButton.Value.kDPadDown);
+    final DPadButton closeIntakeCoverButton = new DPadButton("Close intakeCover", m_operatorController,
+        DPadButton.Value.kDPadUp);
+    final DPadButton openIntakeCoverButton = new DPadButton("Open intakeCover", m_operatorController,
+        DPadButton.Value.kDPadDown);
 
     /**
      * SET SHOOTING TARGET
@@ -182,16 +184,16 @@ public class RobotContainer {
 
     /**
      * LOAD CARGO
-     * Open the intake hatch when you run intake
+     * Open the intake cover when you run intake
      * When you release the cargo load button, hold the cargo by stopping all motors
-     * Close the intake hatch after 2 seconds without loading cargo
+     * Close the intake cover after 2 seconds without loading cargo
      */
     cargoLoadControl.whenPressed(
-        new LoadCargo(m_intake, m_hatch, m_conveyor, m_feeder, m_shooter))
+        new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter))
         .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
-            .andThen(new WaitCommand(2)
-                .andThen(new InstantCommand(m_hatch::closeIntake,
-                    m_hatch))));
+            .andThen(new WaitCommand(10)
+                .andThen(new InstantCommand(m_intakeCover::closeIntake,
+                    m_intakeCover))));
 
     /**
      * EJECT CARGO
@@ -200,9 +202,9 @@ public class RobotContainer {
     cargoEjectControl.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
         .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder));
 
-    /** HATCH MANUAL OPEN/CLOSE */
-    openHatchButton.whenPressed(new InstantCommand(m_hatch::openIntake, m_hatch));
-    closeHatchButton.whenPressed(new InstantCommand(m_hatch::closeIntake, m_hatch));
+    /** INTAKE COVER MANUAL OPEN/CLOSE */
+    openIntakeCoverButton.whenPressed(new InstantCommand(m_intakeCover::openIntake, m_intakeCover));
+    closeIntakeCoverButton.whenPressed(new InstantCommand(m_intakeCover::closeIntake, m_intakeCover));
 
     /** LOCK AND UNLOCK CLIMBER */
     unlockClimberButton.whenPressed(new InstantCommand(m_climber::unlockClimber, m_climber));
