@@ -6,14 +6,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.Hatch;
+import frc.robot.subsystems.IntakeCover;
 
 /** An example command that uses an example subsystem. */
 public class Climb extends CommandBase {
   private final Climber m_climber;
-  private final Hatch m_hatch;
+  private final IntakeCover m_hatch;
 
-  public Climb(Climber climber, Hatch hatch) {
+  public Climb(Climber climber, IntakeCover hatch) {
     m_climber = climber;
     m_hatch = hatch;
     addRequirements(climber);

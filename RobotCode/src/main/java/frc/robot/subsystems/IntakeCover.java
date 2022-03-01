@@ -9,22 +9,26 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.Constants.HatchConstants;
+import frc.robot.Constants.IntakeCoverConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Hatch extends SubsystemBase {
-    private final DoubleSolenoid m_hatchSolenoid = new DoubleSolenoid(
+public class IntakeCover extends SubsystemBase {
+    private final DoubleSolenoid m_intakeCoverSolenoid = new DoubleSolenoid(
             PneumaticsModuleType.CTREPCM,
-            HatchConstants.kHatchSolenoidPorts[0],
-            HatchConstants.kHatchSolenoidPorts[1]);
+            IntakeCoverConstants.kIntakeCoverSolenoidPorts[0],
+            IntakeCoverConstants.kIntakeCoverSolenoidPorts[1]);
 
-    /** Grabs the hatch. */
+    /** Puts the intake cover down */
     public void openIntake() {
-        m_hatchSolenoid.set(kForward);
+        m_intakeCoverSolenoid.set(kForward);
     }
 
-    /** Releases the hatch. */
+    /** Lifts the intake cover up */
     public void closeIntake() {
-        m_hatchSolenoid.set(kReverse);
+        m_intakeCoverSolenoid.set(kReverse);
+    }
+
+    public boolean isIntakeCoverOpen() {
+        return m_intakeCoverSolenoid.get() == kForward;
     }
 }

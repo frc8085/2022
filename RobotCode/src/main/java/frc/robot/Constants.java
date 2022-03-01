@@ -61,8 +61,13 @@ public final class Constants {
 
   }
 
-  public static final class HatchConstants {
-    public static final int[] kHatchSolenoidPorts = new int[] { 6, 7 };
+  public static final class IntakeCoverConstants {
+    public static final int[] kIntakeCoverSolenoidPorts = new int[] { 6, 7 };
+
+  }
+
+  public static final class ClimberBrakeConstants {
+    public static final int[] kClimberBrakeSolenoidPorts = new int[] { 8, 9 };
 
   }
 
@@ -77,14 +82,14 @@ public final class Constants {
     public static final int kShooterOffSpeed = 0;
 
     // High shot speeds
-    public static final int kHighNearSpeed = -3200;
+    public static final int kHighNearSpeed = -3400;
     public static final int kHighFarSpeed = -3800;
-    public static final int kHighAngledSpeed = -3200;
+    public static final int kHighAngledSpeed = -3600;
 
     // Low shot speeds
-    public static final int kLowNearSpeed = -2300;
-    public static final int kLowFarSpeed = -3200;
-    public static final int kLowAngledSpeed = -2300;
+    public static final int kLowNearSpeed = -1800;
+    public static final int kLowFarSpeed = -2100;
+    public static final int kLowAngledSpeed = -2400;
 
     public static final int[] kShooterTargetRPM = new int[] {
         kShooterOffSpeed, // 0, kShooterOff
