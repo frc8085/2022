@@ -28,7 +28,7 @@ public class IntakeCover extends SubsystemBase {
         m_intakeCoverSolenoid.set(kReverse);
     }
 
-    public boolean isIntakeCoverOpen() {
+    public boolean isIntakeCoverDown() {
         return m_intakeCoverSolenoid.get() == kForward;
     }
 }

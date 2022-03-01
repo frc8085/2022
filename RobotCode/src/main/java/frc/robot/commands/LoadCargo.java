@@ -18,12 +18,12 @@ import frc.robot.subsystems.Shooter;
 // Make sure that the feeder is not running
 
 public class LoadCargo extends SequentialCommandGroup {
-    public LoadCargo(Intake intake, IntakeCover hatch, Conveyor conveyor, Feeder feeder, Shooter shooter) {
+    public LoadCargo(Intake intake, IntakeCover intakeCover, Conveyor conveyor, Feeder feeder, Shooter shooter) {
         addCommands(new InstantCommand(shooter::stopShooter, shooter)
                 .andThen(new ConditionalCommand(
                         new InstantCommand(),
-                        new InstantCommand(hatch::openIntake, hatch).andThen(new WaitCommand(1)),
-                        hatch::isIntakeCoverOpen)
+                        new InstantCommand(intakeCover::openIntake, intakeCover).andThen(new WaitCommand(1)),
+                        intakeCover::isIntakeCoverDown)
                                 .andThen(new InstantCommand(intake::runIntake, intake))
                                 .andThen(new InstantCommand(conveyor::runConveyor, conveyor))));
 

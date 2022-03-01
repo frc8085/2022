@@ -9,6 +9,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import java.util.HashMap;
 import java.util.Map;
 
+import frc.robot.Constants.IntakeConstants;
 // Constants
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.ShooterConstants;
@@ -188,7 +189,8 @@ public class RobotContainer {
     cargoLoadControl.whenPressed(
         new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter))
         .whenReleased(
-            new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter).withTimeout(2)
+            new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter)
+                .withTimeout(IntakeConstants.kLoadLagSecs)
                 .andThen(new HoldCargo(m_intake, m_conveyor, m_feeder))
                 .andThen(new WaitCommand(10)
                     .andThen(new InstantCommand(m_intakeCover::closeIntake,
@@ -198,7 +200,7 @@ public class RobotContainer {
      * EJECT CARGO
      * When you release cargo eject, hold any remaining cargo by stopping all motors
      */
-    cargoEjectControl.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder))
+    cargoEjectControl.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder, m_intakeCover))
         .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder));
 
     /** INTAKE COVER MANUAL OPEN/CLOSE */
