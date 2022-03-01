@@ -174,10 +174,7 @@ public class RobotContainer {
     // TODO: Set time to automatically turn off the shooter motor
     // See Timer.getFPGATimestamp
 
-    shootButton.whenPressed(
-        new Shoot(m_intake, m_feeder, m_shooter, m_conveyor))
-        .whenReleased(new InstantCommand(m_feeder::stopFeeder, m_feeder)
-            .alongWith(new InstantCommand(m_conveyor::stopConveyor, m_conveyor)));
+    shootButton.whenPressed(new Shoot(m_intake, m_feeder, m_shooter, m_conveyor));
 
     shooterOffButton.whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter)
         .andThen(() -> setShootingMode(OIConstants.kShooterOff)));
@@ -190,10 +187,12 @@ public class RobotContainer {
      */
     cargoLoadControl.whenPressed(
         new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter))
-        .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder)
-            .andThen(new WaitCommand(10)
-                .andThen(new InstantCommand(m_intakeCover::closeIntake,
-                    m_intakeCover))));
+        .whenReleased(
+            new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter).withTimeout(2)
+                .andThen(new HoldCargo(m_intake, m_conveyor, m_feeder))
+                .andThen(new WaitCommand(10)
+                    .andThen(new InstantCommand(m_intakeCover::closeIntake,
+                        m_intakeCover))));
 
     /**
      * EJECT CARGO

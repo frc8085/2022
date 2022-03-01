@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Intake;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
@@ -19,15 +20,18 @@ import frc.robot.subsystems.Shooter;
 public class Shoot extends SequentialCommandGroup {
   public Shoot(Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
     addCommands(
-        // Before running the shooter, run feeder in reverse for 0.25 seconds
-        new InstantCommand(feeder::reverseFeeder, feeder).withTimeout(0.25)
-            .andThen(new ConditionalCommand(
-                // If shooter is up to speed, run the feeder & conveyor
-                new InstantCommand(feeder::runFeeder, feeder)
-                    .alongWith(new InstantCommand(conveyor::runConveyor, conveyor)),
-                // If shooter is NOT up to speed, do nothing
-                new InstantCommand(),
-                // Check if shooter is up to speed
-                shooter::atSetpoint)));
+        new ConditionalCommand(
+            // If shooter is up to speed, run the feeder & conveyor
+            new InstantCommand(feeder::runFeeder, feeder).withTimeout(ShooterConstants.kShootBurstTime)
+                .alongWith(new InstantCommand(conveyor::runConveyor, conveyor))
+                .withTimeout(ShooterConstants.kShootBurstTime)
+                // Stop the shooting routine after N seconds
+                .andThen(new InstantCommand(feeder::stopFeeder, feeder)
+                    .alongWith(new InstantCommand(conveyor::stopConveyor, conveyor))),
+
+            // If shooter is NOT up to speed, do nothing
+            new InstantCommand(),
+            // Check if shooter is up to speed
+            shooter::atSetpoint));
   }
 }
