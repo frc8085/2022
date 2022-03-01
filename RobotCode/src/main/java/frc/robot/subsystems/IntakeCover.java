@@ -18,18 +18,17 @@ public class IntakeCover extends SubsystemBase {
             IntakeCoverConstants.kIntakeCoverSolenoidPorts[0],
             IntakeCoverConstants.kIntakeCoverSolenoidPorts[1]);
 
-    /**  */
-    private boolean isIntakeCoverDown = true;
-
-    /** Grabs the intake cover. */
+    /** Puts the intake cover down */
     public void openIntake() {
         m_intakeCoverSolenoid.set(kForward);
-        isIntakeCoverDown = true;
     }
 
-    /** Releases the intake cover. */
+    /** Lifts the intake cover up */
     public void closeIntake() {
         m_intakeCoverSolenoid.set(kReverse);
-        isIntakeCoverDown = false;
+    }
+
+    public boolean isIntakeCoverOpen() {
+        return m_intakeCoverSolenoid.get() == kForward;
     }
 }

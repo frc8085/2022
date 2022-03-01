@@ -17,8 +17,8 @@ public class EjectCargo extends SequentialCommandGroup {
   public EjectCargo(Intake intake, Conveyor conveyor, Feeder feeder) {
     addCommands(
         // Briefly run feeder before ejecting
-        new InstantCommand(feeder::runFeeder, feeder).withTimeout(1)
-            .andThen(new InstantCommand(feeder::reverseFeeder, feeder)),
+        new InstantCommand(feeder::runFeeder, feeder).withTimeout(1),
+        new InstantCommand(feeder::reverseFeeder, feeder),
         new InstantCommand(conveyor::reverseConveyor, conveyor),
         new InstantCommand(intake::reverseIntake, intake));
   }
