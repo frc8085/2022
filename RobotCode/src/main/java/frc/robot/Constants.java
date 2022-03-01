@@ -59,6 +59,10 @@ public final class Constants {
     // rate = Time in seconds to go from 0 to full throttle.
     public static final double kRampRate = 0.25;
 
+    // Duration in seconds to keep running the load
+    // cargo routine after release
+    public static double kLoadLagSecs = 1;
+
   }
 
   public static final class IntakeCoverConstants {
@@ -100,6 +104,9 @@ public final class Constants {
         kLowFarSpeed, // 6, kTargetLowFar
         kLowAngledSpeed// 6, kTargetLowAngled
     };
+
+    // Duration in seconds that the shooter should shoot
+    public static final double kShootBurstTime = 2;
   }
 
   public static final class ClimberConstants {
