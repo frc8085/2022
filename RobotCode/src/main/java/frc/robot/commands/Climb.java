@@ -7,22 +7,25 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IntakeCover;
+import frc.robot.subsystems.ClimberBrake;
 
 /** An example command that uses an example subsystem. */
 public class Climb extends CommandBase {
   private final Climber m_climber;
-  private final IntakeCover m_hatch;
+  private final IntakeCover m_intakeCover;
+  private final ClimberBrake m_climberBrake;
 
-  public Climb(Climber climber, IntakeCover hatch) {
+  public Climb(Climber climber, IntakeCover intakeCover, ClimberBrake climberBrake) {
     m_climber = climber;
-    m_hatch = hatch;
+    m_intakeCover = intakeCover;
+    m_climberBrake = climberBrake;
     addRequirements(climber);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_hatch.openIntake();
+    m_intakeCover.openIntake();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

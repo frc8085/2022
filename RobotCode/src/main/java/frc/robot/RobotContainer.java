@@ -42,6 +42,7 @@ import frc.robot.utilities.DPadButton;
 import frc.robot.utilities.JoystickAxisButton;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.ClimberBrake;
 
 // Displays
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -65,6 +66,7 @@ public class RobotContainer {
   private final Conveyor m_conveyor = new Conveyor();
   private final IntakeCover m_intakeCover = new IntakeCover();
   private final Intake m_intake = new Intake();
+  private final ClimberBrake m_climberBrake = new ClimberBrake();
 
   // TODO: Is there a better way to do this?
   // Because the Climber and Intake are using Joystick Axes, we're passing
@@ -101,7 +103,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_robotDrive.setDefaultCommand(new Drive(m_robotDrive));
-    m_climber.setDefaultCommand(new Climb(m_climber, m_intakeCover));
+    m_climber.setDefaultCommand(new Climb(m_climber, m_intakeCover, m_climberBrake));
 
     shootingModeDisplay = Shuffleboard.getTab("Shooter")
         .add("Shooting Mode", shootingMode.get(shootMode))
@@ -207,9 +209,12 @@ public class RobotContainer {
     openIntakeCoverButton.whenPressed(new InstantCommand(m_intakeCover::openIntake, m_intakeCover));
     closeIntakeCoverButton.whenPressed(new InstantCommand(m_intakeCover::closeIntake, m_intakeCover));
 
-    /** LOCK AND UNLOCK CLIMBER */
-    unlockClimberButton.whenPressed(new InstantCommand(m_climber::unlockClimber, m_climber));
-    lockClimberButton.whenPressed(new InstantCommand(m_climber::lockClimber, m_climber));
+    /** LOCK AND UNLOCK CLIMBER AND BRAKE */
+    unlockClimberButton.whenPressed(new InstantCommand(m_climber::unlockClimber, m_climber)
+        .andThen(new InstantCommand(m_climberBrake::unlockClimber, m_climberBrake)));
+    lockClimberButton.whenPressed(
+        new InstantCommand(m_climber::lockClimber, m_climber)
+            .andThen(new InstantCommand(m_climberBrake::lockClimber, m_climberBrake)));
 
   }
 

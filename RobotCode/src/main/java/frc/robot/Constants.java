@@ -71,7 +71,7 @@ public final class Constants {
   }
 
   public static final class ClimberBrakeConstants {
-    public static final int[] kClimberBrakeSolenoidPorts = new int[] { 8, 9 };
+    public static final int[] kClimberBrakeSolenoidPorts = new int[] { 4, 5 };
 
   }
 
