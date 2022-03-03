@@ -44,7 +44,12 @@ public class Climber extends SubsystemBase {
     if (isLocked) {
       stopClimb();
     } else {
-      m_climberMotor.set(rightY * 0.3);
+      // deadband so that it won't drift
+      if (rightY < .1) {
+        stopClimb();
+      } else {
+        m_climberMotor.set(rightY * 0.8);
+      }
     }
   }
 
