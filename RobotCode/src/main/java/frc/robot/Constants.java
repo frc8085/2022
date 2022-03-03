@@ -106,7 +106,7 @@ public final class Constants {
     };
 
     // Duration in seconds that the shooter should shoot
-    public static final double kShootBurstTime = 2;
+    public static final double kShootBurstTime = .5;
   }
 
   public static final class ClimberConstants {

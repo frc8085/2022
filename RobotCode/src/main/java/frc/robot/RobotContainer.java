@@ -188,7 +188,7 @@ public class RobotContainer {
      * When you release the cargo load button, hold the cargo by stopping all motors
      * Close the intake cover after 2 seconds without loading cargo
      */
-    cargoLoadControl.whenPressed(
+    cargoLoadControl.whenHeld(
         new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter))
         .whenReleased(
             new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter)

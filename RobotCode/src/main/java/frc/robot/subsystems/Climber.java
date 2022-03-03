@@ -44,7 +44,11 @@ public class Climber extends SubsystemBase {
     if (isLocked) {
       stopClimb();
     } else {
-      m_climberMotor.set(rightY * 0.3);
+      if (Math.abs(rightY) < .1) {
+        stopClimb();
+      } else {
+        m_climberMotor.set(rightY * 0.8);
+      }
     }
   }
 
