@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.Conveyor;
@@ -27,9 +28,9 @@ public class Shoot extends SequentialCommandGroup {
                 .alongWith(new InstantCommand(conveyor::runConveyor, conveyor))
                 // .withTimeout(ShooterConstants.kShootBurstTime)
                 // Stop the shooting routine after N seconds
-                // .andThen(new InstantCommand(feeder::stopFeeder, feeder)
-                // .alongWith(new InstantCommand(conveyor::stopConveyor, conveyor))),
-                .withTimeout(3),
+                .andThen(new WaitCommand(3))
+                .andThen(new InstantCommand(feeder::stopFeeder, feeder)
+                    .alongWith(new InstantCommand(conveyor::stopConveyor, conveyor))),
             // If shooter is NOT up to speed, do nothing
             new InstantCommand(),
             // Check if shooter is up to speed
