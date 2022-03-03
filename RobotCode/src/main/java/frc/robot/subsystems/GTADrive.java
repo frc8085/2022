@@ -57,14 +57,29 @@ public class GTADrive extends SubsystemBase {
       m_drive.curvatureDrive(0, turnRotation, true);
     } else {
       speed = m_driverController.getLeftY();
-      // Up is fast. Down is slow.
-      speed *= -.5;
-      // Zero is half speed
-      speed += .5;
+      // Up is fast. Down is slow. Multiply value by .5 so that the max range is 0.5
+      // to -0.5
+      speed *= -0.5;
 
-      speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
-      m_drive.curvatureDrive(speed, turnRotation, true);
+      // if joystick is down, make additional speed adjustments to give a greater
+      // range //
+      if (speed < 0) {
+        speed += 0.5;
+        if (speed == 0) {
+        } else if (speed < 0.2) {
+          speed = .2;
+        } else {
+        }
+
+      } else {
+        // Zero is half speed
+        speed += 0.5;
+
+        speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
+        m_drive.curvatureDrive(speed, turnRotation, true);
+      }
     }
+
   }
 
   /**
