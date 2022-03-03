@@ -22,13 +22,14 @@ public class Shoot extends SequentialCommandGroup {
     addCommands(
         new ConditionalCommand(
             // If shooter is up to speed, run the feeder & conveyor
-            new InstantCommand(feeder::runFeeder, feeder).withTimeout(ShooterConstants.kShootBurstTime)
+            new InstantCommand(feeder::runFeeder, feeder)
+                // .withTimeout(ShooterConstants.kShootBurstTime)
                 .alongWith(new InstantCommand(conveyor::runConveyor, conveyor))
-                .withTimeout(ShooterConstants.kShootBurstTime)
+                // .withTimeout(ShooterConstants.kShootBurstTime)
                 // Stop the shooting routine after N seconds
-                .andThen(new InstantCommand(feeder::stopFeeder, feeder)
-                    .alongWith(new InstantCommand(conveyor::stopConveyor, conveyor))),
-
+                // .andThen(new InstantCommand(feeder::stopFeeder, feeder)
+                // .alongWith(new InstantCommand(conveyor::stopConveyor, conveyor))),
+                .withTimeout(3),
             // If shooter is NOT up to speed, do nothing
             new InstantCommand(),
             // Check if shooter is up to speed
