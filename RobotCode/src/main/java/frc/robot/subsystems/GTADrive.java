@@ -61,25 +61,17 @@ public class GTADrive extends SubsystemBase {
       // to -0.5
       speed *= -0.5;
 
-      // if joystick is down, make additional speed adjustments to give a greater
-      // range //
-      if (speed < 0) {
-        speed += 0.5;
-        if (speed == 0) {
-        } else if (speed < 0.2) {
-          speed = .2;
-        } else {
-        }
+      // rescale joystick so zero is half speed
+      speed += 0.5;
 
-      } else {
-        // Zero is half speed
-        speed += 0.5;
+      // change factor so that we can readjust scale such that slowest is .2, neutral
+      // is .6, and fastest is 1
+      speed *= .8;
+      speed += .2;
 
-        speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
-        m_drive.curvatureDrive(speed, turnRotation, true);
-      }
+      speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
+      m_drive.curvatureDrive(speed, turnRotation, true);
     }
-
   }
 
   /**
