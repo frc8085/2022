@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.GTADrive;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
@@ -38,6 +39,14 @@ public class DriveStraight extends PIDCommand {
     addRequirements(m_drivetrain);
 
     getController().setTolerance(DriveConstants.kAutoPositionTolerance);
+  }
+
+  @Override
+  public void execute() {
+    SmartDashboard.putNumber("Left Distance", m_drivetrain.getLeftEncoderDistance());
+    SmartDashboard.putNumber("Right Distance", m_drivetrain.getRightEncoderDistance());
+    SmartDashboard.putNumber("Distance traveled", m_drivetrain.getRightEncoderDistance());
+    super.execute();
   }
 
   // Called just before this Command runs the first time
