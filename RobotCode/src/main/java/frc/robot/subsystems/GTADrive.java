@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -37,6 +38,8 @@ public class GTADrive extends SubsystemBase {
       DriveConstants.kRightEncoderPorts[0],
       DriveConstants.kRightEncoderPorts[1]);
 
+  private final RelativeEncoder left1Encoder = left1.getEncoder();
+
   // Gyro
   private final AnalogGyro m_gyro = new AnalogGyro(DriveConstants.kGyroChannel);
 
@@ -71,8 +74,13 @@ public class GTADrive extends SubsystemBase {
 
   /** The log method puts interesting information to the SmartDashboard. */
   public void log() {
-    SmartDashboard.putNumber("Left Distance", m_leftEncoder.getDistance());
-    SmartDashboard.putNumber("Right Distance", m_rightEncoder.getDistance());
+
+    // Unit = Revolutions (of the Motor)
+    // * 10.75
+    SmartDashboard.putNumber("Left1 Position", left1Encoder.getPosition());
+
+    // SmartDashboard.putNumber("Left Distance", m_leftEncoder.getDistance());
+    // SmartDashboard.putNumber("Right Distance", m_rightEncoder.getDistance());
     SmartDashboard.putNumber("Left Speed", m_leftEncoder.getRate());
     SmartDashboard.putNumber("Right Speed", m_rightEncoder.getRate());
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
@@ -86,6 +94,10 @@ public class GTADrive extends SubsystemBase {
 
   // Tank drive for autonomous
   public void drive(double left, double right) {
+    SmartDashboard.putNumber("left wanted", left);
+    SmartDashboard.putNumber("right wanted", right);
+    SmartDashboard.putNumber("left gotten", left1.get());
+    SmartDashboard.putNumber("right gotten", right1.get());
     m_drive.tankDrive(left, right);
   }
 
@@ -173,4 +185,11 @@ public class GTADrive extends SubsystemBase {
     return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2;
   }
 
+  public double getLeftEncoderDistance() {
+    return m_leftEncoder.getDistance();
+  }
+
+  public double getRightEncoderDistance() {
+    return m_rightEncoder.getDistance();
+  }
 }
