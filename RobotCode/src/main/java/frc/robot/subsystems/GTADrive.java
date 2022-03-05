@@ -38,8 +38,8 @@ public class GTADrive extends SubsystemBase {
       DriveConstants.kRightEncoderPorts[0],
       DriveConstants.kRightEncoderPorts[1]);
 
-  private final RelativeEncoder left1Encoder = left1.getEncoder();
-  private final RelativeEncoder right1Encoder = right1.getEncoder();
+  private final RelativeEncoder m_left1Encoder = left1.getEncoder();
+  private final RelativeEncoder m_right1Encoder = right1.getEncoder();
 
   // Gyro
   private final AnalogGyro m_gyro = new AnalogGyro(DriveConstants.kGyroChannel);
@@ -65,6 +65,9 @@ public class GTADrive extends SubsystemBase {
     m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     m_leftMotors.setInverted(true);
 
+    m_left1Encoder.setPositionConversionFactor(DriveConstants.kGearRatio);
+    m_right1Encoder.setPositionConversionFactor(DriveConstants.kGearRatio);
+
     // Let's name the sensors on the LiveWindow
     addChild("Drive", m_drive);
     addChild("Left Encoder", m_leftEncoder);
@@ -77,8 +80,8 @@ public class GTADrive extends SubsystemBase {
 
     // Unit = Revolutions (of the Motor)
     // * 10.75
-    SmartDashboard.putNumber("Left1 Position", left1Encoder.getPosition() * DriveConstants.kReverse);
-    SmartDashboard.putNumber("Right1 Position", right1Encoder.getPosition());
+    SmartDashboard.putNumber("Left1 Position", m_left1Encoder.getPosition() * DriveConstants.kReverse);
+    SmartDashboard.putNumber("Right1 Position", m_right1Encoder.getPosition());
 
     // SmartDashboard.putNumber("Left Distance", m_leftEncoder.getDistance());
     // SmartDashboard.putNumber("Right Distance", m_rightEncoder.getDistance());
@@ -173,8 +176,8 @@ public class GTADrive extends SubsystemBase {
   /** Reset the robots sensors to the zero states. */
   public void reset() {
     m_gyro.reset();
-    m_leftEncoder.reset();
-    m_rightEncoder.reset();
+    m_left1Encoder.setPosition(0);
+    m_right1Encoder.setPosition(0);
   }
 
   /**
@@ -183,8 +186,7 @@ public class GTADrive extends SubsystemBase {
    * @return The distance driven (average of left and right encoders).
    */
   public double getDistance() {
-
-    return (m_leftEncoder.getDistance() * DriveConstants.kReverse + m_rightEncoder.getDistance()) / 2;
+    return (m_left1Encoder.getPosition() * DriveConstants.kReverse + m_right1Encoder.getPosition()) / 2;
   }
 
   public double getLeftEncoderDistance() {

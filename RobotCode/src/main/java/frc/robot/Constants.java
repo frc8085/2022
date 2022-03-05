@@ -40,7 +40,8 @@ public final class Constants {
 
     // Encoder CPR = 42
     // Gear ratio = 10.75 : 1
-    public static final double kEncoderCPR = 42 * 10.75;
+    public static final double kGearRatio = 10.75;
+    public static final double kEncoderCPR = 42 * kGearRatio;
     public static final double kWheelDiameterInches = 6;
     public static final double kEncoderDistancePerPulse =
         // Assumes the encoders are directly mounted on the wheel shafts
