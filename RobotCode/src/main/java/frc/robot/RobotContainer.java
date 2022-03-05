@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.commands.AutoRoutine1;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
@@ -50,9 +51,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class RobotContainer {
-  // The robot's subsystems and commands
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
 
   // Drive train and driver controller
   private final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -67,6 +65,9 @@ public class RobotContainer {
   private final IntakeCover m_intakeCover = new IntakeCover();
   private final Intake m_intake = new Intake();
   private final ClimberBrake m_climberBrake = new ClimberBrake();
+
+  // The robot's subsystems and commands
+  private final AutoRoutine1 m_autoCommand = new AutoRoutine1(m_robotDrive);
 
   // TODO: Is there a better way to do this?
   // Because the Climber and Intake are using Joystick Axes, we're passing
@@ -261,7 +262,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
+    // Command to run in autonomous
     return m_autoCommand;
   }
 }

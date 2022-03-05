@@ -5,8 +5,11 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class GTADrive extends SubsystemBase {
@@ -26,6 +29,17 @@ public class GTADrive extends SubsystemBase {
   private final MotorControllerGroup m_leftMotors = new MotorControllerGroup(left1, left2);
   private final MotorControllerGroup m_rightMotors = new MotorControllerGroup(right1, right2);
 
+  // Encoders
+  private final Encoder m_leftEncoder = new Encoder(
+      DriveConstants.kLeftEncoderPorts[0],
+      DriveConstants.kLeftEncoderPorts[1]);
+  private final Encoder m_rightEncoder = new Encoder(
+      DriveConstants.kRightEncoderPorts[0],
+      DriveConstants.kRightEncoderPorts[1]);
+
+  // Gyro
+  private final AnalogGyro m_gyro = new AnalogGyro(DriveConstants.kGyroChannel);
+
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(
       m_leftMotors, m_rightMotors);
@@ -42,7 +56,37 @@ public class GTADrive extends SubsystemBase {
 
   public GTADrive(XboxController driverController) {
     m_driverController = driverController;
+
+    m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+    m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
+
     m_leftMotors.setInverted(true);
+
+    // Let's name the sensors on the LiveWindow
+    addChild("Drive", m_drive);
+    addChild("Left Encoder", m_leftEncoder);
+    addChild("Right Encoder", m_rightEncoder);
+    addChild("Gyro", m_gyro);
+  }
+
+  /** The log method puts interesting information to the SmartDashboard. */
+  public void log() {
+    SmartDashboard.putNumber("Left Distance", m_leftEncoder.getDistance());
+    SmartDashboard.putNumber("Right Distance", m_rightEncoder.getDistance());
+    SmartDashboard.putNumber("Left Speed", m_leftEncoder.getRate());
+    SmartDashboard.putNumber("Right Speed", m_rightEncoder.getRate());
+    SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
+  }
+
+  /** Call log method every loop. */
+  @Override
+  public void periodic() {
+    log();
+  }
+
+  // Tank drive for autonomous
+  public void drive(double left, double right) {
+    m_drive.tankDrive(left, right);
   }
 
   public void driveRobot() {
@@ -102,6 +146,31 @@ public class GTADrive extends SubsystemBase {
    */
   private double applyDirection(double speed, double leftTrigger, double rightTrigger) {
     return (isForward(leftTrigger, rightTrigger)) ? speed * -1 : speed * 1;
+  }
+
+  /**
+   * Get the robot's heading.
+   *
+   * @return The robots heading in degrees.
+   */
+  public double getHeading() {
+    return m_gyro.getAngle();
+  }
+
+  /** Reset the robots sensors to the zero states. */
+  public void reset() {
+    m_gyro.reset();
+    m_leftEncoder.reset();
+    m_rightEncoder.reset();
+  }
+
+  /**
+   * Get the average distance of the encoders since the last reset.
+   *
+   * @return The distance driven (average of left and right encoders).
+   */
+  public double getDistance() {
+    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2;
   }
 
 }
