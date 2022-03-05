@@ -19,6 +19,10 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 public class DriveStraight extends PIDCommand {
   private final GTADrive m_drivetrain;
 
+  static double kP = 0.0001;
+  static double kI = 0;
+  static double kD = 0.001;
+
   /**
    * Create a new DriveStraight command.
    *
@@ -26,7 +30,9 @@ public class DriveStraight extends PIDCommand {
    */
   public DriveStraight(double distance, GTADrive drivetrain) {
     super(
-        new PIDController(1, 0, 0), drivetrain::getDistance, distance, d -> drivetrain.drive(d, d));
+        new PIDController(kP, kI, kD),
+        drivetrain::getDistance,
+        distance, d -> drivetrain.drive(d, d));
 
     m_drivetrain = drivetrain;
     addRequirements(m_drivetrain);

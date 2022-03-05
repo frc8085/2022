@@ -47,7 +47,7 @@ public final class Constants {
         (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
 
     public static final double kAutoPositionTolerance = 0.01;
-    public static final double kTrackWidthIncjes = 21.75;
+    public static final double kTrackWidthInches = 21.75;
 
   }
 
