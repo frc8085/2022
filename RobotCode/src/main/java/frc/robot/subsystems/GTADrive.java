@@ -6,8 +6,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 
 public class GTADrive extends SubsystemBase {
   private XboxController m_driverController;
@@ -48,6 +50,7 @@ public class GTADrive extends SubsystemBase {
   public void driveRobot() {
     double leftTrigger = m_driverController.getLeftTriggerAxis();
     double rightTrigger = m_driverController.getRightTriggerAxis();
+    boolean leftBumper = m_driverController.getLeftBumper();
 
     // Transform the turn rotation based on Right Joystick X
     turnRotation = Math.pow(m_driverController.getRightX(), 3) * -0.5;
@@ -56,21 +59,25 @@ public class GTADrive extends SubsystemBase {
       // Even if it's stopped, let it turn
       m_drive.curvatureDrive(0, turnRotation, true);
     } else {
-      speed = m_driverController.getLeftY();
-      // Up is fast. Down is slow. Multiply value by .5 so that the max range is 0.5
-      // to -0.5
-      speed *= -0.5;
+      if (leftBumper) {
+        speed = .1;
+      } else {
+        speed = m_driverController.getLeftY();
+        // Up is fast. Down is slow. Multiply value by .5 so that the max range is 0.5
+        // to -0.5
+        speed *= -0.5;
 
-      // rescale joystick so zero is half speed
-      speed += 0.5;
+        // rescale joystick so zero is half speed
+        speed += 0.5;
 
-      // change factor so that we can readjust scale such that slowest is .2, neutral
-      // is .6, and fastest is 1
-      speed *= .8;
-      speed += .2;
+        // change factor so that we can readjust scale such that slowest is .2, neutral
+        // is .6, and fastest is 1
+        speed *= .8;
+        speed += .2;
 
-      speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
-      m_drive.curvatureDrive(speed, turnRotation, true);
+        speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
+        m_drive.curvatureDrive(speed, turnRotation, true);
+      }
     }
   }
 
