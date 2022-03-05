@@ -48,6 +48,7 @@ public final class Constants {
 
     public static final double kAutoPositionTolerance = 0.01;
     public static final double kTrackWidthInches = 21.75;
+    public static final double kReverse = -1;
 
   }
 

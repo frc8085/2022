@@ -39,6 +39,7 @@ public class GTADrive extends SubsystemBase {
       DriveConstants.kRightEncoderPorts[1]);
 
   private final RelativeEncoder left1Encoder = left1.getEncoder();
+  private final RelativeEncoder right1Encoder = right1.getEncoder();
 
   // Gyro
   private final AnalogGyro m_gyro = new AnalogGyro(DriveConstants.kGyroChannel);
@@ -62,7 +63,6 @@ public class GTADrive extends SubsystemBase {
 
     m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-
     m_leftMotors.setInverted(true);
 
     // Let's name the sensors on the LiveWindow
@@ -77,7 +77,8 @@ public class GTADrive extends SubsystemBase {
 
     // Unit = Revolutions (of the Motor)
     // * 10.75
-    SmartDashboard.putNumber("Left1 Position", left1Encoder.getPosition());
+    SmartDashboard.putNumber("Left1 Position", left1Encoder.getPosition() * DriveConstants.kReverse);
+    SmartDashboard.putNumber("Right1 Position", right1Encoder.getPosition());
 
     // SmartDashboard.putNumber("Left Distance", m_leftEncoder.getDistance());
     // SmartDashboard.putNumber("Right Distance", m_rightEncoder.getDistance());
@@ -182,11 +183,12 @@ public class GTADrive extends SubsystemBase {
    * @return The distance driven (average of left and right encoders).
    */
   public double getDistance() {
-    return (m_leftEncoder.getDistance() + m_rightEncoder.getDistance()) / 2;
+
+    return (m_leftEncoder.getDistance() * DriveConstants.kReverse + m_rightEncoder.getDistance()) / 2;
   }
 
   public double getLeftEncoderDistance() {
-    return m_leftEncoder.getDistance();
+    return m_leftEncoder.getDistance() * DriveConstants.kReverse;
   }
 
   public double getRightEncoderDistance() {
