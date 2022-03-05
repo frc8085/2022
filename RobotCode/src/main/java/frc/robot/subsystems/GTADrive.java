@@ -61,6 +61,10 @@ public class GTADrive extends SubsystemBase {
     } else {
       if (leftBumper) {
         speed = .1;
+
+        speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
+        m_drive.curvatureDrive(speed, turnRotation, true);
+
       } else {
         speed = m_driverController.getLeftY();
         // Up is fast. Down is slow. Multiply value by .5 so that the max range is 0.5
