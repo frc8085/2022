@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.GTADrive;
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /**
@@ -17,9 +16,12 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
  * input is the
  * averaged values of the left and right encoders.
  */
-public class DriveStraight extends CommandBase {
+public class DriveStraight extends PIDCommand {
   private final GTADrive m_drivetrain;
-  private double m_distance;
+
+  static double kP = 0.0001;
+  static double kI = 0;
+  static double kD = 0.001;
 
   /**
    * Create a new DriveStraight command.
@@ -27,15 +29,15 @@ public class DriveStraight extends CommandBase {
    * @param distance The distance to drive
    */
   public DriveStraight(double distance, GTADrive drivetrain) {
-    m_drivetrain = drivetrain;
-    m_distance = distance;
-    addRequirements(m_drivetrain);
-  }
+    super(
+        new PIDController(kP, kI, kD),
+        drivetrain::getDistance,
+        distance, d -> drivetrain.drive(d, d));
 
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {
-    m_drivetrain.drive(0.25, 0.25);
+    m_drivetrain = drivetrain;
+    addRequirements(m_drivetrain);
+
+    getController().setTolerance(DriveConstants.kAutoPositionTolerance);
   }
 
   // Called just before this Command runs the first time
@@ -49,7 +51,6 @@ public class DriveStraight extends CommandBase {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   public boolean isFinished() {
-    boolean atSetpoint = m_distance <= m_drivetrain.getDistance();
-    return atSetpoint;
+    return getController().atSetpoint();
   }
 }
