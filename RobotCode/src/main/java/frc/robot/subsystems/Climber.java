@@ -44,6 +44,7 @@ public class Climber extends SubsystemBase {
     if (isLocked) {
       stopClimb();
     } else {
+      // deadband to remove drift when climbing
       if (Math.abs(rightY) < .1) {
         stopClimb();
       } else {
