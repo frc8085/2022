@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.GTADrive;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /**
@@ -16,12 +17,9 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
  * input is the
  * averaged values of the left and right encoders.
  */
-public class DriveStraight extends PIDCommand {
+public class DriveStraight extends CommandBase {
   private final GTADrive m_drivetrain;
-
-  static double kP = 0.0001;
-  static double kI = 0;
-  static double kD = 0.001;
+  private double m_distance;
 
   /**
    * Create a new DriveStraight command.
@@ -29,15 +27,15 @@ public class DriveStraight extends PIDCommand {
    * @param distance The distance to drive
    */
   public DriveStraight(double distance, GTADrive drivetrain) {
-    super(
-        new PIDController(kP, kI, kD),
-        drivetrain::getDistance,
-        distance, d -> drivetrain.drive(d, d));
-
     m_drivetrain = drivetrain;
+    m_distance = distance;
     addRequirements(m_drivetrain);
+  }
 
-    getController().setTolerance(DriveConstants.kAutoPositionTolerance);
+  // Called every time the scheduler runs while the command is scheduled.
+  @Override
+  public void execute() {
+    m_drivetrain.drive(0.25, 0.25);
   }
 
   // Called just before this Command runs the first time
@@ -51,6 +49,7 @@ public class DriveStraight extends PIDCommand {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   public boolean isFinished() {
-    return getController().atSetpoint();
+    boolean atSetpoint = m_distance <= m_drivetrain.getDistance();
+    return atSetpoint;
   }
 }
