@@ -15,15 +15,13 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
 public class ShootLowNear extends SequentialCommandGroup {
-    @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
-
     public ShootLowNear(Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
-        shooter.setSetpoint(ShooterConstants.kShooterTargetRPM[OIConstants.kTargetLowNear]);
-        addCommands(
-                new InstantCommand(conveyor::runConveyor, conveyor)
-                        .andThen(new WaitCommand(1))
-                        .andThen(new Shoot(intake, feeder, shooter, conveyor))
-                        .andThen(new HoldCargo(intake, conveyor, feeder)));
+        addCommands(new InstantCommand(() -> shooter.setSetpoint(
+                ShooterConstants.kShooterTargetRPM[OIConstants.kTargetLowNear]))
+                        .andThen(new InstantCommand(conveyor::runConveyor, conveyor)
+                                .andThen(new WaitCommand(1.5))
+                                .andThen(new Shoot(intake, feeder, shooter, conveyor))
+                                .andThen(new HoldCargo(intake, conveyor, feeder))));
 
     }
 
