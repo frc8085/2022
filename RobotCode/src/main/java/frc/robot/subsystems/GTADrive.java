@@ -76,6 +76,8 @@ public class GTADrive extends SubsystemBase {
     SmartDashboard.putNumber("Left Inches", getLeftEncoderDistanceInches());
     SmartDashboard.putNumber("Right Inches", getRightEncoderDistanceInches());
 
+    SmartDashboard.putNumber("Distance traveled", getDistance());
+
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
   }
 
@@ -179,7 +181,6 @@ public class GTADrive extends SubsystemBase {
     return (getLeftEncoderDistanceInches() + getRightEncoderDistanceInches()) / 2;
   }
 
-  // TODO: If setPositionConversionFactor doesn't work, try this instead
   public double getLeftEncoderDistanceInches() {
     double leftMotorRevolutions = m_left1Encoder.getPosition() * DriveConstants.kReverse;
     double leftDistanceInches = leftMotorRevolutions * DriveConstants.kInchesPerMotorRevolution;
