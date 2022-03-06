@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
-import edu.wpi.first.wpilibj.AnalogGyro;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class GTADrive extends SubsystemBase {
@@ -34,7 +34,7 @@ public class GTADrive extends SubsystemBase {
   private final RelativeEncoder m_right1Encoder = right2.getEncoder();
 
   // Gyro
-  private final AnalogGyro m_gyro = new AnalogGyro(DriveConstants.kGyroChannel);
+  private final ADXRS450_Gyro m_gyro = new ADXRS450_Gyro();
 
   // The robot's drive
   private final DifferentialDrive m_drive = new DifferentialDrive(
@@ -170,7 +170,6 @@ public class GTADrive extends SubsystemBase {
     m_gyro.reset();
     m_left1Encoder.setPosition(0);
     m_right1Encoder.setPosition(0);
-
   }
 
   /**
