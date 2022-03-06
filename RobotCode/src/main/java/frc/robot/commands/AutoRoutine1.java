@@ -15,10 +15,14 @@ import frc.robot.subsystems.Shooter;
 /** The main autonomous command */
 public class AutoRoutine1 extends SequentialCommandGroup {
   /** Create a new autonomous command. */
-  public AutoRoutine1(GTADrive drive, Shooter shooter, Feeder feeder, Conveyor conveyor, IntakeCover intakeCover,
+  public AutoRoutine1(
+      GTADrive drive,
+      Shooter shooter,
+      Feeder feeder,
+      Conveyor conveyor,
+      IntakeCover intakeCover,
       Intake intake) {
     addCommands(
-        new ShootLowNear(intake, feeder, shooter, conveyor),
-        new DriveStraight(24, drive));
+        new ShootLowNear(intake, feeder, shooter, conveyor).andThen(new DriveStraight(24, drive)));
   }
 }
