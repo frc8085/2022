@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj.AnalogGyro;
-import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class GTADrive extends SubsystemBase {
@@ -53,12 +52,12 @@ public class GTADrive extends SubsystemBase {
 
   public GTADrive(XboxController driverController) {
     m_driverController = driverController;
+    left1.restoreFactoryDefaults();
+    left2.restoreFactoryDefaults();
+    right1.restoreFactoryDefaults();
+    right2.restoreFactoryDefaults();
 
     m_leftMotors.setInverted(true);
-
-    m_left1Encoder.setPositionConversionFactor(DriveConstants.kReverse *
-        DriveConstants.kMotorRevolutionsPerInch);
-    m_right1Encoder.setPositionConversionFactor(DriveConstants.kMotorRevolutionsPerInch);
 
     // Reset sensor values when starting
     reset();
@@ -70,9 +69,8 @@ public class GTADrive extends SubsystemBase {
 
   /** The log method puts interesting information to the SmartDashboard. */
   public void log() {
-    SmartDashboard.putNumber("Left Raw", m_left1Encoder.getPosition());
-    SmartDashboard.putNumber("Right Raw", m_right1Encoder.getPosition());
-
+    SmartDashboard.putNumber("Left", m_left1Encoder.getPosition());
+    SmartDashboard.putNumber("Right", m_right1Encoder.getPosition());
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
   }
 
@@ -84,10 +82,10 @@ public class GTADrive extends SubsystemBase {
 
   // Tank drive for autonomous
   public void drive(double left, double right) {
-    SmartDashboard.putNumber("left wanted", left);
-    SmartDashboard.putNumber("right wanted", right);
-    SmartDashboard.putNumber("left gotten", left1.get());
-    SmartDashboard.putNumber("right gotten", right1.get());
+    // SmartDashboard.putNumber("left wanted", left);
+    // SmartDashboard.putNumber("right wanted", right);
+    // SmartDashboard.putNumber("left gotten", left1.get());
+    // SmartDashboard.putNumber("right gotten", right1.get());
     m_drive.tankDrive(left, right);
   }
 
@@ -164,6 +162,7 @@ public class GTADrive extends SubsystemBase {
     m_gyro.reset();
     m_left1Encoder.setPosition(0);
     m_right1Encoder.setPosition(0);
+
   }
 
   /**
