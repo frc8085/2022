@@ -20,14 +20,14 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 public class DriveStraight extends PIDCommand {
   private final GTADrive m_drivetrain;
 
-  static double kP = 0.0001;
+  static double kP = 0.01;
   static double kI = 0;
-  static double kD = 0.001;
+  static double kD = 0;
 
   /**
    * Create a new DriveStraight command.
    *
-   * @param distance The distance to drive
+   * @param distance The distance to drive (inches)
    */
   public DriveStraight(double distance, GTADrive drivetrain) {
     super(
@@ -43,9 +43,9 @@ public class DriveStraight extends PIDCommand {
 
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Left Distance", m_drivetrain.getLeftEncoderDistance());
-    SmartDashboard.putNumber("Right Distance", m_drivetrain.getRightEncoderDistance());
-    SmartDashboard.putNumber("Distance traveled", m_drivetrain.getRightEncoderDistance());
+    SmartDashboard.putNumber("Left Distance", m_drivetrain.getLeftEncoderDistanceInches());
+    SmartDashboard.putNumber("Right Distance", m_drivetrain.getRightEncoderDistanceInches());
+    SmartDashboard.putNumber("Distance traveled", m_drivetrain.getDistance());
     super.execute();
   }
 

@@ -32,20 +32,22 @@ public final class Constants {
     public static final double kRotationSlewRateLimit = 10;
     public static final int kGyroChannel = 1;
 
-    public static final int[] kRightEncoderPorts = new int[] { 2, 4 };
-    public static final int[] kLeftEncoderPorts = new int[] { 1, 3 };
-
-    // public static final boolean kLeftEncoderReversed = false;
-    // public static final boolean kRightEncoderReversed = true;
-
-    // Encoder CPR = 42
-    // Gear ratio = 10.75 : 1
-    public static final double kGearRatio = 10.75;
-    public static final double kEncoderCPR = 42 * kGearRatio;
     public static final double kWheelDiameterInches = 6;
-    public static final double kEncoderDistancePerPulse =
-        // Assumes the encoders are directly mounted on the wheel shafts
-        (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
+    // The inches one wheel revolution travels
+    public static final double kInchesPerWheelRevolution = kWheelDiameterInches * Math.PI;
+
+    // We determined the motor revolutions per wheel revolution
+    // by turning the wheel once and recording the encoder units measured
+    public static final double kMotorRevolutionsPerWheelRevolution = 115;
+
+    // Motor revolutions per inch traveled
+    public static final double kMotorRevolutionsPerInch = kMotorRevolutionsPerWheelRevolution
+        / kInchesPerWheelRevolution;
+
+    // public static final double kGearRatio = 10.75;
+    // public static final double kEncoderCPR = 42 * kGearRatio;
+    // public static final double kEncoderDistancePerPulse =
+    // (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
 
     public static final double kAutoPositionTolerance = 0.01;
     public static final double kTrackWidthInches = 21.75;

@@ -31,13 +31,6 @@ public class GTADrive extends SubsystemBase {
   private final MotorControllerGroup m_rightMotors = new MotorControllerGroup(right1, right2);
 
   // Encoders
-  private final Encoder m_leftEncoder = new Encoder(
-      DriveConstants.kLeftEncoderPorts[0],
-      DriveConstants.kLeftEncoderPorts[1]);
-  private final Encoder m_rightEncoder = new Encoder(
-      DriveConstants.kRightEncoderPorts[0],
-      DriveConstants.kRightEncoderPorts[1]);
-
   private final RelativeEncoder m_left1Encoder = left1.getEncoder();
   private final RelativeEncoder m_right1Encoder = right1.getEncoder();
 
@@ -61,32 +54,24 @@ public class GTADrive extends SubsystemBase {
   public GTADrive(XboxController driverController) {
     m_driverController = driverController;
 
-    m_leftEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
-    m_rightEncoder.setDistancePerPulse(DriveConstants.kEncoderDistancePerPulse);
     m_leftMotors.setInverted(true);
 
-    m_left1Encoder.setPositionConversionFactor(DriveConstants.kGearRatio);
-    m_right1Encoder.setPositionConversionFactor(DriveConstants.kGearRatio);
+    m_left1Encoder.setPositionConversionFactor(-1 * DriveConstants.kMotorRevolutionsPerInch);
+    m_right1Encoder.setPositionConversionFactor(DriveConstants.kMotorRevolutionsPerInch);
 
     // Let's name the sensors on the LiveWindow
     addChild("Drive", m_drive);
-    addChild("Left Encoder", m_leftEncoder);
-    addChild("Right Encoder", m_rightEncoder);
     addChild("Gyro", m_gyro);
   }
 
   /** The log method puts interesting information to the SmartDashboard. */
   public void log() {
 
-    // Unit = Revolutions (of the Motor)
-    // * 10.75
+    // getPosition returns units of Revolutions (of the Motor)
+    // We need to convert these to inches
+
     SmartDashboard.putNumber("Left1 Position", m_left1Encoder.getPosition() * DriveConstants.kReverse);
     SmartDashboard.putNumber("Right1 Position", m_right1Encoder.getPosition());
-
-    // SmartDashboard.putNumber("Left Distance", m_leftEncoder.getDistance());
-    // SmartDashboard.putNumber("Right Distance", m_rightEncoder.getDistance());
-    SmartDashboard.putNumber("Left Speed", m_leftEncoder.getRate());
-    SmartDashboard.putNumber("Right Speed", m_rightEncoder.getRate());
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
   }
 
@@ -181,19 +166,25 @@ public class GTADrive extends SubsystemBase {
   }
 
   /**
-   * Get the average distance of the encoders since the last reset.
+   * Get the average distance (inches) of the encoders since the last reset.
    *
    * @return The distance driven (average of left and right encoders).
    */
   public double getDistance() {
-    return (m_left1Encoder.getPosition() * DriveConstants.kReverse + m_right1Encoder.getPosition()) / 2;
+    return (m_left1Encoder.getPosition() + m_right1Encoder.getPosition()) / 2;
   }
 
-  public double getLeftEncoderDistance() {
-    return m_leftEncoder.getDistance() * DriveConstants.kReverse;
+  // TODO: If setPositionConversionFactor doesn't work, try this instead
+  public double getLeftEncoderDistanceInches() {
+    double leftMotorRevolutions = m_left1Encoder.getPosition() * DriveConstants.kReverse;
+    double leftDistanceInches = leftMotorRevolutions * DriveConstants.kMotorRevolutionsPerInch;
+    return leftDistanceInches;
   }
 
-  public double getRightEncoderDistance() {
-    return m_rightEncoder.getDistance();
+  public double getRightEncoderDistanceInches() {
+    double rightMotorRevolutions = m_right1Encoder.getPosition();
+    double rightDistanceInches = rightMotorRevolutions * DriveConstants.kMotorRevolutionsPerInch;
+    return rightDistanceInches;
   }
+
 }
