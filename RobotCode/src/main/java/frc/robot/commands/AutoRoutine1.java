@@ -5,13 +5,20 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.IntakeCover;
+import frc.robot.subsystems.Shooter;
 
 /** The main autonomous command */
 public class AutoRoutine1 extends SequentialCommandGroup {
   /** Create a new autonomous command. */
-  public AutoRoutine1(GTADrive drive) {
+  public AutoRoutine1(GTADrive drive, Shooter shooter, Feeder feeder, Conveyor conveyor, IntakeCover intakeCover,
+      Intake intake) {
     addCommands(
+        new ShootLowNear(intake, feeder, shooter, conveyor),
         new DriveStraight(24, drive));
   }
 }

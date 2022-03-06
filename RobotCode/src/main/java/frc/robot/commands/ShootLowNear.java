@@ -4,17 +4,21 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.Intake;
+import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Shooter;
 
-public class ShootLow extends SequentialCommandGroup {
+public class ShootLowNear extends SequentialCommandGroup {
     @SuppressWarnings({ "PMD.UnusedPrivateField", "PMD.SingularField" })
 
-    public ShootLow(Intake intake, Feeder feeder, Shooter shooter) {
+    public ShootLowNear(Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
+        shooter.setSetpoint(ShooterConstants.kShooterTargetRPM[OIConstants.kTargetLowNear]);
+        addCommands(
+                new Shoot(intake, feeder, shooter, conveyor));
 
     }
 

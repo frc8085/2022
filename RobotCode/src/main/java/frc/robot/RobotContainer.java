@@ -67,7 +67,8 @@ public class RobotContainer {
   private final ClimberBrake m_climberBrake = new ClimberBrake();
 
   // The robot's subsystems and commands
-  private final AutoRoutine1 m_autoCommand = new AutoRoutine1(m_robotDrive);
+  private final AutoRoutine1 m_autoCommand = new AutoRoutine1(m_robotDrive, m_shooter, m_feeder, m_conveyor,
+      m_intakeCover, m_intake);
 
   // TODO: Is there a better way to do this?
   // Because the Climber and Intake are using Joystick Axes, we're passing
