@@ -38,7 +38,7 @@ public final class Constants {
 
     // We determined the motor revolutions per wheel revolution
     // by turning the wheel once and recording the encoder units measured
-    public static final double kMotorRevolutionsPerWheelRevolution = 115;
+    public static final double kMotorRevolutionsPerWheelRevolution = 10.75;
 
     // Motor revolutions per inch traveled
     public static final double kMotorRevolutionsPerInch = kMotorRevolutionsPerWheelRevolution

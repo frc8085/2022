@@ -56,11 +56,11 @@ public class GTADrive extends SubsystemBase {
 
     m_leftMotors.setInverted(true);
 
-    // m_left1Encoder.setPositionConversionFactor(DriveConstants.kReverse *
-    // DriveConstants.kMotorRevolutionsPerInch);
-    // m_right1Encoder.setPositionConversionFactor(DriveConstants.kMotorRevolutionsPerInch);
+    m_left1Encoder.setPositionConversionFactor(DriveConstants.kReverse *
+        DriveConstants.kMotorRevolutionsPerInch);
+    m_right1Encoder.setPositionConversionFactor(DriveConstants.kMotorRevolutionsPerInch);
 
-    // Reset values when starting
+    // Reset sensor values when starting
     reset();
 
     // Let's name the sensors on the LiveWindow
