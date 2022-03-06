@@ -57,7 +57,9 @@ public class GTADrive extends SubsystemBase {
     right1.restoreFactoryDefaults();
     right2.restoreFactoryDefaults();
 
+    // Reverse the lefts motor and left motor encoder
     m_leftMotors.setInverted(true);
+    m_left1Encoder.setPositionConversionFactor(DriveConstants.kReverse);
 
     // Reset sensor values when starting
     reset();
