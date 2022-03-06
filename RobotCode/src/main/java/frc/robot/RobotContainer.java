@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.autoTwoBallHigh;
+import frc.robot.commands.autoUpAgainstHub;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
@@ -64,7 +65,7 @@ public class RobotContainer {
   private final ClimberBrake m_climberBrake = new ClimberBrake();
 
   // The robot's subsystems and commands
-  private final autoTwoBallHigh m_autoCommand = new autoTwoBallHigh(m_robotDrive, m_shooter, m_feeder, m_conveyor,
+  private final autoUpAgainstHub m_autoCommand = new autoUpAgainstHub(m_robotDrive, m_shooter, m_feeder, m_conveyor,
       m_intakeCover, m_intake);
 
   // TODO: Is there a better way to do this?
