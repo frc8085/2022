@@ -59,7 +59,6 @@ public class GTADrive extends SubsystemBase {
 
     // Reverse the lefts motor and left motor encoder
     m_leftMotors.setInverted(true);
-    m_left1Encoder.setPositionConversionFactor(DriveConstants.kReverse);
 
     // Reset sensor values when starting
     reset();
@@ -71,8 +70,12 @@ public class GTADrive extends SubsystemBase {
 
   /** The log method puts interesting information to the SmartDashboard. */
   public void log() {
-    SmartDashboard.putNumber("Left", m_left1Encoder.getPosition());
-    SmartDashboard.putNumber("Right", m_right1Encoder.getPosition());
+    SmartDashboard.putNumber("Left Motor Revs", m_left1Encoder.getPosition());
+    SmartDashboard.putNumber("Right Motor Revs", m_right1Encoder.getPosition());
+
+    SmartDashboard.putNumber("Left Inches", getLeftEncoderDistanceInches());
+    SmartDashboard.putNumber("Right Inches", getRightEncoderDistanceInches());
+
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
   }
 
@@ -173,7 +176,7 @@ public class GTADrive extends SubsystemBase {
    * @return The distance driven (average of left and right encoders).
    */
   public double getDistance() {
-    return (m_left1Encoder.getPosition() + m_right1Encoder.getPosition()) / 2;
+    return (getLeftEncoderDistanceInches() + getRightEncoderDistanceInches()) / 2;
   }
 
   // TODO: If setPositionConversionFactor doesn't work, try this instead
