@@ -19,8 +19,11 @@ public class ShootLowNear extends SequentialCommandGroup {
 
     public ShootLowNear(Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
         shooter.setSetpoint(ShooterConstants.kShooterTargetRPM[OIConstants.kTargetLowNear]);
-        addCommands(new WaitCommand(2)
-                .andThen(new Shoot(intake, feeder, shooter, conveyor)));
+        addCommands(
+                new InstantCommand(conveyor::runConveyor, conveyor)
+                        .andThen(new WaitCommand(1))
+                        .andThen(new Shoot(intake, feeder, shooter, conveyor))
+                        .andThen(new HoldCargo(intake, conveyor, feeder)));
 
     }
 

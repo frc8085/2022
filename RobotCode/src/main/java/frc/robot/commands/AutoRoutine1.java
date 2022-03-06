@@ -23,6 +23,7 @@ public class AutoRoutine1 extends SequentialCommandGroup {
       IntakeCover intakeCover,
       Intake intake) {
     addCommands(
-        new ShootLowNear(intake, feeder, shooter, conveyor).andThen(new DriveStraight(24, drive)));
+        new ShootLowNear(intake, feeder, shooter, conveyor)
+            .andThen(new DriveStraight(24, drive)));
   }
 }
