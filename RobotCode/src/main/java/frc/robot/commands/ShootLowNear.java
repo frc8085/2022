@@ -21,7 +21,8 @@ public class ShootLowNear extends SequentialCommandGroup {
                         .andThen(new InstantCommand(conveyor::runConveyor, conveyor)
                                 .andThen(new WaitCommand(1.5))
                                 .andThen(new Shoot(intake, feeder, shooter, conveyor))
-                                .andThen(new HoldCargo(intake, conveyor, feeder))));
+                                .andThen(new HoldCargo(intake, conveyor, feeder)
+                                        .andThen(new InstantCommand(shooter::stopShooter, shooter)))));
 
     }
 
