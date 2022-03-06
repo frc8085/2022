@@ -89,11 +89,7 @@ public class GTADrive extends SubsystemBase {
 
   // Tank drive for autonomous
   public void drive(double left, double right) {
-    // SmartDashboard.putNumber("left wanted", left);
-    // SmartDashboard.putNumber("right wanted", right);
-    // SmartDashboard.putNumber("left gotten", left1.get());
-    // SmartDashboard.putNumber("right gotten", right1.get());
-    m_drive.tankDrive(left, right);
+    m_drive.tankDrive(left / 4, right / 4);
   }
 
   public void driveRobot() {
