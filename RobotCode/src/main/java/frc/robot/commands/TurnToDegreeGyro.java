@@ -31,10 +31,14 @@ public class TurnToDegreeGyro extends PIDCommand {
     public TurnToDegreeGyro(double degree, GTADrive drivetrain) {
         super(
                 new PIDController(kP, kI, kD),
+                // Close loop on heading
                 drivetrain::getHeading,
+                // Set reference to target
                 degree,
-                d -> drivetrain.turn(d));
+                // Pipe output to turn robot
+                output -> drivetrain.turn(output));
 
+        // Require the drive
         m_drivetrain = drivetrain;
         addRequirements(m_drivetrain);
 

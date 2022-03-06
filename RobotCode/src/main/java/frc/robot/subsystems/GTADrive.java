@@ -92,9 +92,9 @@ public class GTADrive extends SubsystemBase {
     m_drive.tankDrive(left, right);
   }
 
-  // Turn (in units of distance -- inches)
+  // Turn
   public void turn(double distance) {
-    m_drive.tankDrive(distance, -distance);
+    m_drive.tankDrive(-distance, distance);
   }
 
   public void driveRobot() {
