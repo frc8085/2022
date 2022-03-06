@@ -56,8 +56,9 @@ public class GTADrive extends SubsystemBase {
 
     m_leftMotors.setInverted(true);
 
-    m_left1Encoder.setPositionConversionFactor(DriveConstants.kReverse * DriveConstants.kMotorRevolutionsPerInch);
-    m_right1Encoder.setPositionConversionFactor(DriveConstants.kMotorRevolutionsPerInch);
+    // m_left1Encoder.setPositionConversionFactor(DriveConstants.kReverse *
+    // DriveConstants.kMotorRevolutionsPerInch);
+    // m_right1Encoder.setPositionConversionFactor(DriveConstants.kMotorRevolutionsPerInch);
 
     // Let's name the sensors on the LiveWindow
     addChild("Drive", m_drive);
@@ -66,8 +67,9 @@ public class GTADrive extends SubsystemBase {
 
   /** The log method puts interesting information to the SmartDashboard. */
   public void log() {
-    SmartDashboard.putNumber("Left1 Position", m_left1Encoder.getPosition());
-    SmartDashboard.putNumber("Right1 Position", m_right1Encoder.getPosition());
+    SmartDashboard.putNumber("Left Raw", m_left1Encoder.getPosition());
+    SmartDashboard.putNumber("Right Raw", m_right1Encoder.getPosition());
+
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
   }
 
