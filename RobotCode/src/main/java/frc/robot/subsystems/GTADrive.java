@@ -56,7 +56,7 @@ public class GTADrive extends SubsystemBase {
 
     m_leftMotors.setInverted(true);
 
-    m_left1Encoder.setPositionConversionFactor(-1 * DriveConstants.kMotorRevolutionsPerInch);
+    m_left1Encoder.setPositionConversionFactor(DriveConstants.kReverse * DriveConstants.kMotorRevolutionsPerInch);
     m_right1Encoder.setPositionConversionFactor(DriveConstants.kMotorRevolutionsPerInch);
 
     // Let's name the sensors on the LiveWindow
@@ -66,11 +66,7 @@ public class GTADrive extends SubsystemBase {
 
   /** The log method puts interesting information to the SmartDashboard. */
   public void log() {
-
-    // getPosition returns units of Revolutions (of the Motor)
-    // We need to convert these to inches
-
-    SmartDashboard.putNumber("Left1 Position", m_left1Encoder.getPosition() * DriveConstants.kReverse);
+    SmartDashboard.putNumber("Left1 Position", m_left1Encoder.getPosition());
     SmartDashboard.putNumber("Right1 Position", m_right1Encoder.getPosition());
     SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
   }
