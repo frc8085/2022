@@ -5,6 +5,9 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.Shooter;
@@ -23,6 +26,9 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private Shooter m_shooter;
 
+  // for Sending Auto to Dashboard
+  protected SendableChooser<Integer> m_autoSelection = new SendableChooser<>();
+
   // TODO: Add "Last touched shooter" timer variable
 
   /**
@@ -36,6 +42,16 @@ public class Robot extends TimedRobot {
     // and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+
+    // Add commands to the autonomous command chooser
+    m_autoSelection.setDefaultOption("Up Against Hub", 1);
+    m_autoSelection.addOption("Across Line 2 Ball High", 2);
+
+    // Put the chooser on the dashboard
+    SmartDashboard.putData(m_autoSelection);
+
+    // etc.
+
   }
 
   /**
@@ -77,6 +93,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
+    int autoMode = m_autoSelection.getSelected();
+    // Run the appropriate command
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     // schedule the autonomous command (example)

@@ -4,8 +4,6 @@
 
 package frc.robot;
 
-import frc.robot.subsystems.ExampleSubsystem;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,7 +26,6 @@ import frc.robot.commands.AutoRoutine1;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
-import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.HoldCargo;
 import frc.robot.commands.LoadCargo;
 import frc.robot.commands.Shoot;

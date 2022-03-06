@@ -14,9 +14,9 @@ import frc.robot.subsystems.IntakeCover;
 import frc.robot.subsystems.Shooter;
 
 /** The main autonomous command */
-public class AutoRoutine2 extends SequentialCommandGroup {
+public class autoTwoBallHigh extends SequentialCommandGroup {
     /** Create a new autonomous command. */
-    public AutoRoutine2(
+    public autoTwoBallHigh(
             GTADrive drive,
             Shooter shooter,
             Feeder feeder,
