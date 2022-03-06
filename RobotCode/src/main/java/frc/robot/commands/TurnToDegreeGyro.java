@@ -28,11 +28,11 @@ public class TurnToDegreeGyro extends PIDCommand {
      *
      * @param distance The distance to drive (inches)
      */
-    public TurnToDegreeGyro(double startHeading, double degree, GTADrive drivetrain) {
+    public TurnToDegreeGyro(double degree, GTADrive drivetrain) {
         super(
                 new PIDController(kP, kI, kD),
                 drivetrain::getHeading,
-                startHeading + degree,
+                degree,
                 d -> drivetrain.turn(d));
 
         m_drivetrain = drivetrain;
