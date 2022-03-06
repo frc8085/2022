@@ -31,8 +31,8 @@ public class GTADrive extends SubsystemBase {
   private final MotorControllerGroup m_rightMotors = new MotorControllerGroup(right1, right2);
 
   // Encoders
-  private final RelativeEncoder m_left1Encoder = left1.getEncoder();
-  private final RelativeEncoder m_right1Encoder = right1.getEncoder();
+  private final RelativeEncoder m_left1Encoder = left2.getEncoder();
+  private final RelativeEncoder m_right1Encoder = right2.getEncoder();
 
   // Gyro
   private final AnalogGyro m_gyro = new AnalogGyro(DriveConstants.kGyroChannel);
@@ -59,6 +59,9 @@ public class GTADrive extends SubsystemBase {
     // m_left1Encoder.setPositionConversionFactor(DriveConstants.kReverse *
     // DriveConstants.kMotorRevolutionsPerInch);
     // m_right1Encoder.setPositionConversionFactor(DriveConstants.kMotorRevolutionsPerInch);
+
+    // Reset values when starting
+    reset();
 
     // Let's name the sensors on the LiveWindow
     addChild("Drive", m_drive);
