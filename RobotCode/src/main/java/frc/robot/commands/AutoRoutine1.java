@@ -26,6 +26,6 @@ public class AutoRoutine1 extends SequentialCommandGroup {
     addCommands(
         new ShootLowNear(intake, feeder, shooter, conveyor)
             .andThen(new WaitCommand(1))
-            .andThen(new DriveStraight(24, drive)));
+            .andThen(new TurnToDegree(90, drive)));
   }
 }

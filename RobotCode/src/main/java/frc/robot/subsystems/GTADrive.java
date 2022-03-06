@@ -92,6 +92,11 @@ public class GTADrive extends SubsystemBase {
     m_drive.tankDrive(left, right);
   }
 
+  // Turn (in units of distance -- inches)
+  public void turn(double distance) {
+    m_drive.tankDrive(distance, -distance);
+  }
+
   public void driveRobot() {
     double leftTrigger = m_driverController.getLeftTriggerAxis();
     double rightTrigger = m_driverController.getRightTriggerAxis();
@@ -175,6 +180,10 @@ public class GTADrive extends SubsystemBase {
    */
   public double getDistance() {
     return (getLeftEncoderDistanceInches() + getRightEncoderDistanceInches()) / 2;
+  }
+
+  public double getTurnedInches() {
+    return (getLeftEncoderDistanceInches() + -1 * getRightEncoderDistanceInches()) / 2;
   }
 
   public double getLeftEncoderDistanceInches() {

@@ -53,6 +53,8 @@ public final class Constants {
     public static final double kTrackWidthInches = 21.75;
     public static final double kReverse = -1;
 
+    public static final double kTurnFactor = kTrackWidthInches * Math.PI / 360;
+
   }
 
   public static final class IntakeConstants {
