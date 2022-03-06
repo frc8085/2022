@@ -33,16 +33,16 @@ public final class Constants {
     public static final int kGyroChannel = 1;
 
     public static final double kWheelDiameterInches = 6;
+
     // The inches one wheel revolution travels
     public static final double kInchesPerWheelRevolution = kWheelDiameterInches * Math.PI;
 
     // We determined the motor revolutions per wheel revolution
     // by turning the wheel once and recording the encoder units measured
-    public static final double kMotorRevolutionsPerWheelRevolution = 10.75;
+    public static final double kGearRatio = 10.75;
 
-    // Motor revolutions per inch traveled
-    public static final double kMotorRevolutionsPerInch = kMotorRevolutionsPerWheelRevolution
-        / kInchesPerWheelRevolution;
+    // Inches per motor revolution
+    public static final double kInchesPerMotorRevolution = kInchesPerWheelRevolution / kGearRatio;
 
     // public static final double kGearRatio = 10.75;
     // public static final double kEncoderCPR = 42 * kGearRatio;

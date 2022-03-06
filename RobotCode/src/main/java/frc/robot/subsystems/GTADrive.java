@@ -182,13 +182,13 @@ public class GTADrive extends SubsystemBase {
   // TODO: If setPositionConversionFactor doesn't work, try this instead
   public double getLeftEncoderDistanceInches() {
     double leftMotorRevolutions = m_left1Encoder.getPosition() * DriveConstants.kReverse;
-    double leftDistanceInches = leftMotorRevolutions * DriveConstants.kMotorRevolutionsPerInch;
+    double leftDistanceInches = leftMotorRevolutions * DriveConstants.kInchesPerMotorRevolution;
     return leftDistanceInches;
   }
 
   public double getRightEncoderDistanceInches() {
     double rightMotorRevolutions = m_right1Encoder.getPosition();
-    double rightDistanceInches = rightMotorRevolutions * DriveConstants.kMotorRevolutionsPerInch;
+    double rightDistanceInches = rightMotorRevolutions * DriveConstants.kInchesPerMotorRevolution;
     return rightDistanceInches;
   }
 
