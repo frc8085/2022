@@ -26,6 +26,9 @@ public class autoUpAgainstHub extends SequentialCommandGroup {
     addCommands(
         new ShootLowNear(intake, feeder, shooter, conveyor)
             .andThen(new WaitCommand(1))
-            .andThen(new TurnToDegreeGyro(-90, drive)));
+            // .andThen(new TurnToDegreeGyro(-90, drive))
+            .andThen(new LoadCargo(intake, intakeCover, conveyor, feeder, shooter))
+            .andThen(new WaitCommand(2))
+            .andThen(new HoldCargo(intake, conveyor, feeder)));
   }
 }
