@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
  * input is the
  * averaged values of the left and right encoders.
  */
-public class TurnToDegree extends PIDCommand {
+public class TurnToDegreeGyro extends PIDCommand {
     private final GTADrive m_drivetrain;
 
     static double kP = 0.1;
@@ -24,15 +24,15 @@ public class TurnToDegree extends PIDCommand {
     static double kD = 0.001;
 
     /**
-     * Create a new TurnToDegree command.
+     * Create a new TurnToDegreeGyro command.
      *
      * @param distance The distance to drive (inches)
      */
-    public TurnToDegree(double degree, GTADrive drivetrain) {
+    public TurnToDegreeGyro(double startHeading, double degree, GTADrive drivetrain) {
         super(
                 new PIDController(kP, kI, kD),
-                drivetrain::getTurnedInches,
-                degree * DriveConstants.kTurnFactor, // Convert degrees to distance
+                drivetrain::getHeading,
+                startHeading + degree,
                 d -> drivetrain.turn(d));
 
         m_drivetrain = drivetrain;
