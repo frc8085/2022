@@ -89,7 +89,7 @@ public class GTADrive extends SubsystemBase {
 
   // Tank drive for autonomous
   public void drive(double left, double right) {
-    m_drive.tankDrive(left / 4, right / 4);
+    m_drive.tankDrive(left, right);
   }
 
   public void driveRobot() {

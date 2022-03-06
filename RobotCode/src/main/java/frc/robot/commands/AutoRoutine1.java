@@ -12,6 +12,6 @@ public class AutoRoutine1 extends SequentialCommandGroup {
   /** Create a new autonomous command. */
   public AutoRoutine1(GTADrive drive) {
     addCommands(
-        new DriveStraight(100, drive));
+        new DriveStraight(24, drive));
   }
 }
