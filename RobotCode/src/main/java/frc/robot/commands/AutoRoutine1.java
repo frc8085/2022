@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
@@ -24,6 +25,7 @@ public class AutoRoutine1 extends SequentialCommandGroup {
       Intake intake) {
     addCommands(
         new ShootLowNear(intake, feeder, shooter, conveyor)
+            .andThen(new WaitCommand(1))
             .andThen(new DriveStraight(24, drive)));
   }
 }
