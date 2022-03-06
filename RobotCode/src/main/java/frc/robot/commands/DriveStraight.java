@@ -33,7 +33,8 @@ public class DriveStraight extends PIDCommand {
     super(
         new PIDController(kP, kI, kD),
         drivetrain::getDistance,
-        distance, d -> drivetrain.drive(d, d));
+        distance,
+        d -> drivetrain.drive(d, d));
 
     m_drivetrain = drivetrain;
     addRequirements(m_drivetrain);
@@ -43,9 +44,7 @@ public class DriveStraight extends PIDCommand {
 
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Left Distance", m_drivetrain.getLeftEncoderDistanceInches());
-    SmartDashboard.putNumber("Right Distance", m_drivetrain.getRightEncoderDistanceInches());
-    SmartDashboard.putNumber("Distance traveled", m_drivetrain.getDistance());
+    SmartDashboard.putNumber("DRIVE Distance traveled", m_drivetrain.getDistance());
     super.execute();
   }
 
