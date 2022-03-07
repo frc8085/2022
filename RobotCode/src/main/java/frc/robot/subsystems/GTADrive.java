@@ -54,12 +54,15 @@ public class GTADrive extends SubsystemBase {
 
     public GTADrive(XboxController driverController) {
         m_driverController = driverController;
+
+        // We need to restore the motors to defaults
+        // every time they're initialized when using encoders
         left1.restoreFactoryDefaults();
         left2.restoreFactoryDefaults();
         right1.restoreFactoryDefaults();
         right2.restoreFactoryDefaults();
 
-        // Reverse the lefts motor and left motor encoder
+        // Reverse the lefts motor
         m_leftMotors.setInverted(true);
 
         // Reset sensor values when starting
@@ -96,9 +99,9 @@ public class GTADrive extends SubsystemBase {
         int directionL = left >= 0 ? 1 : -1;
         int directionR = right >= 0 ? 1 : -1;
 
-        // Clamps the output to between 0.4 and 0.5
-        double speedL = MathUtil.clamp(left, 0.4, 0.6);
-        double speedR = MathUtil.clamp(right, 0.4, 0.6);
+        // Clamps the output to between 0.4 and 0.8
+        double speedL = MathUtil.clamp(left, 0.4, 0.8);
+        double speedR = MathUtil.clamp(right, 0.4, 0.8);
 
         m_drive.tankDrive(speedL * directionL, speedR * directionR);
     }
