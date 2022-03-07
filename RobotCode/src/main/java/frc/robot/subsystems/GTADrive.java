@@ -91,11 +91,16 @@ public class GTADrive extends SubsystemBase {
 
     // Tank drive for autonomous
     public void drive(double left, double right) {
-        // Clamps the output to between 0.2 and 0.5
-        double speedL = MathUtil.clamp(left, 0.2, 0.5);
-        double speedR = MathUtil.clamp(right, 0.2, 0.5);
 
-        m_drive.tankDrive(speedL, speedR);
+        // TODO: Fix this hack using a better util
+        int directionL = left >= 0 ? 1 : -1;
+        int directionR = right >= 0 ? 1 : -1;
+
+        // Clamps the output to between 0.4 and 0.5
+        double speedL = MathUtil.clamp(left, 0.4, 0.6);
+        double speedR = MathUtil.clamp(right, 0.4, 0.6);
+
+        m_drive.tankDrive(speedL * directionL, speedR * directionR);
     }
 
     // Turn
