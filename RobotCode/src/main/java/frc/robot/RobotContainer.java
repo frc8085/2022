@@ -22,8 +22,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.autoTwoBallHigh;
-import frc.robot.commands.autoUpAgainstHub;
+import frc.robot.commands.AutoBaseSequence;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
@@ -67,11 +66,6 @@ public class RobotContainer {
     private final Intake m_intake = new Intake();
     private final ClimberBrake m_climberBrake = new ClimberBrake();
 
-    // The default autonomous command.
-    // This is NOT 'final' because we change it on the dashboard during match
-    private Command m_autoCommand = new autoUpAgainstHub(m_drive, m_shooter, m_feeder, m_conveyor, m_intakeCover,
-            m_intake);
-
     // The robot's subsystems and commands
 
     // TODO: Is there a better way to do this?
@@ -105,11 +99,29 @@ public class RobotContainer {
         }
     };
 
-    private final Command autoUpAgainstHub = new autoUpAgainstHub(
-            m_drive, m_shooter, m_feeder, m_conveyor, m_intakeCover, m_intake);
+    private final Command autoUpAgainstHub = new AutoBaseSequence(
+            kTargetLowNear, // shoot
+            64, // drive
+            true, // pick up new cargo
+            -64, // drive back
+            kTargetLowNear, // shoot
+            90, // turn
+            72, // drive
+            true, // pick up new cargo
+            0, // 🚫 DON'T drive
+            m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
-    private final Command autoTwoBallHigh = new autoTwoBallHigh(
-            m_drive, m_shooter, m_feeder, m_conveyor, m_intakeCover, m_intake);
+    private final Command autoTwoBallHigh = new AutoBaseSequence(
+            kTargetHighNear, // shoot
+            24, // drive
+            false, // 🚫 don't pick up new cargo
+            0, // 🚫 don't drive
+            kShooterOff, // 🚫 don't shoot (set setpoint to 0)
+            0, // 🚫 don't turn
+            0, // 🚫 don't drive
+            false, // 🚫 don't pick up new cargo
+            0, // 🚫 don't drive
+            m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
     public RobotContainer() {
         configureButtonBindings();

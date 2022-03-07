@@ -15,24 +15,24 @@ import frc.robot.subsystems.Shooter;
 
 /** The main autonomous command */
 public class autoUpAgainstHub extends SequentialCommandGroup {
-  /** Create a new autonomous command. */
-  public autoUpAgainstHub(
-      GTADrive drive,
-      Shooter shooter,
-      Feeder feeder,
-      Conveyor conveyor,
-      IntakeCover intakeCover,
-      Intake intake) {
-    addCommands(
-        new ShootLowNear(intake, feeder, shooter, conveyor)
-            .andThen(new WaitCommand(1))
-            .andThen(new DriveStraight(64, drive))
-            .andThen(new LoadCargo(intake, intakeCover, conveyor, feeder, shooter))
-            .andThen(new WaitCommand(3))
-            .andThen(new HoldCargo(intake, conveyor, feeder))
-            .andThen(new DriveStraight(-64, drive))
-            .andThen(new ShootLowNear(intake, feeder, shooter, conveyor))
-            .andThen(new TurnToDegreeGyro(90, drive))
-            .andThen(new DriveStraight(72, drive)));
-  }
+    /** Create a new autonomous command. */
+    public autoUpAgainstHub(
+            GTADrive drive,
+            Shooter shooter,
+            Feeder feeder,
+            Conveyor conveyor,
+            IntakeCover intakeCover,
+            Intake intake) {
+        addCommands(
+                new ShootLowNear(intake, feeder, shooter, conveyor)
+                        .andThen(new WaitCommand(1))
+                        .andThen(new DriveStraight(64, drive))
+                        .andThen(new LoadCargo(intake, intakeCover, conveyor, feeder, shooter))
+                        .andThen(new WaitCommand(3))
+                        .andThen(new HoldCargo(intake, conveyor, feeder))
+                        .andThen(new DriveStraight(-64, drive))
+                        .andThen(new ShootLowNear(intake, feeder, shooter, conveyor))
+                        .andThen(new TurnToDegreeGyro(90, drive))
+                        .andThen(new DriveStraight(72, drive)));
+    }
 }
