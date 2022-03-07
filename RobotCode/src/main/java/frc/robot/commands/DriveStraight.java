@@ -32,14 +32,18 @@ public class DriveStraight extends PIDCommand {
     public DriveStraight(double distance, GTADrive drivetrain) {
         super(
                 new PIDController(kP, kI, kD),
+                // Close loop on distance
                 drivetrain::getDistance,
+                // Set reference to target distance
                 distance,
-                d -> drivetrain.drive(d, d));
+                // Pipe output to drive the robot
+                output -> drivetrain.drive(output, output));
 
         m_drivetrain = drivetrain;
         addRequirements(m_drivetrain);
 
         getController().setTolerance(kAutoPositionTolerance);
+
     }
 
     @Override

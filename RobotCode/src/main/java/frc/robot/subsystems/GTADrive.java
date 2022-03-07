@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.DriveConstants.*;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.XboxController;
 
@@ -89,7 +91,11 @@ public class GTADrive extends SubsystemBase {
 
     // Tank drive for autonomous
     public void drive(double left, double right) {
-        m_drive.tankDrive(left, right);
+        // Clamps the output to between 0.2 and 0.5
+        double speedL = MathUtil.clamp(left, 0.2, 0.5);
+        double speedR = MathUtil.clamp(right, 0.2, 0.5);
+
+        m_drive.tankDrive(speedL, speedR);
     }
 
     // Turn
