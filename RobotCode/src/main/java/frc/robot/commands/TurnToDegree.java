@@ -5,16 +5,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.Constants.DriveConstants;
+import static frc.robot.Constants.DriveConstants.*;
 import frc.robot.subsystems.GTADrive;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /**
  * Drive the given distance straight (negative values go backwards). Uses a
- * local PID controller to
- * run a simple PID loop that is only enabled while this command is running. The
- * input is the
- * averaged values of the left and right encoders.
+ * local PID controller to run a simple PID loop that is only enabled while t
+ * is command is running. The input is the averaged values of the left and right
+ * encoders.
  */
 public class TurnToDegree extends PIDCommand {
     private final GTADrive m_drivetrain;
@@ -32,13 +31,13 @@ public class TurnToDegree extends PIDCommand {
         super(
                 new PIDController(kP, kI, kD),
                 drivetrain::getTurnedInches,
-                degree * DriveConstants.kTurnFactor, // Convert degrees to distance
+                degree * kTurnFactor, // Convert degrees to distance
                 d -> drivetrain.turn(d));
 
         m_drivetrain = drivetrain;
         addRequirements(m_drivetrain);
 
-        getController().setTolerance(DriveConstants.kAutoPositionTolerance);
+        getController().setTolerance(kAutoPositionTolerance);
     }
 
     @Override

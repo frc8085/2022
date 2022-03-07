@@ -11,47 +11,46 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;
+import static frc.robot.Constants.DriveConstants.*;
 
 public class DriveTrain extends SubsystemBase {
-  /** Creates a new DriveTrain. */
+    /** Creates a new DriveTrain. */
 
-  // Left motors
-  private final CANSparkMax left1 = new CANSparkMax(DriveConstants.kLeftMotor1Port, MotorType.kBrushless);
-  private final CANSparkMax left2 = new CANSparkMax(DriveConstants.kLeftMotor2Port, MotorType.kBrushless);
+    // Left motors
+    private final CANSparkMax left1 = new CANSparkMax(kLeftMotor1Port, MotorType.kBrushless);
+    private final CANSparkMax left2 = new CANSparkMax(kLeftMotor2Port, MotorType.kBrushless);
 
-  // Right motors
-  private final CANSparkMax right1 = new CANSparkMax(DriveConstants.kRightMotor1Port,
-      MotorType.kBrushless);
-  private final CANSparkMax right2 = new CANSparkMax(DriveConstants.kRightMotor2Port,
-      MotorType.kBrushless);
+    // Right motors
+    private final CANSparkMax right1 = new CANSparkMax(kRightMotor1Port,
+            MotorType.kBrushless);
+    private final CANSparkMax right2 = new CANSparkMax(kRightMotor2Port,
+            MotorType.kBrushless);
 
-  // Create motor groups
-  private final MotorControllerGroup m_leftMotors = new MotorControllerGroup(left1, left2);
-  private final MotorControllerGroup m_rightMotors = new MotorControllerGroup(right1, right2);
+    // Create motor groups
+    private final MotorControllerGroup m_leftMotors = new MotorControllerGroup(left1, left2);
+    private final MotorControllerGroup m_rightMotors = new MotorControllerGroup(right1, right2);
 
-  // The robot's drive
-  private final DifferentialDrive m_drive = new DifferentialDrive(
-      m_leftMotors, m_rightMotors);
+    // The robot's drive
+    private final DifferentialDrive m_drive = new DifferentialDrive(
+            m_leftMotors, m_rightMotors);
 
-  // Creates a SlewRateLimiter that limits the rate of change
-  // of the signal to {kSlewRateLimit} units per second
-  // TODO: Seperate rate limit for speed up vs slow down.
-  SlewRateLimiter speedFilter = new SlewRateLimiter(DriveConstants.kSpeedSlewRateLimit);
-  SlewRateLimiter rotationFilter = new SlewRateLimiter(DriveConstants.kRotationSlewRateLimit);
+    // Creates a SlewRateLimiter that limits the rate of change
+    // of the signal to {kSlewRateLimit} units per second
+    SlewRateLimiter speedFilter = new SlewRateLimiter(kSpeedSlewRateLimit);
+    SlewRateLimiter rotationFilter = new SlewRateLimiter(kRotationSlewRateLimit);
 
-  // Drive the robot using ArcadeDrive command
-  public void ArcadeDrive(double speed, double rotation) {
-    m_drive.arcadeDrive(
-        -1 * (speedFilter.calculate(Math.pow(speed, 3))),
-        -0.5 * (rotationFilter.calculate(rotation)));
-  }
+    // Drive the robot using ArcadeDrive command
+    public void ArcadeDrive(double speed, double rotation) {
+        m_drive.arcadeDrive(
+                -1 * (speedFilter.calculate(Math.pow(speed, 3))),
+                -0.5 * (rotationFilter.calculate(rotation)));
+    }
 
-  public DriveTrain() {
-    m_leftMotors.setInverted(true);
-    left1.setOpenLoopRampRate(DriveConstants.kRampRate);
-    left2.setOpenLoopRampRate(DriveConstants.kRampRate);
-    right1.setOpenLoopRampRate(DriveConstants.kRampRate);
-    right2.setOpenLoopRampRate(DriveConstants.kRampRate);
-  }
+    public DriveTrain() {
+        m_leftMotors.setInverted(true);
+        left1.setOpenLoopRampRate(kRampRate);
+        left2.setOpenLoopRampRate(kRampRate);
+        right1.setOpenLoopRampRate(kRampRate);
+        right2.setOpenLoopRampRate(kRampRate);
+    }
 }

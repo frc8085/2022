@@ -9,14 +9,14 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.Constants.ClimberBrakeConstants;
+import static frc.robot.Constants.ClimberBrakeConstants.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ClimberBrake extends SubsystemBase {
     private final DoubleSolenoid m_climberBrakeSolenoid = new DoubleSolenoid(
             PneumaticsModuleType.CTREPCM,
-            ClimberBrakeConstants.kClimberBrakeSolenoidPorts[0],
-            ClimberBrakeConstants.kClimberBrakeSolenoidPorts[1]);
+            kClimberBrakeSolenoidPorts[0],
+            kClimberBrakeSolenoidPorts[1]);
 
     /** Grabs the intake cover. */
     public void lockClimber() {

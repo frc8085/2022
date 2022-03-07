@@ -9,14 +9,14 @@ import static edu.wpi.first.wpilibj.DoubleSolenoid.Value.kReverse;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import frc.robot.Constants.IntakeCoverConstants;
+import static frc.robot.Constants.IntakeCoverConstants.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class IntakeCover extends SubsystemBase {
     private final DoubleSolenoid m_intakeCoverSolenoid = new DoubleSolenoid(
             PneumaticsModuleType.CTREPCM,
-            IntakeCoverConstants.kIntakeCoverSolenoidPorts[0],
-            IntakeCoverConstants.kIntakeCoverSolenoidPorts[1]);
+            kIntakeCoverSolenoidPorts[0],
+            kIntakeCoverSolenoidPorts[1]);
 
     /** Puts the intake cover down */
     public void openIntake() {
