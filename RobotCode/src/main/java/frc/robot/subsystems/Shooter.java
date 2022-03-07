@@ -22,7 +22,7 @@ public class Shooter extends SubsystemBase {
   private final CANSparkMax m_shooterMotor;
   private SparkMaxPIDController m_pidController;
   private RelativeEncoder m_encoder;
-  private double kSetPoint, kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput, maxRPM;
+  private double kSetPoint, kP, kI, kD, kIz, kFF, kMaxOutput, kMinOutput;
 
   /** The shooter subsystem for the robot. */
   public Shooter() {
@@ -41,7 +41,6 @@ public class Shooter extends SubsystemBase {
     kFF = 0.0001761804087;
     kMaxOutput = 0;
     kMinOutput = -1;
-    maxRPM = 5700;
     kSetPoint = ShooterConstants.kShooterTargetRPM[0];
 
     // set PID coefficients

@@ -4,7 +4,6 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IntakeCover;
@@ -14,12 +13,10 @@ import frc.robot.subsystems.ClimberBrake;
 public class Climb extends CommandBase {
   private final Climber m_climber;
   private final IntakeCover m_intakeCover;
-  private final ClimberBrake m_climberBrake;
 
   public Climb(Climber climber, IntakeCover intakeCover, ClimberBrake climberBrake) {
     m_climber = climber;
     m_intakeCover = intakeCover;
-    m_climberBrake = climberBrake;
     addRequirements(climber);
   }
 
