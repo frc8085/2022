@@ -7,10 +7,10 @@ package frc.robot;
 import java.util.HashMap;
 import java.util.Map;
 
-import frc.robot.Constants.IntakeConstants;
 // Constants
-import frc.robot.Constants.OIConstants;
-import frc.robot.Constants.ShooterConstants;
+import static frc.robot.Constants.IntakeConstants.*;
+import static frc.robot.Constants.OIConstants.*;
+import static frc.robot.Constants.ShooterConstants.*;
 
 // Inputs
 import edu.wpi.first.wpilibj.XboxController;
@@ -54,12 +54,12 @@ public class RobotContainer {
   protected SendableChooser<Integer> m_autoSelection = new SendableChooser<>();
 
   // Drive train and driver controller
-  private final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  private final XboxController m_driverController = new XboxController(kDriverControllerPort);
   private final GTADrive m_drive = new GTADrive(m_driverController);
 
   // Operator controller and subsystems
   private final XboxController m_operatorController = new XboxController(
-      OIConstants.kOperatorControllerPort);
+      kOperatorControllerPort);
   private final Shooter m_shooter = new Shooter();
   private final Feeder m_feeder = new Feeder();
   private final Conveyor m_conveyor = new Conveyor();
@@ -88,20 +88,20 @@ public class RobotContainer {
    * in the Shuffleboard entry shotingModeDisplay
    */
   private NetworkTableEntry shootingModeDisplay;
-  private int shootMode = OIConstants.kShooterOff;
+  private int shootMode = kShooterOff;
   private boolean shootLow = false;
 
   private static final Map<Integer, String> shootingMode = new HashMap<Integer, String>() {
     {
-      put(OIConstants.kShooterOff, "Shooting mode not selected");
+      put(kShooterOff, "Shooting mode not selected");
 
-      put(OIConstants.kTargetHighNear, "HIGH ▔ Near");
-      put(OIConstants.kTargetHighFar, "HIGH ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ Far");
-      put(OIConstants.kTargetHighAngled, "HIGH ▔▔/angled/▔▔");
+      put(kTargetHighNear, "HIGH ▔ Near");
+      put(kTargetHighFar, "HIGH ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ Far");
+      put(kTargetHighAngled, "HIGH ▔▔/angled/▔▔");
 
-      put(OIConstants.kTargetLowNear, "LOW _ Near");
-      put(OIConstants.kTargetLowFar, "LOW ____________________ Far");
-      put(OIConstants.kTargetLowAngled, "LOW __/angled/__");
+      put(kTargetLowNear, "LOW _ Near");
+      put(kTargetLowFar, "LOW ____________________ Far");
+      put(kTargetLowAngled, "LOW __/angled/__");
     }
   };
 
@@ -178,20 +178,20 @@ public class RobotContainer {
 
     setTargetFar.whenPressed(
         new ConditionalCommand(
-            new InstantCommand(() -> setShootingMode(OIConstants.kTargetLowFar)),
-            new InstantCommand(() -> setShootingMode(OIConstants.kTargetHighFar)),
+            new InstantCommand(() -> setShootingMode(kTargetLowFar)),
+            new InstantCommand(() -> setShootingMode(kTargetHighFar)),
             () -> shootLow));
 
     setTargetAngled.whenPressed(
         new ConditionalCommand(
-            new InstantCommand(() -> setShootingMode(OIConstants.kTargetLowAngled)),
-            new InstantCommand(() -> setShootingMode(OIConstants.kTargetHighAngled)),
+            new InstantCommand(() -> setShootingMode(kTargetLowAngled)),
+            new InstantCommand(() -> setShootingMode(kTargetHighAngled)),
             () -> shootLow));
 
     setTargetNear.whenPressed(
         new ConditionalCommand(
-            new InstantCommand(() -> setShootingMode(OIConstants.kTargetLowNear)),
-            new InstantCommand(() -> setShootingMode(OIConstants.kTargetHighNear)),
+            new InstantCommand(() -> setShootingMode(kTargetLowNear)),
+            new InstantCommand(() -> setShootingMode(kTargetHighNear)),
             () -> shootLow));
 
     /**
@@ -207,7 +207,7 @@ public class RobotContainer {
     shootButton.whenPressed(new Shoot(m_intake, m_feeder, m_shooter, m_conveyor));
 
     shooterOffButton.whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter)
-        .andThen(() -> setShootingMode(OIConstants.kShooterOff)));
+        .andThen(() -> setShootingMode(kShooterOff)));
 
     /**
      * LOAD CARGO
@@ -219,7 +219,7 @@ public class RobotContainer {
         new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter))
         .whenReleased(
             new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter)
-                .withTimeout(IntakeConstants.kLoadLagSecs)
+                .withTimeout(kLoadLagSecs)
                 .andThen(new HoldCargo(m_intake, m_conveyor, m_feeder))
                 .andThen(new WaitCommand(10)
                     .andThen(new InstantCommand(m_intakeCover::closeIntake,
@@ -248,21 +248,21 @@ public class RobotContainer {
   private void setShootingMode(int mode) {
     shootMode = mode;
     shootingModeDisplay.setString(shootingMode.get(shootMode));
-    m_shooter.setSetpoint(ShooterConstants.kShooterTargetRPM[mode]);
+    m_shooter.setSetpoint(kShooterTargetRPM[mode]);
   }
 
   private void setLow(int mode) {
     shootLow = true;
 
     switch (mode) {
-      case OIConstants.kTargetHighNear:
-        shootMode = OIConstants.kTargetLowNear;
+      case kTargetHighNear:
+        shootMode = kTargetLowNear;
         break;
-      case OIConstants.kTargetHighFar:
-        shootMode = OIConstants.kTargetLowFar;
+      case kTargetHighFar:
+        shootMode = kTargetLowFar;
         break;
-      case OIConstants.kTargetHighAngled:
-        shootMode = OIConstants.kTargetLowAngled;
+      case kTargetHighAngled:
+        shootMode = kTargetLowAngled;
         break;
     }
 
@@ -273,14 +273,14 @@ public class RobotContainer {
     shootLow = false;
 
     switch (mode) {
-      case OIConstants.kTargetLowNear:
-        shootMode = OIConstants.kTargetHighNear;
+      case kTargetLowNear:
+        shootMode = kTargetHighNear;
         break;
-      case OIConstants.kTargetLowFar:
-        shootMode = OIConstants.kTargetHighFar;
+      case kTargetLowFar:
+        shootMode = kTargetHighFar;
         break;
-      case OIConstants.kTargetLowAngled:
-        shootMode = OIConstants.kTargetHighAngled;
+      case kTargetLowAngled:
+        shootMode = kTargetHighAngled;
         break;
     }
 

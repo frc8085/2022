@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Constants.DriveConstants;
+import static frc.robot.Constants.DriveConstants.*;
 import frc.robot.subsystems.GTADrive;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
@@ -18,47 +18,47 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
  * averaged values of the left and right encoders.
  */
 public class DriveStraight extends PIDCommand {
-  private final GTADrive m_drivetrain;
+    private final GTADrive m_drivetrain;
 
-  static double kP = 0.1;
-  static double kI = 0;
-  static double kD = 0.001;
+    static double kP = 0.1;
+    static double kI = 0;
+    static double kD = 0.001;
 
-  /**
-   * Create a new DriveStraight command.
-   *
-   * @param distance The distance to drive (inches)
-   */
-  public DriveStraight(double distance, GTADrive drivetrain) {
-    super(
-        new PIDController(kP, kI, kD),
-        drivetrain::getDistance,
-        distance,
-        d -> drivetrain.drive(d, d));
+    /**
+     * Create a new DriveStraight command.
+     *
+     * @param distance The distance to drive (inches)
+     */
+    public DriveStraight(double distance, GTADrive drivetrain) {
+        super(
+                new PIDController(kP, kI, kD),
+                drivetrain::getDistance,
+                distance,
+                d -> drivetrain.drive(d, d));
 
-    m_drivetrain = drivetrain;
-    addRequirements(m_drivetrain);
+        m_drivetrain = drivetrain;
+        addRequirements(m_drivetrain);
 
-    getController().setTolerance(DriveConstants.kAutoPositionTolerance);
-  }
+        getController().setTolerance(kAutoPositionTolerance);
+    }
 
-  @Override
-  public void execute() {
-    SmartDashboard.putNumber("DRIVE Distance traveled", m_drivetrain.getDistance());
-    super.execute();
-  }
+    @Override
+    public void execute() {
+        SmartDashboard.putNumber("DRIVE Distance traveled", m_drivetrain.getDistance());
+        super.execute();
+    }
 
-  // Called just before this Command runs the first time
-  @Override
-  public void initialize() {
-    // Get everything in a safe starting state.
-    m_drivetrain.reset();
-    super.initialize();
-  }
+    // Called just before this Command runs the first time
+    @Override
+    public void initialize() {
+        // Get everything in a safe starting state.
+        m_drivetrain.reset();
+        super.initialize();
+    }
 
-  // Make this return true when this Command no longer needs to run execute()
-  @Override
-  public boolean isFinished() {
-    return getController().atSetpoint();
-  }
+    // Make this return true when this Command no longer needs to run execute()
+    @Override
+    public boolean isFinished() {
+        return getController().atSetpoint();
+    }
 }

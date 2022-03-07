@@ -8,31 +8,31 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.IntakeConstants;
+import static frc.robot.Constants.IntakeConstants.*;
 
 public class Intake extends SubsystemBase {
-  /** Creates a new Intake. */
+    /** Creates a new Intake. */
 
-  // Intake motor
-  private final CANSparkMax m_IntakeMotor = new CANSparkMax(IntakeConstants.kIntakeMotorPort, MotorType.kBrushless);
+    // Intake motor
+    private final CANSparkMax m_IntakeMotor = new CANSparkMax(kIntakeMotorPort, MotorType.kBrushless);
 
-  public Intake() {
-    m_IntakeMotor.setOpenLoopRampRate(IntakeConstants.kRampRate);
-  }
+    public Intake() {
+        m_IntakeMotor.setOpenLoopRampRate(kRampRate);
+    }
 
-  // Run the intake forward
-  public void runIntake() {
-    m_IntakeMotor.set(IntakeConstants.kIntakeSpeed);
-  }
+    // Run the intake forward
+    public void runIntake() {
+        m_IntakeMotor.set(kIntakeSpeed);
+    }
 
-  // Run the intake reverse
-  public void reverseIntake() {
-    m_IntakeMotor.set(-IntakeConstants.kIntakeSpeed);
-  }
+    // Run the intake reverse
+    public void reverseIntake() {
+        m_IntakeMotor.set(-kIntakeSpeed);
+    }
 
-  // Stop the intake the intake
-  public void stopIntake() {
-    m_IntakeMotor.set(0);
-  }
+    // Stop the intake the intake
+    public void stopIntake() {
+        m_IntakeMotor.set(0);
+    }
 
 }

@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.Constants.DriveConstants;
+import static frc.robot.Constants.DriveConstants.*;
 import frc.robot.subsystems.GTADrive;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
@@ -29,8 +29,7 @@ public class TurnToDegreeGyro extends PIDCommand {
      * @param distance The distance to drive (inches)
      */
     public TurnToDegreeGyro(double degree, GTADrive drivetrain) {
-        super(
-                new PIDController(kP, kI, kD),
+        super(new PIDController(kP, kI, kD),
                 // Close loop on heading
                 drivetrain::getHeading,
                 // Set reference to target
@@ -42,7 +41,7 @@ public class TurnToDegreeGyro extends PIDCommand {
         m_drivetrain = drivetrain;
         addRequirements(m_drivetrain);
 
-        getController().setTolerance(DriveConstants.kAutoPositionTolerance);
+        getController().setTolerance(kAutoPositionTolerance);
     }
 
     @Override
