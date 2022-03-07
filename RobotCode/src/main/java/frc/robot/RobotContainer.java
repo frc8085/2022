@@ -45,14 +45,17 @@ import frc.robot.subsystems.ClimberBrake;
 
 // Displays
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class RobotContainer {
+  // Add Auto Selection chooser to Dashboard
+  protected SendableChooser<Integer> m_autoSelection = new SendableChooser<>();
 
   // Drive train and driver controller
   private final XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-  private final GTADrive m_robotDrive = new GTADrive(m_driverController);
+  private final GTADrive m_drive = new GTADrive(m_driverController);
 
   // Operator controller and subsystems
   private final XboxController m_operatorController = new XboxController(
@@ -64,9 +67,12 @@ public class RobotContainer {
   private final Intake m_intake = new Intake();
   private final ClimberBrake m_climberBrake = new ClimberBrake();
 
+  // The default autonomous command.
+  // This is NOT 'final' because we change it on the dashboard during match
+  private Command m_autoCommand = new autoUpAgainstHub(m_drive, m_shooter, m_feeder, m_conveyor, m_intakeCover,
+      m_intake);
+
   // The robot's subsystems and commands
-  private final autoUpAgainstHub m_autoCommand = new autoUpAgainstHub(m_robotDrive, m_shooter, m_feeder, m_conveyor,
-      m_intakeCover, m_intake);
 
   // TODO: Is there a better way to do this?
   // Because the Climber and Intake are using Joystick Axes, we're passing
@@ -102,14 +108,35 @@ public class RobotContainer {
   public RobotContainer() {
     configureButtonBindings();
 
-    m_robotDrive.setDefaultCommand(new Drive(m_robotDrive));
+    m_drive.setDefaultCommand(new Drive(m_drive));
     m_climber.setDefaultCommand(new Climb(m_climber, m_intakeCover, m_climberBrake));
 
+    // Add commands to the autonomous command chooser
+    m_autoSelection.setDefaultOption("Up Against Hub", 1);
+    m_autoSelection.addOption("Across Line 2 Ball High", 2);
+
+    // Put the chooser on the dashboard
+    SmartDashboard.putData(m_autoSelection);
+
+    int autoMode = m_autoSelection.getSelected();
+
+    switch (autoMode) {
+      case 1:
+        m_autoCommand = new autoUpAgainstHub(m_drive, m_shooter, m_feeder, m_conveyor, m_intakeCover, m_intake);
+        break;
+      case 2:
+        m_autoCommand = new autoTwoBallHigh(m_drive, m_shooter, m_feeder, m_conveyor, m_intakeCover, m_intake);
+        break;
+      default:
+    }
+
+    // TODO: Move this to the Shooter submodue
     shootingModeDisplay = Shuffleboard.getTab("Shooter")
         .add("Shooting Mode", shootingMode.get(shootMode))
         .withPosition(0, 0)
         .withSize(2, 1)
         .getEntry();
+
   }
 
   private void configureButtonBindings() {
