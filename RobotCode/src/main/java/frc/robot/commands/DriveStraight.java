@@ -22,7 +22,7 @@ public class DriveStraight extends PIDCommand {
 
     static double kP = .01;
     static double kI = 0;
-    static double kD = 0.01;
+    static double kD = 0.001;
 
     /**
      * Create a new DriveStraight command.

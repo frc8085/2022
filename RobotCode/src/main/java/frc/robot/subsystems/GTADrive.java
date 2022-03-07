@@ -97,8 +97,8 @@ public class GTADrive extends SubsystemBase {
         int directionR = right >= 0 ? 1 : -1;
 
         // Clamps the output to between 0.4 and 0.5
-        double speedL = MathUtil.clamp(left, 0.4, 0.6);
-        double speedR = MathUtil.clamp(right, 0.4, 0.6);
+        double speedL = MathUtil.clamp(left, 0.4, 1);
+        double speedR = MathUtil.clamp(right, 0.4, 1);
 
         m_drive.tankDrive(speedL * directionL, speedR * directionR);
     }
