@@ -98,14 +98,14 @@ public final class Constants {
     public static final int kShooterOffSpeed = 0;
 
     // High shot speeds
-    public static final int kHighNearSpeed = -3400;
+    public static final int kHighNearSpeed = -2100;
     public static final int kHighFarSpeed = -3800;
-    public static final int kHighAngledSpeed = -3600;
+    public static final int kHighAngledSpeed = -3500;
 
     // Low shot speeds
     public static final int kLowNearSpeed = -1800;
-    public static final int kLowFarSpeed = -2100;
-    public static final int kLowAngledSpeed = -2400;
+    public static final int kLowFarSpeed = -4000;
+    public static final int kLowAngledSpeed = -2000;
 
     public static final int[] kShooterTargetRPM = new int[] {
         kShooterOffSpeed, // 0, kShooterOff
