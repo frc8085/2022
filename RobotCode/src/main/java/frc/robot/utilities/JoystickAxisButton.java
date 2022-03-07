@@ -2,7 +2,8 @@ package frc.robot.utilities;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
@@ -12,7 +13,9 @@ public class JoystickAxisButton extends Button {
 
     private DoubleSupplier m_joystick_value;
     private double THRESHOLD = 0.5;
-    private String m_label = "";
+
+    /** Dashboard tab to display control activations that are tied to buttons */
+    private NetworkTableEntry controlsDisplay;
 
     /**
      * Create a button for triggering commands off a joystick's analog axis
@@ -21,7 +24,10 @@ public class JoystickAxisButton extends Button {
      */
     public JoystickAxisButton(String label, DoubleSupplier joystick_value) {
         m_joystick_value = joystick_value;
-        m_label = label;
+
+        controlsDisplay = Shuffleboard.getTab("Controls")
+                .add(label, false)
+                .getEntry();
     }
 
     /**
@@ -33,8 +39,11 @@ public class JoystickAxisButton extends Button {
      */
     public JoystickAxisButton(String label, DoubleSupplier joystick_value, double threshold) {
         m_joystick_value = joystick_value;
-        m_label = label;
         THRESHOLD = threshold;
+
+        controlsDisplay = Shuffleboard.getTab("Controls")
+                .add(label, false)
+                .getEntry();
     }
 
     /**
@@ -63,13 +72,13 @@ public class JoystickAxisButton extends Button {
             // Return true if axis value is less than negative
             // threshold
             boolean pressed = m_joystick_value.getAsDouble() < THRESHOLD;
-            SmartDashboard.putBoolean(m_label, pressed);
+            controlsDisplay.setBoolean(pressed);
             return pressed;
         } else {
             // Return true if axis value is greater than
             // positive threshold
             boolean pressed = m_joystick_value.getAsDouble() > THRESHOLD;
-            SmartDashboard.putBoolean(m_label, pressed);
+            controlsDisplay.setBoolean(pressed);
             return pressed;
         }
     }

@@ -75,14 +75,7 @@ public class GTADrive extends SubsystemBase {
 
     /** The log method puts interesting information to the SmartDashboard. */
     public void log() {
-        SmartDashboard.putNumber("Left Motor Revs", m_left1Encoder.getPosition());
-        SmartDashboard.putNumber("Right Motor Revs", m_right1Encoder.getPosition());
-
-        SmartDashboard.putNumber("Left Inches", getLeftEncoderDistanceInches());
-        SmartDashboard.putNumber("Right Inches", getRightEncoderDistanceInches());
-
         SmartDashboard.putNumber("Distance traveled", getDistance());
-
         SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
     }
 

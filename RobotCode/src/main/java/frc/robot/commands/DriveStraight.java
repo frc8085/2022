@@ -48,7 +48,6 @@ public class DriveStraight extends PIDCommand {
 
     @Override
     public void execute() {
-        SmartDashboard.putNumber("DRIVE Distance traveled", m_drivetrain.getDistance());
         super.execute();
     }
 

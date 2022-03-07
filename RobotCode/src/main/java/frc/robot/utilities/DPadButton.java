@@ -8,8 +8,9 @@
 
 package frc.robot.utilities;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
@@ -18,11 +19,12 @@ import edu.wpi.first.wpilibj2.command.button.Button;
 
 public class DPadButton extends Button {
     private int dPadDegree;
-    private String m_label = "";
     private XboxController controller;
+    private NetworkTableEntry controlsDisplay;
 
     public enum Value {
-        kDPadRight, kDPadUpRight, kDPadUp, kDPadUpLeft, kDPadLeft, kDPadDownLeft, kDPadDown, kDPadDownRight,
+        kDPadRight, kDPadUpRight, kDPadUp, kDPadUpLeft,
+        kDPadLeft, kDPadDownLeft, kDPadDown, kDPadDownRight,
     }
 
     /**
@@ -34,7 +36,6 @@ public class DPadButton extends Button {
 
     public DPadButton(String label, XboxController controller, Value value) {
         this.controller = controller;
-        m_label = label;
         switch (value) {
             case kDPadRight:
                 this.dPadDegree = 90;
@@ -63,12 +64,16 @@ public class DPadButton extends Button {
             default:
                 throw new AssertionError("Illegal value" + value);
         }
+
+        controlsDisplay = Shuffleboard.getTab("Controls")
+                .add(label, false)
+                .getEntry();
     }
 
     @Override
     public boolean get() {
         boolean pressed = controller.getPOV() == dPadDegree;
-        SmartDashboard.putBoolean(m_label, pressed);
+        controlsDisplay.setBoolean(pressed);
         return pressed;
     }
 }

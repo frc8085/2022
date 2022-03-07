@@ -13,7 +13,6 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Shooter extends SubsystemBase {
@@ -33,7 +32,6 @@ public class Shooter extends SubsystemBase {
         m_pidController = m_shooterMotor.getPIDController();
 
         // PID coefficients
-        // kP = 6e-5;
         kP = 0.0001;
         kI = 0;
         kD = 0.001;
@@ -43,7 +41,7 @@ public class Shooter extends SubsystemBase {
         kMinOutput = -1;
         kSetPoint = kShooterTargetRPM[0];
 
-        // set PID coefficients
+        // Set PID coefficients
         m_pidController.setP(kP);
         m_pidController.setI(kI);
         m_pidController.setD(kD);
@@ -51,7 +49,7 @@ public class Shooter extends SubsystemBase {
         m_pidController.setFF(kFF);
         m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
-        // display PID coefficients on SmartDashboard
+        // Display PID coefficients on SmartDashboard
         // SmartDashboard.putNumber("P Gain", kP);
         // SmartDashboard.putNumber("I Gain", kI);
         // SmartDashboard.putNumber("D Gain", kD);
@@ -70,7 +68,7 @@ public class Shooter extends SubsystemBase {
     @Override
     public void periodic() {
 
-        // read PID coefficients from SmartDashboard
+        // Read PID coefficients from SmartDashboard
         // double p = SmartDashboard.getNumber("P Gain", 0);
         // double i = SmartDashboard.getNumber("I Gain", 0);
         // double d = SmartDashboard.getNumber("D Gain", 0);
@@ -107,22 +105,7 @@ public class Shooter extends SubsystemBase {
         // kMaxOutput = max;
         // }
 
-        /**
-         * PIDController objects are commanded to a set point using the
-         * SetReference() method.
-         * 
-         * The first parameter is the value of the set point, whose units vary
-         * depending on the control type set in the second parameter.
-         * 
-         * The second parameter is the control type can be set to one of four
-         * parameters:
-         * com.revrobotics.CANSparkMax.ControlType.kDutyCycle
-         * com.revrobotics.CANSparkMax.ControlType.kPosition
-         * com.revrobotics.CANSparkMax.ControlType.kVoltage
-         * com.revrobotics.CANSparkMax.ControlType.kVelocity
-         */
-        SmartDashboard.putNumber("Encoder Velocity", m_encoder.getVelocity());
-        SmartDashboard.putNumber("Setpoint", kSetPoint);
+        // Turn the display GREEN on the 'Shooter' tab if we're ready to shoot
         readyToShoot.setBoolean(atSetpoint());
     }
 
