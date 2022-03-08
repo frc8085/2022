@@ -63,7 +63,7 @@ public final class Constants {
     public static final int kConveyorMotorPort2 = 9;
 
     public static final double kIntakeSpeed = -.75;
-    public static final double kConveyorSpeed = 0.75;
+    public static final double kConveyorSpeed = 0.5;
 
     // TODO. Decide peak current in AMPs for the intake motor
     // public static final double kPeakCurrent = 10;
