@@ -36,7 +36,8 @@
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul"
+              "Y-axis/Unit": "ul",
+              "Visible data/SmartDashboard/Distance traveled": true
             }
           },
           "3,1": {
@@ -51,6 +52,25 @@
               "Range/Min": 0.0,
               "Range/Max": 360.0,
               "Visuals/Show value": true
+            }
+          },
+          "5,0": {
+            "size": [
+              3,
+              2
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": -1,
+              "imageHeight": -1
             }
           }
         }
@@ -258,9 +278,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 514.0,
-    "y": 25.0,
-    "width": 1910.0,
-    "height": 913.0
+    "x": 44.0,
+    "y": 0.0,
+    "width": 1297.3333740234375,
+    "height": 737.3333129882812
   }
 }
