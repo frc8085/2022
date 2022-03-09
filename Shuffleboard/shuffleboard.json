@@ -31,13 +31,12 @@
               "_type": "Graph",
               "_source0": "network_table:///SmartDashboard/Distance traveled",
               "_title": "Distance traveled",
-              "Graph/Visible time": 30.0,
+              "Graph/Visible time": 15.0,
               "Graph/X-axis auto scrolling": true,
               "Y-axis/Automatic bounds": true,
               "Y-axis/Upper bound": 1.0,
               "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/Distance traveled": true
+              "Y-axis/Unit": "ul"
             }
           },
           "3,1": {
@@ -259,9 +258,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 0.0,
+    "x": 514.0,
     "y": 25.0,
-    "width": 2560.0,
-    "height": 1330.0
+    "width": 1910.0,
+    "height": 913.0
   }
 }

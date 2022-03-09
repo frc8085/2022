@@ -83,7 +83,6 @@ public class GTADrive extends SubsystemBase {
     @Override
     public void periodic() {
         log();
-        m_drive.feed(); // TODO: Test if this fixes Drive input error.
     }
 
     // Tank drive for autonomous
