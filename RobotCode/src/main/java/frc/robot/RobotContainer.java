@@ -43,11 +43,8 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.ClimberBrake;
 
-// Displays
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.networktables.NetworkTableEntry;
 
 public class RobotContainer {
         // Add Auto Selection chooser to Dashboard
@@ -122,7 +119,7 @@ public class RobotContainer {
                 final JoystickButton setTargetTBD = new JoystickButton(m_operatorController, Button.kB.value);
                 final JoystickButton setTargetNear = new JoystickButton(m_operatorController, Button.kA.value);
                 final JoystickButton bumpTargetSpeeds = new JoystickButton(m_operatorController,
-                                Button.kLeftBumper.value);
+                                Button.kRightBumper.value);
 
                 // Create fake button to correspond to right trigger pressed
                 final JoystickAxisButton shootButton = new JoystickAxisButton("Shoot",
