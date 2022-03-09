@@ -19,13 +19,14 @@ import frc.robot.subsystems.Shooter;
 
 public class LoadCargo extends SequentialCommandGroup {
     public LoadCargo(Intake intake, IntakeCover intakeCover, Conveyor conveyor, Feeder feeder, Shooter shooter) {
-        addCommands(new InstantCommand(shooter::stopShooter, shooter)
-                .andThen(new ConditionalCommand(
-                        new InstantCommand(),
-                        new InstantCommand(intakeCover::openIntake, intakeCover).andThen(new WaitCommand(1)),
-                        intakeCover::isIntakeCoverDown)
-                                .andThen(new InstantCommand(intake::runIntake, intake))
-                                .andThen(new InstantCommand(conveyor::runConveyor, conveyor))));
+        addCommands
+        // (new InstantCommand(shooter::stopShooter, shooter).andThen
+        (new ConditionalCommand(
+                new InstantCommand(),
+                new InstantCommand(intakeCover::openIntake, intakeCover).andThen(new WaitCommand(1)),
+                intakeCover::isIntakeCoverDown)
+                        .andThen(new InstantCommand(intake::runIntake, intake))
+                        .andThen(new InstantCommand(conveyor::runConveyor, conveyor)));
 
     }
 
