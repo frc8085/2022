@@ -125,6 +125,12 @@ public final class Constants {
     public static final int kClimberMotorPort = 14;
   }
 
+  public static final class AutoConstants {
+    public static final boolean kPickupCargo = true;
+    public static final boolean kDontPickupCargo = false;
+    public static final int kStandStill = 0;
+  }
+
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kOperatorControllerPort = 1;

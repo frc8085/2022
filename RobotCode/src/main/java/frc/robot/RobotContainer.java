@@ -11,6 +11,7 @@ import java.util.Map;
 import static frc.robot.Constants.IntakeConstants.*;
 import static frc.robot.Constants.OIConstants.*;
 import static frc.robot.Constants.ShooterConstants.*;
+import static frc.robot.Constants.AutoConstants.*;
 
 // Inputs
 import edu.wpi.first.wpilibj.XboxController;
@@ -100,27 +101,27 @@ public class RobotContainer {
         };
 
         private final Command autoUpAgainstHub = new AutoBaseSequence(
-                        kTargetHighNear, // shoot
+                        kTargetHighNear, // shoot to desired target
                         64, // drive
-                        true, // pick up new cargo
+                        kPickupCargo, // pick up new cargo
                         -64, // drive back
-                        kTargetHighNear, // shoot
+                        kTargetHighNear, // shoot to desired target
                         90, // turn
                         72, // drive
-                        true, // pick up new cargo
-                        0, // 🚫 DON'T drive
+                        kPickupCargo, // pick up new cargo
+                        kStandStill, // 🚫 DON'T drive
                         m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
         private final Command autoTwoBallHigh = new AutoBaseSequence(
-                        kTargetHighFar, // shoot
+                        kTargetHighFar, // shoot to desired target
                         24, // drive
-                        false, // 🚫 don't pick up new cargo
-                        0, // 🚫 don't drive
+                        kDontPickupCargo, // 🚫 don't pick up new cargo
+                        kStandStill, // 🚫 don't drive
                         kShooterOff, // 🚫 don't shoot (set setpoint to 0)
-                        0, // 🚫 don't turn
-                        0, // 🚫 don't drive
-                        false, // 🚫 don't pick up new cargo
-                        0, // 🚫 don't drive
+                        kStandStill, // 🚫 don't turn
+                        kStandStill, // 🚫 don't drive
+                        kDontPickupCargo, // 🚫 don't pick up new cargo
+                        kStandStill, // 🚫 don't drive
                         m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
         public RobotContainer() {
