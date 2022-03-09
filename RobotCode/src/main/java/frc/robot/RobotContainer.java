@@ -10,6 +10,7 @@ import java.util.Map;
 // Constants
 import static frc.robot.Constants.IntakeConstants.*;
 import static frc.robot.Constants.OIConstants.*;
+import static frc.robot.Constants.ShooterConstants.*;
 import static frc.robot.Constants.AutoConstants.*;
 
 // Inputs
@@ -19,10 +20,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // Commands
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoBaseSequence;
-import frc.robot.commands.AutoCommands;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
@@ -62,13 +63,39 @@ public class RobotContainer {
         private final IntakeCover m_intakeCover = new IntakeCover();
         private final Intake m_intake = new Intake();
         private final ClimberBrake m_climberBrake = new ClimberBrake();
-        private final Climber m_climber = new Climber(m_operatorController);
-
-        // Pass all our subsystems to the autonomous commands wrapper
-        private final AutoCommands m_autoCommands = new AutoCommands(
-                        m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
         // The robot's subsystems and commands
+
+        // TODO: Is there a better way to do this?
+        // Because the Climber and Intake are using Joystick Axes, we're passing
+        // the operator controllers to them instead of setting them here
+        // shen using configureButtonBindings
+
+        private final Climber m_climber = new Climber(m_operatorController);
+
+        private final Command autoUpAgainstHub = new AutoBaseSequence(
+                        kTargetNear, // shoot to desired target
+                        64, // drive
+                        kPickupCargo, // pick up new cargo
+                        -64, // drive back
+                        kTargetNear, // shoot to desired target
+                        90, // turn
+                        72, // drive
+                        kPickupCargo, // pick up new cargo
+                        kStandStill, // 🚫 DON'T drive
+                        m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
+
+        private final Command autoTwoBallHigh = new AutoBaseSequence(
+                        kTargetFar, // shoot to desired target
+                        24, // drive
+                        kDontPickupCargo, // 🚫 don't pick up new cargo
+                        kStandStill, // 🚫 don't drive
+                        kShooterOff, // 🚫 don't shoot (set setpoint to 0)
+                        kStandStill, // 🚫 don't turn
+                        kStandStill, // 🚫 don't drive
+                        kDontPickupCargo, // 🚫 don't pick up new cargo
+                        kStandStill, // 🚫 don't drive
+                        m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
         public RobotContainer() {
                 configureButtonBindings();
@@ -77,8 +104,8 @@ public class RobotContainer {
                 m_climber.setDefaultCommand(new Climb(m_climber, m_intakeCover, m_climberBrake));
 
                 // Add commands to the autonomous command chooser
-                m_autoSelection.setDefaultOption("Up Against Hub", m_autoCommands.autoUpAgainstHub);
-                m_autoSelection.addOption("Across Line 2 Ball High", m_autoCommands.autoTwoBallHigh);
+                m_autoSelection.setDefaultOption("Up Against Hub", autoUpAgainstHub);
+                m_autoSelection.addOption("Across Line 2 Ball High", autoTwoBallHigh);
 
                 // Put the chooser on the dashboard
                 SmartDashboard.putData(m_autoSelection);
