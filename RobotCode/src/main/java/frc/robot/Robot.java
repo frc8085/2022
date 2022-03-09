@@ -8,6 +8,14 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+import org.opencv.core.Mat;
+
+// Camera server
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.AxisCamera;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -20,6 +28,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
+    Thread m_visionThread;
 
     // TODO: Add "Last touched shooter" timer variable
 
@@ -35,7 +44,41 @@ public class Robot extends TimedRobot {
         // autonomous chooser on the dashboard.
         m_robotContainer = new RobotContainer();
 
-        // etc.
+        m_visionThread = new Thread(
+                () -> {
+                    // Get the Axis camera from CameraServer
+                    AxisCamera camera = CameraServer.addAxisCamera("axis-camera.local");
+
+                    // Set the resolution
+                    camera.setResolution(640, 480);
+
+                    // Get a CvSink. This will capture Mats from the camera
+                    CvSink cvSink = CameraServer.getVideo();
+                    // Setup a CvSource. This will send images back to the Dashboard
+                    CvSource outputStream = CameraServer.putVideo("Rectangle", 640, 480);
+
+                    // Mats are very memory expensive. Lets reuse this Mat.
+                    Mat mat = new Mat();
+
+                    // This cannot be 'true'. The program will never exit if it is. This
+                    // lets the robot stop this thread when restarting robot code or
+                    // deploying.
+                    while (!Thread.interrupted()) {
+                        // Tell the CvSink to grab a frame from the camera and put it
+                        // in the source mat. If there is an error notify the output.
+                        if (cvSink.grabFrame(mat) == 0) {
+                            // Send the output the error.
+                            outputStream.notifyError(cvSink.getError());
+                            // skip the rest of the current iteration
+                            continue;
+                        }
+
+                        // Give the output stream a new image to display
+                        outputStream.putFrame(mat);
+                    }
+                });
+        m_visionThread.setDaemon(true);
+        m_visionThread.start();
 
     }
 
