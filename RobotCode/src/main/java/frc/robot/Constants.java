@@ -3,6 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -16,6 +18,38 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  // TODO: Characterize the robot !
+  public static final class RobotCharacterizationConstants {
+    // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
+    // These characterization values MUST be determined either experimentally or
+    // theoretically for *your* robot's drive.
+    // The Robot Characterization Toolsuite provides a convenient tool for obtaining
+    // these values for your robot.
+    public static final double ksVolts = 0.22;
+    public static final double kvVoltSecondsPerMeter = 1.98;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.2;
+
+    // Example value only - as above, this must be tuned for your drive!
+    public static final double kPDriveVel = 8.5;
+
+    // Known constants
+    public static final double kTrackWidthMeters = 0.55245;
+    public static final double kTurnFactorMeters = kTrackWidthMeters * Math.PI / 360;
+
+    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
+        kTrackWidthMeters);
+
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+    // Reasonable baseline values for a RAMSETE follower in units of meters and
+    // seconds
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
+
+  }
+
   public static final class DriveConstants {
     public static final int kRightMotor1Port = 2;
     public static final int kRightMotor2Port = 4;
@@ -34,8 +68,11 @@ public final class Constants {
 
     public static final double kWheelDiameterInches = 6;
 
+    public static final double kWheelDiameterMeters = 0.1524;
+
     // The inches one wheel revolution travels
     public static final double kInchesPerWheelRevolution = kWheelDiameterInches * Math.PI;
+    public static final double kMetersPerWheelRevolution = kWheelDiameterMeters * Math.PI;
 
     // We determined the motor revolutions per wheel revolution
     // by turning the wheel once and recording the encoder units measured
@@ -43,6 +80,7 @@ public final class Constants {
 
     // Inches per motor revolution
     public static final double kInchesPerMotorRevolution = kInchesPerWheelRevolution / kGearRatio;
+    public static final double kMetersPerMotorRevolution = kMetersPerWheelRevolution / kGearRatio;
 
     // public static final double kGearRatio = 10.75;
     // public static final double kEncoderCPR = 42 * kGearRatio;
@@ -50,10 +88,13 @@ public final class Constants {
     // (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
 
     public static final double kAutoPositionTolerance = 3;
-    public static final double kTrackWidthInches = 21.75;
     public static final double kReverse = -1;
 
+    public static final double kTrackWidthInches = 21.75;
+
     public static final double kTurnFactor = kTrackWidthInches * Math.PI / 360;
+
+    public static final double kRPMtoMPSFactor = 0.007979645340118075;
 
   }
 
@@ -147,7 +188,6 @@ public final class Constants {
     public static final int kTargetBumpedNear = 4;
     public static final int kTargetBumpedFar = 5;
     public static final int kTargetBumpedTBD = 6;
-
   }
 
 }
