@@ -55,8 +55,8 @@ public class GTADrive extends SubsystemBase {
     public GTADrive(XboxController driverController) {
         m_driverController = driverController;
 
-        // We need to restore the motors to defaults
-        // every time they're initialized when using encoders
+        // We need to restore the motors to defaults every time
+        // they're initialized, otherwise the encoders go bezerk
         left1.restoreFactoryDefaults();
         left2.restoreFactoryDefaults();
         right1.restoreFactoryDefaults();
@@ -118,10 +118,6 @@ public class GTADrive extends SubsystemBase {
         } else {
             if (leftBumper) {
                 speed = .1;
-
-                speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
-                m_drive.curvatureDrive(speed, turnRotation, true);
-
             } else {
                 speed = m_driverController.getLeftY();
                 // Up is fast. Down is slow. Multiply value by .5 so that the max range is 0.5
@@ -135,10 +131,9 @@ public class GTADrive extends SubsystemBase {
                 // is .6, and fastest is 1
                 speed *= .8;
                 speed += .2;
-
-                speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
-                m_drive.curvatureDrive(speed, turnRotation, true);
             }
+            speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
+            m_drive.curvatureDrive(speed, turnRotation, true);
         }
     }
 
