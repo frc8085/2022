@@ -76,31 +76,6 @@ public class RobotContainer {
 
         private final Climber m_climber = new Climber(m_operatorController);
 
-        // TODO: Move Shooting Mode definitions to Shooter Submodule
-        /**
-         * Shooting Mode definition
-         * shootMode is an integer corresponding to the different types of targets
-         * shootingMode translates the integer into a string so we can display it
-         * in the Shuffleboard entry shotingModeDisplay
-         */
-        private NetworkTableEntry shootingModeDisplay;
-        private int shootMode = kShooterOff;
-        private boolean bumpShoot = false;
-
-        private static final Map<Integer, String> shootingMode = new HashMap<Integer, String>() {
-                {
-                        put(kShooterOff, "Shooting mode not selected");
-
-                        put(kTargetNear, "▔ Near");
-                        put(kTargetFar, "▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ Far");
-                        put(kTargetTBD, "▔▔/tbd/▔▔");
-
-                        put(kTargetBumpedNear, "↑bump _ Near");
-                        put(kTargetBumpedFar, "↑bump ____________________ Far");
-                        put(kTargetBumpedTBD, "↑bump __/tbd/__");
-                }
-        };
-
         private final Command autoUpAgainstHub = new AutoBaseSequence(
                         kTargetNear, // shoot to desired target
                         64, // drive
@@ -138,13 +113,6 @@ public class RobotContainer {
                 // Put the chooser on the dashboard
                 SmartDashboard.putData(m_autoSelection);
 
-                // TODO: Move this to the Shooter submodue
-                shootingModeDisplay = Shuffleboard.getTab("Shooter")
-                                .add("Shooting Mode", shootingMode.get(shootMode))
-                                .withPosition(0, 0)
-                                .withSize(2, 1)
-                                .getEntry();
-
         }
 
         private void configureButtonBindings() {
@@ -154,7 +122,7 @@ public class RobotContainer {
                 final JoystickButton setTargetTBD = new JoystickButton(m_operatorController, Button.kB.value);
                 final JoystickButton setTargetNear = new JoystickButton(m_operatorController, Button.kA.value);
                 final JoystickButton bumpTargetSpeeds = new JoystickButton(m_operatorController,
-                                Button.kRightBumper.value);
+                                Button.kLeftBumper.value);
 
                 // Create fake button to correspond to right trigger pressed
                 final JoystickAxisButton shootButton = new JoystickAxisButton("Shoot",
@@ -181,27 +149,12 @@ public class RobotContainer {
                  * SET SHOOTING TARGET
                  * Setting the shooting target will update the shooter motor setpoint
                  */
-                bumpTargetSpeeds.whenPressed(
-                                new InstantCommand(() -> setBumped(shootMode)))
-                                .whenReleased(new InstantCommand(() -> setNormal(shootMode)));
+                bumpTargetSpeeds.whenPressed(new InstantCommand(m_shooter::setBumped, m_shooter))
+                                .whenReleased(new InstantCommand(m_shooter::setNormal, m_shooter));
 
-                setTargetFar.whenPressed(
-                                new ConditionalCommand(
-                                                new InstantCommand(() -> setShootingMode(kTargetBumpedFar)),
-                                                new InstantCommand(() -> setShootingMode(kTargetFar)),
-                                                () -> bumpShoot));
-
-                setTargetTBD.whenPressed(
-                                new ConditionalCommand(
-                                                new InstantCommand(() -> setShootingMode(kTargetBumpedTBD)),
-                                                new InstantCommand(() -> setShootingMode(kTargetTBD)),
-                                                () -> bumpShoot));
-
-                setTargetNear.whenPressed(
-                                new ConditionalCommand(
-                                                new InstantCommand(() -> setShootingMode(kTargetBumpedNear)),
-                                                new InstantCommand(() -> setShootingMode(kTargetNear)),
-                                                () -> bumpShoot));
+                setTargetFar.whenPressed(new InstantCommand(() -> m_shooter.setShootingMode(kTargetFar)));
+                setTargetTBD.whenPressed(new InstantCommand(() -> m_shooter.setShootingMode(kTargetTBD)));
+                setTargetNear.whenPressed(new InstantCommand(() -> m_shooter.setShootingMode(kTargetNear)));
 
                 /**
                  * SHOOT ACTION
@@ -216,7 +169,7 @@ public class RobotContainer {
                 shootButton.whenPressed(new Shoot(m_intake, m_feeder, m_shooter, m_conveyor));
 
                 shooterOffButton.whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter)
-                                .andThen(() -> setShootingMode(kShooterOff)));
+                                .andThen(() -> m_shooter.setShootingMode(kShooterOff)));
 
                 /**
                  * LOAD CARGO
@@ -254,49 +207,6 @@ public class RobotContainer {
                                                 .andThen(new InstantCommand(m_climberBrake::lockClimber,
                                                                 m_climberBrake)));
 
-        }
-
-        // TODO: Move these functions to the Shooter Submodule
-        private void setShootingMode(int mode) {
-                shootMode = mode;
-                shootingModeDisplay.setString(shootingMode.get(shootMode));
-                m_shooter.setSetpoint(kShooterTargetRPM[mode]);
-        }
-
-        private void setBumped(int mode) {
-                bumpShoot = true;
-
-                switch (mode) {
-                        case kTargetNear:
-                                shootMode = kTargetBumpedNear;
-                                break;
-                        case kTargetFar:
-                                shootMode = kTargetBumpedFar;
-                                break;
-                        case kTargetTBD:
-                                shootMode = kTargetBumpedTBD;
-                                break;
-                }
-
-                setShootingMode(shootMode);
-        }
-
-        private void setNormal(int mode) {
-                bumpShoot = false;
-
-                switch (mode) {
-                        case kTargetBumpedNear:
-                                shootMode = kTargetNear;
-                                break;
-                        case kTargetBumpedFar:
-                                shootMode = kTargetFar;
-                                break;
-                        case kTargetBumpedTBD:
-                                shootMode = kTargetTBD;
-                                break;
-                }
-
-                setShootingMode(shootMode);
         }
 
         public Command getAutonomousCommand() {
