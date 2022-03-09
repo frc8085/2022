@@ -139,14 +139,14 @@ public final class Constants {
     public static final int kShooterOff = 0;
 
     /** High shot indices in { @see ShooterConstants.kShooterTargetRPM } */
-    public static final int kTargetHighNear = 1;
-    public static final int kTargetHighFar = 2;
-    public static final int kTargetHighAngled = 3;
+    public static final int kTargetNear = 1;
+    public static final int kTargetFar = 2;
+    public static final int kTargetTBD = 3;
 
     /** Low shot indices in { @see ShooterConstants.kShooterTargetRPM } */
-    public static final int kTargetLowNear = 4;
-    public static final int kTargetLowFar = 5;
-    public static final int kTargetLowAngled = 6;
+    public static final int kTargetBumpedNear = 4;
+    public static final int kTargetBumpedFar = 5;
+    public static final int kTargetBumpedTBD = 6;
 
   }
 

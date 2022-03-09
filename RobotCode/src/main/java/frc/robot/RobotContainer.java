@@ -85,28 +85,28 @@ public class RobotContainer {
          */
         private NetworkTableEntry shootingModeDisplay;
         private int shootMode = kShooterOff;
-        private boolean shootLow = false;
+        private boolean bumpShoot = false;
 
         private static final Map<Integer, String> shootingMode = new HashMap<Integer, String>() {
                 {
                         put(kShooterOff, "Shooting mode not selected");
 
-                        put(kTargetHighNear, "HIGH ▔ Near");
-                        put(kTargetHighFar, "HIGH ▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ Far");
-                        put(kTargetHighAngled, "HIGH ▔▔/angled/▔▔");
+                        put(kTargetNear, "▔ Near");
+                        put(kTargetFar, "▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ Far");
+                        put(kTargetTBD, "▔▔/tbd/▔▔");
 
-                        put(kTargetLowNear, "LOW _ Near");
-                        put(kTargetLowFar, "LOW ____________________ Far");
-                        put(kTargetLowAngled, "LOW __/angled/__");
+                        put(kTargetBumpedNear, "↑bump _ Near");
+                        put(kTargetBumpedFar, "↑bump ____________________ Far");
+                        put(kTargetBumpedTBD, "↑bump __/tbd/__");
                 }
         };
 
         private final Command autoUpAgainstHub = new AutoBaseSequence(
-                        kTargetHighNear, // shoot to desired target
+                        kTargetNear, // shoot to desired target
                         64, // drive
                         kPickupCargo, // pick up new cargo
                         -64, // drive back
-                        kTargetHighNear, // shoot to desired target
+                        kTargetNear, // shoot to desired target
                         90, // turn
                         72, // drive
                         kPickupCargo, // pick up new cargo
@@ -114,7 +114,7 @@ public class RobotContainer {
                         m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
         private final Command autoTwoBallHigh = new AutoBaseSequence(
-                        kTargetHighFar, // shoot to desired target
+                        kTargetFar, // shoot to desired target
                         24, // drive
                         kDontPickupCargo, // 🚫 don't pick up new cargo
                         kStandStill, // 🚫 don't drive
@@ -151,9 +151,10 @@ public class RobotContainer {
                 // Create some buttons
                 final JoystickButton shooterOffButton = new JoystickButton(m_operatorController, Button.kX.value);
                 final JoystickButton setTargetFar = new JoystickButton(m_operatorController, Button.kY.value);
-                final JoystickButton setTargetAngled = new JoystickButton(m_operatorController, Button.kB.value);
+                final JoystickButton setTargetTBD = new JoystickButton(m_operatorController, Button.kB.value);
                 final JoystickButton setTargetNear = new JoystickButton(m_operatorController, Button.kA.value);
-                final JoystickButton setLowTarget = new JoystickButton(m_operatorController, Button.kRightBumper.value);
+                final JoystickButton bumpTargetSpeeds = new JoystickButton(m_operatorController,
+                                Button.kRightBumper.value);
 
                 // Create fake button to correspond to right trigger pressed
                 final JoystickAxisButton shootButton = new JoystickAxisButton("Shoot",
@@ -180,27 +181,27 @@ public class RobotContainer {
                  * SET SHOOTING TARGET
                  * Setting the shooting target will update the shooter motor setpoint
                  */
-                setLowTarget.whenPressed(
-                                new InstantCommand(() -> setLow(shootMode)))
-                                .whenReleased(new InstantCommand(() -> setHigh(shootMode)));
+                bumpTargetSpeeds.whenPressed(
+                                new InstantCommand(() -> setBumped(shootMode)))
+                                .whenReleased(new InstantCommand(() -> setNormal(shootMode)));
 
                 setTargetFar.whenPressed(
                                 new ConditionalCommand(
-                                                new InstantCommand(() -> setShootingMode(kTargetLowFar)),
-                                                new InstantCommand(() -> setShootingMode(kTargetHighFar)),
-                                                () -> shootLow));
+                                                new InstantCommand(() -> setShootingMode(kTargetBumpedFar)),
+                                                new InstantCommand(() -> setShootingMode(kTargetFar)),
+                                                () -> bumpShoot));
 
-                setTargetAngled.whenPressed(
+                setTargetTBD.whenPressed(
                                 new ConditionalCommand(
-                                                new InstantCommand(() -> setShootingMode(kTargetLowAngled)),
-                                                new InstantCommand(() -> setShootingMode(kTargetHighAngled)),
-                                                () -> shootLow));
+                                                new InstantCommand(() -> setShootingMode(kTargetBumpedTBD)),
+                                                new InstantCommand(() -> setShootingMode(kTargetTBD)),
+                                                () -> bumpShoot));
 
                 setTargetNear.whenPressed(
                                 new ConditionalCommand(
-                                                new InstantCommand(() -> setShootingMode(kTargetLowNear)),
-                                                new InstantCommand(() -> setShootingMode(kTargetHighNear)),
-                                                () -> shootLow));
+                                                new InstantCommand(() -> setShootingMode(kTargetBumpedNear)),
+                                                new InstantCommand(() -> setShootingMode(kTargetNear)),
+                                                () -> bumpShoot));
 
                 /**
                  * SHOOT ACTION
@@ -262,36 +263,36 @@ public class RobotContainer {
                 m_shooter.setSetpoint(kShooterTargetRPM[mode]);
         }
 
-        private void setLow(int mode) {
-                shootLow = true;
+        private void setBumped(int mode) {
+                bumpShoot = true;
 
                 switch (mode) {
-                        case kTargetHighNear:
-                                shootMode = kTargetLowNear;
+                        case kTargetNear:
+                                shootMode = kTargetBumpedNear;
                                 break;
-                        case kTargetHighFar:
-                                shootMode = kTargetLowFar;
+                        case kTargetFar:
+                                shootMode = kTargetBumpedFar;
                                 break;
-                        case kTargetHighAngled:
-                                shootMode = kTargetLowAngled;
+                        case kTargetTBD:
+                                shootMode = kTargetBumpedTBD;
                                 break;
                 }
 
                 setShootingMode(shootMode);
         }
 
-        private void setHigh(int mode) {
-                shootLow = false;
+        private void setNormal(int mode) {
+                bumpShoot = false;
 
                 switch (mode) {
-                        case kTargetLowNear:
-                                shootMode = kTargetHighNear;
+                        case kTargetBumpedNear:
+                                shootMode = kTargetNear;
                                 break;
-                        case kTargetLowFar:
-                                shootMode = kTargetHighFar;
+                        case kTargetBumpedFar:
+                                shootMode = kTargetFar;
                                 break;
-                        case kTargetLowAngled:
-                                shootMode = kTargetHighAngled;
+                        case kTargetBumpedTBD:
+                                shootMode = kTargetTBD;
                                 break;
                 }
 
