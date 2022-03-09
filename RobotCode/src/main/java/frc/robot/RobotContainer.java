@@ -76,6 +76,7 @@ public class RobotContainer {
 
         private final Climber m_climber = new Climber(m_operatorController);
 
+        // TODO: Move Shooting Mode definitions to Shooter Submodule
         /**
          * Shooting Mode definition
          * shootMode is an integer corresponding to the different types of targets
@@ -254,6 +255,7 @@ public class RobotContainer {
 
         }
 
+        // TODO: Move these functions to the Shooter Submodule
         private void setShootingMode(int mode) {
                 shootMode = mode;
                 shootingModeDisplay.setString(shootingMode.get(shootMode));
