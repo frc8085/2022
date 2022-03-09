@@ -104,8 +104,8 @@ public final class Constants {
 
     // Low shot speeds
     public static final int kBumpedFarSpeed = -4000;
-    public static final int kBumpedTBDSpeed = -2000;
-    public static final int kBumpedNearSpeed = -1800;
+    public static final int kBumpedTBDSpeed = -2500;
+    public static final int kBumpedNearSpeed = -2300;
 
     public static final int[] kShooterTargetRPM = new int[] {
         kShooterOffSpeed, // 0, kShooterOff
