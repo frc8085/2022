@@ -98,23 +98,23 @@ public final class Constants {
     public static final int kShooterOffSpeed = 0;
 
     // High shot speeds
-    public static final int kHighFarSpeed = -3800;
-    public static final int kHighAngledSpeed = -3500;
-    public static final int kHighNearSpeed = -2100;
+    public static final int kFarSpeed = -3800;
+    public static final int kTBDSpeed = -3500;
+    public static final int kNearSpeed = -2100;
 
     // Low shot speeds
-    public static final int kLowFarSpeed = -4000;
-    public static final int kLowAngledSpeed = -2000;
-    public static final int kLowNearSpeed = -1800;
+    public static final int kBumpedFarSpeed = -4000;
+    public static final int kBumpedTBDSpeed = -2000;
+    public static final int kBumpedNearSpeed = -1800;
 
     public static final int[] kShooterTargetRPM = new int[] {
         kShooterOffSpeed, // 0, kShooterOff
-        kHighNearSpeed, // 1, kTargetHighNear
-        kHighFarSpeed, // 2, kTargetHighFar
-        kHighAngledSpeed, // 3, kTargetHighAngled
-        kLowNearSpeed, // 4, kTargetLowNear
-        kLowFarSpeed, // 6, kTargetLowFar
-        kLowAngledSpeed// 6, kTargetLowAngled
+        kNearSpeed, // 1, kTargetNear
+        kFarSpeed, // 2, kTargetFar
+        kTBDSpeed, // 3, kTargetTBD
+        kBumpedNearSpeed, // 4, kTargetBumpedNear
+        kBumpedFarSpeed, // 6, kTargetBumpedFar
+        kBumpedTBDSpeed// 6, kTargetBumpedTBD
     };
 
     // Duration in seconds that the shooter should shoot
