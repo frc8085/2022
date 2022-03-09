@@ -99,13 +99,18 @@ public final class Constants {
 
     // High shot speeds
     public static final int kFarSpeed = -3800;
-    public static final int kTBDSpeed = -3500;
-    public static final int kNearSpeed = -2100;
+    public static final int kTBDSpeed = -3350;
+    public static final int kNearSpeed = -2000;
 
     // Low shot speeds
     public static final int kBumpedFarSpeed = -4000;
+<<<<<<< Updated upstream
     public static final int kBumpedTBDSpeed = -2000;
     public static final int kBumpedNearSpeed = -1800;
+=======
+    public static final int kBumpedTBDSpeed = -3500;
+    public static final int kBumpedNearSpeed = -2400;
+>>>>>>> Stashed changes
 
     public static final int[] kShooterTargetRPM = new int[] {
         kShooterOffSpeed, // 0, kShooterOff
