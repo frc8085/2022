@@ -1,0 +1,18 @@
+Data from SysID
+
+Meters:
+
+Ks = .23657
+Kv = 2.9032
+Ka = .88302
+
+Velocity Kp = 4.213
+
+
+Inches:
+
+Ks = .26088
+Kv = .073608
+Ka = .022282
+
+Velocity Kp = .10706
