@@ -3,6 +3,8 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
+import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
  * numerical or boolean
@@ -16,6 +18,7 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
   public static final class DriveConstants {
     public static final int kRightMotor1Port = 2;
     public static final int kRightMotor2Port = 4;
@@ -34,8 +37,11 @@ public final class Constants {
 
     public static final double kWheelDiameterInches = 6;
 
+    public static final double kWheelDiameterMeters = 0.1524;
+
     // The inches one wheel revolution travels
     public static final double kInchesPerWheelRevolution = kWheelDiameterInches * Math.PI;
+    public static final double kMetersPerWheelRevolution = kWheelDiameterMeters * Math.PI;
 
     // We determined the motor revolutions per wheel revolution
     // by turning the wheel once and recording the encoder units measured
@@ -43,6 +49,7 @@ public final class Constants {
 
     // Inches per motor revolution
     public static final double kInchesPerMotorRevolution = kInchesPerWheelRevolution / kGearRatio;
+    public static final double kMetersPerMotorRevolution = kMetersPerWheelRevolution / kGearRatio;
 
     // public static final double kGearRatio = 10.75;
     // public static final double kEncoderCPR = 42 * kGearRatio;
@@ -50,10 +57,45 @@ public final class Constants {
     // (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
 
     public static final double kAutoPositionTolerance = 3;
-    public static final double kTrackWidthInches = 21.75;
     public static final double kReverse = -1;
 
-    public static final double kTurnFactor = kTrackWidthInches * Math.PI / 360;
+    public static final double kRPMtoMPSFactor = 0.007979645340118075;
+
+    // These are example values only - DO NOT USE THESE FOR YOUR OWN ROBOT!
+    // These characterization values MUST be determined either experimentally or
+    // theoretically for *your* robot's drive.
+    // The Robot Characterization Toolsuite provides a convenient tool for obtaining
+    // these values for your robot.
+
+    public static final double ksVolts = 0.24149;
+
+    // INCHES
+    public static final double kvVoltSecondsPerInch = 0.074863;
+    public static final double kaVoltSecondsSquaredPerInch = 0.020198;
+
+    public static final double kTrackWidthInches = 21.75; // Known
+    public static final double kTurnFactor = kTrackWidthInches * Math.PI / 360; // Known
+
+    public static final double kPDriveVelInches = 0.10749;
+
+    // METERS
+    public static final double kvVoltSecondsPerMeter = 0.074863;
+    public static final double kaVoltSecondsSquaredPerMeter = 0.020198;
+    public static final double kPDriveVel = 8.5;
+
+    public static final double kTrackWidthMeters = 0.55245; // Known
+    public static final double kTurnFactorMeters = kTrackWidthMeters * Math.PI / 360; // Known
+
+    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
+        kTrackWidthMeters);
+
+    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
+
+    // Reasonable baseline values for a RAMSETE follower in units of meters and
+    // seconds
+    public static final double kRamseteB = 2;
+    public static final double kRamseteZeta = 0.7;
 
   }
 
@@ -98,14 +140,14 @@ public final class Constants {
     public static final int kShooterOffSpeed = 0;
 
     // High shot speeds
-    public static final int kFarSpeed = -3800;
-    public static final int kTBDSpeed = -3500;
+    public static final int kFarSpeed = -2500;
+    public static final int kTBDSpeed = -2300;
     public static final int kNearSpeed = -2100;
 
     // Low shot speeds
     public static final int kBumpedFarSpeed = -4000;
-    public static final int kBumpedTBDSpeed = -2000;
-    public static final int kBumpedNearSpeed = -1800;
+    public static final int kBumpedTBDSpeed = -3500;
+    public static final int kBumpedNearSpeed = -3100;
 
     public static final int[] kShooterTargetRPM = new int[] {
         kShooterOffSpeed, // 0, kShooterOff
@@ -147,7 +189,6 @@ public final class Constants {
     public static final int kTargetBumpedNear = 4;
     public static final int kTargetBumpedFar = 5;
     public static final int kTargetBumpedTBD = 6;
-
   }
 
 }
