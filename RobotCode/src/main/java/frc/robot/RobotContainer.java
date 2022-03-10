@@ -13,7 +13,7 @@ import static frc.robot.Constants.IntakeConstants.*;
 import static frc.robot.Constants.OIConstants.*;
 import static frc.robot.Constants.ShooterConstants.*;
 import static frc.robot.Constants.AutoConstants.*;
-import static frc.robot.Constants.RobotCharacterizationConstants.*;
+import static frc.robot.Constants.DriveConstants.*;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
