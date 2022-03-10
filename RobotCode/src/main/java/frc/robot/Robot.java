@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 // Camera server
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -22,6 +23,8 @@ public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
     Thread m_visionThread;
+    UsbCamera camera1;
+    UsbCamera camera2;
 
     // TODO: Add "Last touched shooter" timer variable
 
@@ -36,7 +39,8 @@ public class Robot extends TimedRobot {
         m_robotContainer = new RobotContainer();
 
         if (Robot.isReal()) {
-            CameraServer.startAutomaticCapture();
+            camera1 = CameraServer.startAutomaticCapture(0);
+            camera2 = CameraServer.startAutomaticCapture(1);
         }
     }
 

@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
  * Turn a Joystick Axis into a button
  */
 public class JoystickAxisButton extends Button {
-
+    private boolean DEBUG_MODE = false;
     private DoubleSupplier m_joystick_value;
     private double THRESHOLD = 0.5;
 
@@ -41,9 +41,11 @@ public class JoystickAxisButton extends Button {
         m_joystick_value = joystick_value;
         THRESHOLD = threshold;
 
-        controlsDisplay = Shuffleboard.getTab("Controls")
-                .add(label, false)
-                .getEntry();
+        if (DEBUG_MODE) {
+            controlsDisplay = Shuffleboard.getTab("Controls")
+                    .add(label, false)
+                    .getEntry();
+        }
     }
 
     /**
@@ -72,13 +74,17 @@ public class JoystickAxisButton extends Button {
             // Return true if axis value is less than negative
             // threshold
             boolean pressed = m_joystick_value.getAsDouble() < THRESHOLD;
-            controlsDisplay.setBoolean(pressed);
+            if (DEBUG_MODE) {
+                controlsDisplay.setBoolean(pressed);
+            }
             return pressed;
         } else {
             // Return true if axis value is greater than
             // positive threshold
             boolean pressed = m_joystick_value.getAsDouble() > THRESHOLD;
-            controlsDisplay.setBoolean(pressed);
+            if (DEBUG_MODE) {
+                controlsDisplay.setBoolean(pressed);
+            }
             return pressed;
         }
     }
