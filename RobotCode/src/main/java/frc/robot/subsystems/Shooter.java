@@ -81,8 +81,8 @@ public class Shooter extends SubsystemBase {
         m_pidController.setFF(kFF);
         m_pidController.setOutputRange(kMinOutput, kMaxOutput);
 
-        // Add relevant displays to the Operator dashboard
-        configureOperatorDashboard();
+        // Add relevant displays to the teleop dashboard
+        configureTeleopDashboard();
 
         // If we're fine-tuning PID Constants, the display them on the dashboard
         if (TUNING_MODE) {
@@ -91,23 +91,23 @@ public class Shooter extends SubsystemBase {
 
     }
 
-    private void configureOperatorDashboard() {
-        // Add the selected shooting mode to the Operator dashboard
-        shootingModeDisplay = Shuffleboard.getTab("Operator")
+    private void configureTeleopDashboard() {
+        // Add the selected shooting mode to the Teleop dashboard
+        shootingModeDisplay = Shuffleboard.getTab("Teleop")
                 .add("Shooting Mode", shootingMode.get(shootMode))
                 .withPosition(0, 0)
                 .withSize(2, 1)
                 .getEntry();
 
         // Add the setpoint
-        setpointDisplay = Shuffleboard.getTab("Operator")
+        setpointDisplay = Shuffleboard.getTab("Teleop")
                 .add("Setpoint", kSetPoint)
                 .withPosition(0, 1)
                 .withSize(2, 1)
                 .getEntry();
 
-        // Add ready to shoot indicator to the Operator dashboard
-        readyToShoot = Shuffleboard.getTab("Operator")
+        // Add ready to shoot indicator to the Teleop dashboard
+        readyToShoot = Shuffleboard.getTab("Teleop")
                 .add("Ready to shoot", atSetpoint())
                 .withPosition(2, 0)
                 .withSize(4, 2)
