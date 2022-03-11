@@ -34,7 +34,7 @@ public class AutoBaseSequence extends SequentialCommandGroup {
             Shooter shooter,
             IntakeCover intakeCover) {
         addCommands( /* 1 */ new ShootAuto(shootingMode1, intake, feeder, shooter, conveyor)
-                /*   */ .andThen(new WaitCommand(0.33))
+                /*   */ .andThen(new WaitCommand(0.5))
                 /* 2 */ .andThen(new DriveStraight(driveDistance1, drive))
                 /* 3 */ .andThen(
                         !pickUp1 ? new InstantCommand()
