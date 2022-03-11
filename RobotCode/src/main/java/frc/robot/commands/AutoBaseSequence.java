@@ -34,12 +34,12 @@ public class AutoBaseSequence extends SequentialCommandGroup {
             Shooter shooter,
             IntakeCover intakeCover) {
         addCommands( /* 1 */ new ShootAuto(shootingMode1, intake, feeder, shooter, conveyor)
-                /*   */ .andThen(new WaitCommand(0.5))
+                /*   */ .andThen(new WaitCommand(0.33))
                 /* 2 */ .andThen(new DriveStraight(driveDistance1, drive))
                 /* 3 */ .andThen(
                         !pickUp1 ? new InstantCommand()
                                 : new LoadCargo(intake, intakeCover, conveyor, feeder, shooter)
-                                        .andThen(new WaitCommand(3))
+                                        .andThen(new WaitCommand(2))
                                         .andThen(new HoldCargo(intake, conveyor, feeder)))
                 /* 4 */ .andThen(new DriveStraight(driveDistance2, drive))
                 /* 5 */ .andThen(new ShootAuto(shootingMode2, intake, feeder, shooter, conveyor))
@@ -48,9 +48,9 @@ public class AutoBaseSequence extends SequentialCommandGroup {
                 /* 8 */ .andThen(
                         !pickUp2 ? new InstantCommand()
                                 : new LoadCargo(intake, intakeCover, conveyor, feeder, shooter)
-                                        .andThen(new WaitCommand(3))
+                                        .andThen(new WaitCommand(2))
                                         .andThen(new HoldCargo(intake, conveyor, feeder)))
-                /*   */ .andThen(new WaitCommand(3))
+                /*   */ .andThen(new WaitCommand(2))
                 /*   */ .andThen(new HoldCargo(intake, conveyor, feeder))
                 /* 9 */ .andThen(new DriveStraight(driveDistance4, drive)));
     }
