@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 public class DriveStraight extends PIDCommand {
     private final GTADrive m_drivetrain;
 
-    static double kP = 0.015;
+    static double kP = 0.01;
     static double kI = 0;
     static double kD = 0.001;
 
