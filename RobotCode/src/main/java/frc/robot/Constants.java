@@ -57,7 +57,7 @@ public final class Constants {
         // (kWheelDiameterInches * Math.PI) / (double) kEncoderCPR;
 
         public static final double kAutoPositionTolerance = 3;
-        public static final double kAutoGyroTolerance = 10;
+        public static final double kAutoGyroTolerance = 5;
 
         public static final double kReverse = -1;
 
