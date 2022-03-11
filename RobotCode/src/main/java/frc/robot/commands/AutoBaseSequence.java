@@ -39,7 +39,7 @@ public class AutoBaseSequence extends SequentialCommandGroup {
                 /* 3 */ .andThen(
                         !pickUp1 ? new InstantCommand()
                                 : new LoadCargo(intake, intakeCover, conveyor, feeder, shooter)
-                                        .andThen(new WaitCommand(1.5))
+                                        .andThen(new WaitCommand(3))
                                         .andThen(new HoldCargo(intake, conveyor, feeder)))
                 /* 4 */ .andThen(new DriveStraight(driveDistance2, drive))
                 /* 5 */ .andThen(new ShootAuto(shootingMode2, intake, feeder, shooter, conveyor))
@@ -48,9 +48,9 @@ public class AutoBaseSequence extends SequentialCommandGroup {
                 /* 8 */ .andThen(
                         !pickUp2 ? new InstantCommand()
                                 : new LoadCargo(intake, intakeCover, conveyor, feeder, shooter)
-                                        .andThen(new WaitCommand(1.5))
+                                        .andThen(new WaitCommand(3))
                                         .andThen(new HoldCargo(intake, conveyor, feeder)))
-                /*   */ .andThen(new WaitCommand(1.5))
+                /*   */ .andThen(new WaitCommand(3))
                 /*   */ .andThen(new HoldCargo(intake, conveyor, feeder))
                 /* 9 */ .andThen(new DriveStraight(driveDistance4, drive)));
     }
