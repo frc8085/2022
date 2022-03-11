@@ -33,7 +33,7 @@ public class TurnToDegreeGyro extends PIDCommand {
                 // Close loop on heading
                 drivetrain::getHeading,
                 // Set reference to target
-                degree,
+                degree * kTurnFactor, // Convert degrees to distance
                 // Pipe output to turn robot
                 output -> drivetrain.turn(output));
 
