@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.Button;
  */
 
 public class DPadButton extends Button {
+    private boolean DEBUG_MODE = false;
     private int dPadDegree;
     private XboxController controller;
     private NetworkTableEntry controlsDisplay;
@@ -65,15 +66,19 @@ public class DPadButton extends Button {
                 throw new AssertionError("Illegal value" + value);
         }
 
-        controlsDisplay = Shuffleboard.getTab("Controls")
-                .add(label, false)
-                .getEntry();
+        if (DEBUG_MODE) {
+            controlsDisplay = Shuffleboard.getTab("Controls")
+                    .add(label, false)
+                    .getEntry();
+        }
     }
 
     @Override
     public boolean get() {
         boolean pressed = controller.getPOV() == dPadDegree;
-        controlsDisplay.setBoolean(pressed);
+        if (DEBUG_MODE) {
+            controlsDisplay.setBoolean(pressed);
+        }
         return pressed;
     }
 }
