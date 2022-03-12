@@ -53,5 +53,8 @@ public class AutoBaseSequence extends SequentialCommandGroup {
                 /* 10 */ new ShootAuto(shootingMode3, intake, feeder, shooter, conveyor),
                 /* 11 */ new DriveStraight(0, drive)); // Force it to stop
 
+        /// 305.66-116.17 (distance)
+        // 188 (back)
+        // shoot high
     }
 }

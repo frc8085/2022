@@ -79,8 +79,8 @@ public class RobotContainer {
             kPickupCargo, // pick up new cargo
             -50, // drive back
             kTargetTBD, // shoot to desired target
-            60, // turn
-            100, // drive
+            70, // turn
+            70, // drive
             kPickupCargo, // pick up new cargo
             kStandStill, // 🚫 DON'T drive
             kShooterOff, // 🚫 don't shoot (set setpoint to 0)
