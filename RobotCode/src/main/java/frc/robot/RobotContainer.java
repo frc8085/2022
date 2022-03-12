@@ -96,7 +96,7 @@ public class RobotContainer {
             -85, // drive backwards
             kDontPickupCargo, // 🚫 don't pick up new cargo
             kStandStill, // 🚫 don't drive
-            kBumpedTBDSpeed, // shoot to desired target
+            kTargetBumpedTBD, // shoot to desired target
             m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
     public RobotContainer() {
