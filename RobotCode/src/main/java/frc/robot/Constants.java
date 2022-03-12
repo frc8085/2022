@@ -151,6 +151,17 @@ public final class Constants {
         public static final int kBumpedTBDSpeed = -3500;
         public static final int kBumpedNearSpeed = -3100;
 
+        // High shot delays
+        public static final double kShooterOffDelay = 0;
+        public static final double kFarDelay = 0.85;
+        public static final double kTBDDelay = 0.85;
+        public static final double kNearDelay = 0.85;
+
+        // Low shot delays
+        public static final double kBumpedFarDelay = 1;
+        public static final double kBumpedTBDDelay = 1;
+        public static final double kBumpedNearDelay = 1;
+
         public static final int[] kShooterTargetRPM = new int[] {
                 kShooterOffSpeed, // 0, kShooterOff
                 kNearSpeed, // 1, kTargetNear
@@ -159,6 +170,16 @@ public final class Constants {
                 kBumpedNearSpeed, // 4, kTargetBumpedNear
                 kBumpedFarSpeed, // 6, kTargetBumpedFar
                 kBumpedTBDSpeed// 6, kTargetBumpedTBD
+        };
+
+        public static final double[] kShooterTargetDelay = new double[] {
+                kShooterOffDelay, // 0, kShooterOff
+                kNearDelay, // 1, kTargetNear
+                kFarDelay, // 2, kTargetFar
+                kTBDDelay, // 3, kTargetTBD
+                kBumpedNearDelay, // 4, kTargetBumpedNear
+                kBumpedFarDelay, // 6, kTargetBumpedFar
+                kBumpedTBDDelay// 6, kTargetBumpedTBD
         };
 
         // Duration in seconds that the shooter should shoot

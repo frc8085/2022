@@ -18,13 +18,12 @@ import frc.robot.subsystems.Shooter;
 // and add an extra conveyor run to make sure the cargo is loaded
 public class ShootAuto extends SequentialCommandGroup {
     public ShootAuto(int shootingMode, Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
-        addCommands(new InstantCommand(() -> shooter.setSetpoint(kShooterTargetRPM[shootingMode]))
-                .andThen(new InstantCommand(conveyor::runConveyor, conveyor)
-                        .andThen(new WaitCommand(.85))
-                        .andThen(new Shoot(intake, feeder, shooter, conveyor))
-                        .andThen(new HoldCargo(intake, conveyor, feeder)
-                                .andThen(new InstantCommand(shooter::stopShooter, shooter)))));
-
+        addCommands(
+                new InstantCommand(() -> shooter.setSetpoint(kShooterTargetRPM[shootingMode])),
+                new InstantCommand(conveyor::runConveyor, conveyor),
+                new WaitCommand(kShooterTargetDelay[shootingMode]),
+                new Shoot(intake, feeder, shooter, conveyor),
+                new HoldCargo(intake, conveyor, feeder),
+                new InstantCommand(shooter::stopShooter, shooter));
     }
-
 }

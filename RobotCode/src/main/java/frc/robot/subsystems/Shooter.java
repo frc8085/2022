@@ -95,22 +95,22 @@ public class Shooter extends SubsystemBase {
         // Add the selected shooting mode to the Operator dashboard
         shootingModeDisplay = Shuffleboard.getTab("Operator")
                 .add("Shooting Mode", shootingMode.get(shootMode))
-                .withPosition(1, 0)
+                .withPosition(2, 4)
                 .withSize(2, 1)
                 .getEntry();
 
         // Add the setpoint
         setpointDisplay = Shuffleboard.getTab("Operator")
                 .add("Setpoint", kSetPoint)
-                .withPosition(2, 0)
-                .withSize(2, 1)
+                .withPosition(3, 4)
+                .withSize(1, 1)
                 .getEntry();
 
         // Add ready to shoot indicator to the Operator dashboard
         readyToShoot = Shuffleboard.getTab("Operator")
                 .add("Ready to shoot", atSetpoint())
-                .withPosition(2, 2)
-                .withSize(4, 2)
+                .withPosition(3, 5)
+                .withSize(1, 2)
                 .getEntry();
     }
 
