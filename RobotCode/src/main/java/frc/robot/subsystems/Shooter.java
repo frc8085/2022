@@ -95,22 +95,24 @@ public class Shooter extends SubsystemBase {
         // Add the selected shooting mode to the Operator dashboard
         shootingModeDisplay = Shuffleboard.getTab("Operator")
                 .add("Shooting Mode", shootingMode.get(shootMode))
-                .withPosition(2, 4)
+                .withPosition(6, 2)
                 .withSize(2, 1)
                 .getEntry();
 
-        // Add the setpoint
-        setpointDisplay = Shuffleboard.getTab("Operator")
-                .add("Setpoint", kSetPoint)
-                .withPosition(3, 4)
-                .withSize(1, 1)
-                .getEntry();
+        // Add the setpoint but only if in TUNINGMODE
+        if (TUNING_MODE) {
+            setpointDisplay = Shuffleboard.getTab("Operator")
+                    .add("Setpoint", kSetPoint)
+                    .withPosition(6, 3)
+                    .withSize(1, 1)
+                    .getEntry();
+        }
 
         // Add ready to shoot indicator to the Operator dashboard
         readyToShoot = Shuffleboard.getTab("Operator")
                 .add("Ready to shoot", atSetpoint())
-                .withPosition(3, 5)
-                .withSize(1, 2)
+                .withPosition(7, 3)
+                .withSize(2, 1)
                 .getEntry();
     }
 
@@ -169,7 +171,10 @@ public class Shooter extends SubsystemBase {
     public void periodic() {
         // Display the current shooting mode and set point
         shootingModeDisplay.setString(shootingMode.get(shootMode));
-        setpointDisplay.setNumber(kSetPoint);
+
+        if (TUNING_MODE) {
+            setpointDisplay.setNumber(kSetPoint);
+        }
 
         // Turn the display GREEN on the 'Shooter' tab if we're ready to shoot
         readyToShoot.setBoolean(atSetpoint());
