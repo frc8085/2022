@@ -34,6 +34,10 @@ public class Climber extends SubsystemBase {
         isLocked = false;
     }
 
+    public boolean isLocked() {
+        return isLocked;
+    }
+
     /*
      * Will run the climber as long as it's unlocked
      */
