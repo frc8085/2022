@@ -88,9 +88,6 @@ public final class Constants {
         public static final double kTrackWidthMeters = 0.55245; // Known
         public static final double kTurnFactorMeters = kTrackWidthMeters * Math.PI / 360; // Known
 
-        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-                kTrackWidthMeters);
-
         public static final double kMaxSpeedMetersPerSecond = 3;
         public static final double kMaxAccelerationMetersPerSecondSquared = 3;
 
