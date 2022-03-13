@@ -28,6 +28,7 @@ import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstrai
 // Inputs
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // Commands
@@ -56,7 +57,6 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.ClimberBrake;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotContainer {
         // Add Auto Selection chooser to Dashboard
@@ -86,27 +86,29 @@ public class RobotContainer {
         private final Climber m_climber = new Climber(m_operatorController);
 
         private final Command autoUpAgainstHub = new AutoBaseSequence(
-                        kTargetNear, // shoot to desired target
-                        64, // drive
+                        kTargetBumpedTBD, // shoot to desired target
+                        40, // drive
                         kPickupCargo, // pick up new cargo
-                        -64, // drive back
-                        kTargetNear, // shoot to desired target
-                        90, // turn
-                        72, // drive
+                        -50, // drive back
+                        kTargetBumpedTBD, // shoot to desired target
+                        75, // turn
+                        70, // drive
                         kPickupCargo, // pick up new cargo
                         kStandStill, // 🚫 DON'T drive
+                        kShooterOff, // 🚫 don't shoot (set setpoint to 0)
                         m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
-        private final Command autoTwoBallHigh = new AutoBaseSequence(
-                        kTargetFar, // shoot to desired target
-                        24, // drive
-                        kDontPickupCargo, // 🚫 don't pick up new cargo
-                        kStandStill, // 🚫 don't drive
+        private final Command autoSecondLocation = new AutoBaseSequence(
+                        kTargetBumpedTBD, // shoot to desired target
+                        40, // drive
+                        kPickupCargo, // pick up new cargo
+                        20, // drive forward
                         kShooterOff, // 🚫 don't shoot (set setpoint to 0)
                         kStandStill, // 🚫 don't turn
-                        kStandStill, // 🚫 don't drive
+                        -85, // drive backwards
                         kDontPickupCargo, // 🚫 don't pick up new cargo
                         kStandStill, // 🚫 don't drive
+                        kTargetBumpedTBD, // shoot to desired target
                         m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
         public RobotContainer() {
@@ -117,10 +119,14 @@ public class RobotContainer {
 
                 // Add commands to the autonomous command chooser
                 m_autoSelection.setDefaultOption("Up Against Hub", autoUpAgainstHub);
-                m_autoSelection.addOption("Across Line 2 Ball High", autoTwoBallHigh);
+                m_autoSelection.addOption("Across Line 2nd Ball High", autoSecondLocation);
 
                 // Put the chooser on the dashboard
-                SmartDashboard.putData(m_autoSelection);
+
+                Shuffleboard.getTab("Operator")
+                                .add("Auto routine", m_autoSelection)
+                                .withPosition(1, 0)
+                                .withSize(4, 1);
 
         }
 

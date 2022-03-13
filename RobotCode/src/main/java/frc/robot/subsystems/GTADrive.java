@@ -82,8 +82,10 @@ public class GTADrive extends SubsystemBase {
 
     /** The log method puts interesting information to the SmartDashboard. */
     public void log() {
+        SmartDashboard.putNumber("Raw encoder read", m_left1Encoder.getPosition());
         SmartDashboard.putNumber("Distance traveled", getDistance());
         SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
+
     }
 
     /** Call log method every loop. */
@@ -139,8 +141,8 @@ public class GTADrive extends SubsystemBase {
         int directionR = right >= 0 ? 1 : -1;
 
         // Clamps the output to between 0.4 and 1.0
-        double speedL = MathUtil.clamp(left, 0.4, 1.0);
-        double speedR = MathUtil.clamp(right, 0.4, 1.0);
+        double speedL = MathUtil.clamp(left, 0.5, 1.0);
+        double speedR = MathUtil.clamp(right, 0.5, 1.0);
 
         m_drive.tankDrive(speedL * directionL, speedR * directionR);
     }
@@ -158,8 +160,13 @@ public class GTADrive extends SubsystemBase {
     }
 
     // Turn
-    public void turn(double distance) {
-        m_drive.tankDrive(-distance, distance);
+    public void turn(double speed) {
+        // Clamps the output to between 0.4 and 1.0
+        int direction = speed >= 0 ? 1 : -1;
+        double clamped = MathUtil.clamp(speed, 0.4, 1.0);
+        double newSpeed = clamped * direction;
+
+        m_drive.tankDrive(-newSpeed, newSpeed);
     }
 
     public void driveRobot() {
