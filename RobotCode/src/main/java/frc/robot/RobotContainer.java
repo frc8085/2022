@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // Commands
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoBaseSequence;
@@ -57,6 +58,14 @@ public class RobotContainer {
         private final IntakeCover m_intakeCover = new IntakeCover();
         private final Intake m_intake = new Intake();
         private final ClimberBrake m_climberBrake = new ClimberBrake();
+
+        // The robot's subsystems and commands
+
+        // TODO: Is there a better way to do this?
+        // Because the Climber and Intake are using Joystick Axes, we're passing
+        // the operator controllers to them instead of setting them here
+        // shen using configureButtonBindings
+
         private final Climber m_climber = new Climber(m_operatorController);
 
         private final Command autoUpAgainstHub = new AutoBaseSequence(
@@ -186,7 +195,15 @@ public class RobotContainer {
 
                 /** INTAKE COVER MANUAL OPEN/CLOSE */
                 openIntakeCoverButton.whenPressed(new InstantCommand(m_intakeCover::openIntake, m_intakeCover));
-                closeIntakeCoverButton.whenPressed(new InstantCommand(m_intakeCover::closeIntake, m_intakeCover));
+
+                closeIntakeCoverButton.whenPressed(
+                                new ConditionalCommand(
+                                                // If the climber is locked, you'e free to close the intake
+                                                new InstantCommand(m_intakeCover::closeIntake, m_intakeCover),
+                                                // If the climber is UNLOCKED, do not close intake
+                                                new InstantCommand(),
+                                                // Check if the climber locked
+                                                m_climber::isLocked));
 
                 /** LOCK AND UNLOCK CLIMBER AND BRAKE */
                 unlockClimberButton.whenPressed(new InstantCommand(m_climber::unlockClimber, m_climber)
@@ -202,5 +219,4 @@ public class RobotContainer {
                 // Command to run in autonomous
                 return m_autoSelection.getSelected();
         }
-
 }
