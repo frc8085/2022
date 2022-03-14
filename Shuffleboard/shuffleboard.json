@@ -11,66 +11,40 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "0,0": {
+          "0,1": {
             "size": [
-              5,
+              1,
               1
             ],
             "content": {
-              "_type": "ComboBox Chooser",
-              "_source0": "network_table:///SmartDashboard/SendableChooser[0]",
-              "_title": "Autonomous Routine"
-            }
-          },
-          "0,1": {
-            "size": [
-              3,
-              3
-            ],
-            "content": {
-              "_type": "Graph",
+              "_type": "Simple Dial",
               "_source0": "network_table:///SmartDashboard/Distance traveled",
               "_title": "Distance traveled",
-              "Graph/Visible time": 15.0,
-              "Graph/X-axis auto scrolling": true,
-              "Y-axis/Automatic bounds": true,
-              "Y-axis/Upper bound": 1.0,
-              "Y-axis/Lower bound": -1.0,
-              "Y-axis/Unit": "ul",
-              "Visible data/SmartDashboard/Distance traveled": true
-            }
-          },
-          "3,1": {
-            "size": [
-              2,
-              2
-            ],
-            "content": {
-              "_type": "Simple Dial",
-              "_source0": "network_table:///SmartDashboard/Gyro",
-              "_title": "Heading",
               "Range/Min": 0.0,
-              "Range/Max": 360.0,
+              "Range/Max": 100.0,
               "Visuals/Show value": true
             }
           },
-          "5,0": {
+          "1,1": {
             "size": [
-              3,
-              2
+              1,
+              1
             ],
             "content": {
-              "_type": "Camera Stream",
-              "_source0": "camera_server://USB Camera 0",
-              "_title": "USB Camera 0",
-              "Crosshair/Show crosshair": true,
-              "Crosshair/Crosshair color": "#FFFFFFFF",
-              "Controls/Show controls": true,
-              "Controls/Rotation": "NONE",
-              "compression": -1.0,
-              "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Gyro",
+              "_title": "Heading"
+            }
+          },
+          "6,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Raw encoder read",
+              "_title": "Raw encoder read"
             }
           }
         }
@@ -178,6 +152,16 @@
                   "_type": "PID Controller",
                   "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[10]",
                   "_title": "PIDController[10]"
+                },
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[12]",
+                  "_title": "PIDController[12]"
+                },
+                {
+                  "_type": "PID Controller",
+                  "_source0": "network_table:///LiveWindow/Ungrouped/PIDController[11]",
+                  "_title": "PIDController[11]"
                 }
               ]
             }
@@ -278,9 +262,9 @@
     }
   ],
   "windowGeometry": {
-    "x": 44.0,
-    "y": 25.0,
-    "width": 1298.0,
-    "height": 738.0
+    "x": -7.333333492279053,
+    "y": -7.333333492279053,
+    "width": 1294.6666259765625,
+    "height": 734.6666870117188
   }
 }

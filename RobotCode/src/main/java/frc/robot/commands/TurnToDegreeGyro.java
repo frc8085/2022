@@ -41,7 +41,7 @@ public class TurnToDegreeGyro extends PIDCommand {
         m_drivetrain = drivetrain;
         addRequirements(m_drivetrain);
 
-        getController().setTolerance(kAutoPositionTolerance);
+        getController().setTolerance(kAutoGyroTolerance);
     }
 
     @Override
