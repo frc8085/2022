@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import java.util.List;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.RamseteController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -23,6 +24,7 @@ import edu.wpi.first.math.trajectory.constraint.TrajectoryConstraint;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.Constants;
 import static frc.robot.Constants.DriveConstants.*;
 import frc.robot.subsystems.GTADrive;
@@ -31,9 +33,9 @@ public class AutoPath extends CommandBase {
     private static final double ramseteB = 2;
     private static final double ramseteZeta = 0.7;
     private final GTADrive drive;
-    private DifferentialDriveKinematics m_DriveKinematics;
-    private final Trajectory trajectory;
-    private final RamseteController controller = new RamseteController(ramseteB, ramseteZeta);
+    private DifferentialDriveKinematics driveKinematics;
+    private final Trajectory autoTrajectory;
+    private final RamseteController ramseteController = new RamseteController(ramseteB, ramseteZeta);
     private final Timer timer = new Timer();
 
     /**
@@ -46,57 +48,28 @@ public class AutoPath extends CommandBase {
         this.drive = drive;
         addRequirements(drive);
 
-        // Select max velocity & acceleration
-        double maxVoltage, maxVelocityMetersPerSec, maxAccelerationMetersPerSec2,
-                maxCentripetalAccelerationMetersPerSec2;
-
-        maxVoltage = 10.0;
-        maxVelocityMetersPerSec = Units.inchesToMeters(210.0);
-        maxAccelerationMetersPerSec2 = kMaxAccelerationMetersPerSecondSquared;
-        maxCentripetalAccelerationMetersPerSec2 = Units.inchesToMeters(75.0);
-
         // Set up trajectory configuration
-        m_DriveKinematics = new DifferentialDriveKinematics(Units.inchesToMeters(kTrackWidthInches));
+        driveKinematics = new DifferentialDriveKinematics(Units.inchesToMeters(kTrackWidthInches));
 
         var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
                 new SimpleMotorFeedforward(
                         ksVolts,
                         kvVoltSecondsPerMeter,
                         kaVoltSecondsSquaredPerMeter),
-                m_DriveKinematics,
-                10);
+                driveKinematics,
+                10); // Max Voltage. TODO: Make this a constant.
 
         // Create config for trajectory
         TrajectoryConfig config = new TrajectoryConfig(
                 kMaxSpeedMetersPerSecond,
                 kMaxAccelerationMetersPerSecondSquared)
                         // Add kinematics to ensure max speed is actually obeyed
-                        .setKinematics(m_DriveKinematics)
+                        .setKinematics(driveKinematics)
                         // Apply the voltage constraint
                         .addConstraint(autoVoltageConstraint);
 
-        TrajectoryConfig config = new TrajectoryConfig(maxVelocityMetersPerSec,
-                maxAccelerationMetersPerSec2).setKinematics(kinematics)
-                        .addConstraints(constraints)
-                        .setStartVelocity(startVelocityMetersPerSec)
-                        .setEndVelocity(endVelocityMetersPerSec).setReversed(reversed);
-        if (Units.inchesToMeters(kaVoltSecondsSquaredPerInch) != 0) {
-            config.addConstraint(new DifferentialDriveVoltageConstraint(
-                    new SimpleMotorFeedforward(
-
-                            drive.getKs(), drive.getKv(),
-                            drive.getKa()),
-                    kinematics, maxVoltage));
-        }
-
-        // Generate trajectory
-        Trajectory generatedTrajectory;
-        try {
-            generatedTrajectory = TrajectoryGenerator.generateTrajectory(waypoints, config);
-        } catch (TrajectoryGenerationException exception) {
-            generatedTrajectory = new Trajectory();
-        }
-        trajectory = generatedTrajectory;
+        // Now create the trajectory to follow. All units in meters.
+        autoTrajectory = TrajectoryGenerator.generateTrajectory(waypoints, config);
     }
 
     // Called when the command is initially scheduled.
@@ -109,14 +82,27 @@ public class AutoPath extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        State setpoint = trajectory.sample(timer.get());
-        Logger.getInstance().recordOutput("Odometry/ProfileSetpoint",
-                new double[] { setpoint.poseMeters.getX(), setpoint.poseMeters.getY(),
-                        setpoint.poseMeters.getRotation().getRadians() });
-        ChassisSpeeds chassisSpeeds = controller.calculate(drive.getPose(), setpoint);
-        DifferentialDriveWheelSpeeds wheelSpeeds = kinematics.toWheelSpeeds(chassisSpeeds);
-        drive.driveVelocity(wheelSpeeds.leftMetersPerSecond,
-                wheelSpeeds.rightMetersPerSecond);
+        RamseteCommand ramseteCommand = new RamseteCommand(
+                autoTrajectory,
+                drive::getPose,
+                new RamseteController(kRamseteB, kRamseteZeta),
+                new SimpleMotorFeedforward(
+                        ksVolts,
+                        kvVoltSecondsPerMeter,
+                        kaVoltSecondsSquaredPerMeter),
+                driveKinematics,
+                drive::getWheelSpeeds,
+                new PIDController(kPDriveVel, 0, 0),
+                new PIDController(kPDriveVel, 0, 0),
+                // RamseteCommand passes volts to the callback
+                drive::tankDriveVolts,
+                drive);
+
+        State setpoint = autoTrajectory.sample(timer.get());
+        ChassisSpeeds chassisSpeeds = ramseteController.calculate(drive.getPose(), setpoint);
+        DifferentialDriveWheelSpeeds wheelSpeeds = driveKinematics.toWheelSpeeds(
+                chassisSpeeds);
+        drive.drive(wheelSpeeds.leftMetersPerSecond, wheelSpeeds.rightMetersPerSecond);
     }
 
     // Called once the command ends or is interrupted.
@@ -129,10 +115,10 @@ public class AutoPath extends CommandBase {
     // Returns true when the command should end.
     @Override
     public boolean isFinished() {
-        return timer.hasElapsed(trajectory.getTotalTimeSeconds());
+        return timer.hasElapsed(autoTrajectory.getTotalTimeSeconds());
     }
 
     public double getDuration() {
-        return trajectory.getTotalTimeSeconds();
+        return autoTrajectory.getTotalTimeSeconds();
     }
 }

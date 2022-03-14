@@ -261,6 +261,11 @@ public class GTADrive extends SubsystemBase {
         m_gyro.reset();
     }
 
+    /** Stop the driverain */
+    public void stop() {
+        tankDriveVolts(0, 0);
+    }
+
     /**
      * Get the average distance (Meters) of the encoders since the last reset.
      *
