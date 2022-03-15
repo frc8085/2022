@@ -5,23 +5,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
-import frc.robot.subsystems.GTADrive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
-public class AutoOneCargo extends SequentialCommandGroup {
+/** The shooting routine if we shoot before picking up second cargo */
+public class AutoOneShot extends SequentialCommandGroup {
     /**
      * If we just plan to make one shot, shoot right away
      */
-    public AutoOneCargo(
-            int shootingMode,
-            GTADrive drive,
+    public AutoOneShot(
             Intake intake,
             Conveyor conveyor,
             Feeder feeder,
             Shooter shooter) {
-        addCommands(new ShootAuto(shootingMode, intake, feeder, shooter, conveyor));
+        addCommands(new ShootAuto(OIConstants.kTargetBumpedNear, intake, conveyor, feeder, shooter));
     }
 }

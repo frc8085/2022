@@ -8,28 +8,8 @@ package frc.robot;
 import static frc.robot.Constants.IntakeConstants.*;
 import static frc.robot.Constants.OIConstants.*;
 
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
-
 import static frc.robot.Constants.AutoConstants.*;
-import static frc.robot.Constants.DriveConstants.*;
 
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.RamseteController;
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrajectoryUtil;
-import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
-import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.Filesystem;
 // Inputs
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -40,10 +20,12 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.AutoConstants;
+import frc.robot.Trajectories.TrajectoryType;
 import frc.robot.commands.AutoBaseSequence;
+import frc.robot.commands.AutoLoadShootShoot;
+import frc.robot.commands.AutoOneShot;
+import frc.robot.commands.AutoShootLoadShoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
@@ -84,12 +66,6 @@ public class RobotContainer {
         private final ClimberBrake m_climberBrake = new ClimberBrake();
 
         // The robot's subsystems and commands
-
-        // TODO: Is there a better way to do this?
-        // Because the Climber and Intake are using Joystick Axes, we're passing
-        // the operator controllers to them instead of setting them here
-        // shen using configureButtonBindings
-
         private final Climber m_climber = new Climber(m_operatorController);
 
         private final Command autoUpAgainstHub = new AutoBaseSequence(
@@ -103,7 +79,7 @@ public class RobotContainer {
                         kPickupCargo, // pick up new cargo
                         kStandStill, // 🚫 DON'T drive
                         kShooterOff, // 🚫 don't shoot (set setpoint to 0)
-                        m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
+                        m_drive, m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter);
 
         private final Command autoSecondLocation = new AutoBaseSequence(
                         kTargetBumpedTBD, // shoot to desired target
@@ -116,7 +92,19 @@ public class RobotContainer {
                         kDontPickupCargo, // 🚫 don't pick up new cargo
                         kStandStill, // 🚫 don't drive
                         kTargetBumpedTBD, // shoot to desired target
-                        m_drive, m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
+                        m_drive, m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter);
+
+        private final Command autoOneShot = new AutoOneShot(m_intake, m_conveyor, m_feeder, m_shooter);
+        private final Command autoShootLoadShoot = new AutoShootLoadShoot(TrajectoryType.SAFETY, m_drive, m_intake,
+                        m_conveyor, m_feeder,
+                        m_shooter, m_intakeCover);
+        private final Command autoLoadShootShoot = new AutoLoadShootShoot(TrajectoryType.SAFETY, m_drive, m_intake,
+                        m_conveyor, m_feeder, m_shooter, m_intakeCover);
+
+        private final Command autoShootLoadShootPathweaver = new AutoShootLoadShoot(TrajectoryType.PATHWEAVER, m_drive,
+                        m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
+        private final Command autoLoadShootShootPathweaver = new AutoLoadShootShoot(TrajectoryType.PATHWEAVER, m_drive,
+                        m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
 
         public RobotContainer() {
                 configureButtonBindings();
@@ -125,8 +113,27 @@ public class RobotContainer {
                 m_climber.setDefaultCommand(new Climb(m_climber, m_intakeCover, m_climberBrake));
 
                 // Add commands to the autonomous command chooser
-                m_autoSelection.setDefaultOption("Up Against Hub", autoUpAgainstHub);
-                m_autoSelection.addOption("Across Line 2nd Ball High", autoSecondLocation);
+
+                /**
+                 * SAFETY trajectories have constraints on the max speed, acceleration, and
+                 * voltage
+                 */
+                m_autoSelection.setDefaultOption("SAFELY - Load, Shoot, Shoot", autoLoadShootShoot);
+                m_autoSelection.addOption("SAFELY - Shoot, Load, Shoot", autoShootLoadShoot);
+                m_autoSelection.addOption("SAFELY - Shoot once", autoOneShot);
+
+                /**
+                 * PATHWEAVER trajectories are read directly from pathewaver output JSON files
+                 * We can't more constraints to these paths
+                 */
+                m_autoSelection.addOption("PATHWEAVER - Load, Shoot, Shoot", autoLoadShootShootPathweaver);
+                m_autoSelection.addOption("PATHWEAVER - Shoot, Load, Shoot", autoShootLoadShootPathweaver);
+
+                /**
+                 * MANUAL trajectories we added without using Ramsete controllers
+                 */
+                m_autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
+                m_autoSelection.addOption("MANUAL - Across Line 2nd Ball High", autoSecondLocation);
 
                 // Put the chooser on the dashboard
 
@@ -239,65 +246,8 @@ public class RobotContainer {
 
         }
 
-        public Command getAutonomousCommand2() {
-                // Command to run in autonomous
-                return m_autoSelection.getSelected();
-        }
-
         public Command getAutonomousCommand() {
-                // Set up trajectory configuration
-                DifferentialDriveKinematics driveKinematics = new DifferentialDriveKinematics(
-                                Units.inchesToMeters(kTrackWidthInches));
-
-                // Create a voltage constraint to ensure we don't accelerate too fast
-                var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
-                                new SimpleMotorFeedforward(
-                                                ksVolts,
-                                                kvVoltSecondsPerMeter,
-                                                kaVoltSecondsSquaredPerMeter),
-                                driveKinematics,
-                                10);
-
-                // Create config for trajectory
-                TrajectoryConfig config = new TrajectoryConfig(
-                                kMaxSpeedMetersPerSecond,
-                                kMaxAccelerationMetersPerSecondSquared)
-                                                // Add kinematics to ensure max speed is actually obeyed
-                                                .setKinematics(driveKinematics)
-                                                // Apply the voltage constraint
-                                                .addConstraint(autoVoltageConstraint);
-
-                // An example trajectory to follow. All units in meters.
-                Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-                                // Start at the origin facing the +X direction
-                                new Pose2d(0, 0, new Rotation2d(0)),
-                                // Pass through these two interior waypoints, making an 's' curve path
-                                List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-                                // End 3 meters straight ahead of where we started, facing forward
-                                new Pose2d(3, 0, new Rotation2d(0)),
-                                // Pass config
-                                config);
-
-                RamseteCommand ramseteCommand = new RamseteCommand(
-                                exampleTrajectory,
-                                m_drive::getPose,
-                                new RamseteController(kRamseteB, kRamseteZeta),
-                                new SimpleMotorFeedforward(
-                                                ksVolts,
-                                                kvVoltSecondsPerMeter,
-                                                kaVoltSecondsSquaredPerMeter),
-                                driveKinematics,
-                                m_drive::getWheelSpeeds,
-                                new PIDController(kPDriveVel, 0, 0),
-                                new PIDController(kPDriveVel, 0, 0),
-                                // RamseteCommand passes volts to the callback
-                                m_drive::tankDriveVolts,
-                                m_drive);
-
-                // Reset odometry to the starting pose of the trajectory.
-                m_drive.resetOdometry(exampleTrajectory.getInitialPose());
-
-                // Run path following command, then stop at the end.
-                return ramseteCommand.andThen(() -> m_drive.tankDriveVolts(0, 0));
+                // Command to run in autonomous. Stop at the end
+                return m_autoSelection.getSelected().andThen(() -> m_drive.stop());
         }
 }
