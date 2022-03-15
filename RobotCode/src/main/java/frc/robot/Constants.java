@@ -4,6 +4,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.math.util.Units;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -69,21 +70,22 @@ public final class Constants {
         // The Robot Characterization Toolsuite provides a convenient tool for obtaining
         // these values for your robot.
 
-        public static final double ksVolts = 0.24149;
+        public static final double ksVoltsInches = 0.26088;
+        public static final double ksVolts = 0.23657;
 
         // INCHES
-        public static final double kvVoltSecondsPerInch = 0.074863;
-        public static final double kaVoltSecondsSquaredPerInch = 0.020198;
+        public static final double kvVoltSecondsPerInch = 0.073608;
+        public static final double kaVoltSecondsSquaredPerInch = 0.022282;
 
         public static final double kTrackWidthInches = 21.75; // Known
         public static final double kTurnFactor = kTrackWidthInches * Math.PI / 360; // Known
 
-        public static final double kPDriveVelInches = 0.10749;
+        public static final double kPDriveVelInches = 0.10706;
 
         // METERS
-        public static final double kvVoltSecondsPerMeter = 0.074863;
-        public static final double kaVoltSecondsSquaredPerMeter = 0.020198;
-        public static final double kPDriveVel = 8.5;
+        public static final double kvVoltSecondsPerMeter = 2.9032;
+        public static final double kaVoltSecondsSquaredPerMeter = 0.88302;
+        public static final double kPDriveVel = 4.213;
 
         public static final double kTrackWidthMeters = 0.55245; // Known
         public static final double kTurnFactorMeters = kTrackWidthMeters * Math.PI / 360; // Known
@@ -95,6 +97,13 @@ public final class Constants {
         // seconds
         public static final double kRamseteB = 2;
         public static final double kRamseteZeta = 0.7;
+
+        // Constrain the max voltage
+        public static final double kMaxVoltage = 10;
+
+        // For use with Ramsete auto paths
+        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
+                Units.inchesToMeters(kTrackWidthInches));
 
     }
 
