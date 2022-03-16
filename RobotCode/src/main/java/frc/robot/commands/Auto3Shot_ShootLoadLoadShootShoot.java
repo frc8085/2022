@@ -8,7 +8,8 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Trajectories;
-import frc.robot.Constants.OIConstants;
+import static frc.robot.Constants.OIConstants.*;
+import static frc.robot.Constants.ShooterConstants.*;
 import frc.robot.Trajectories.TrajectoryType;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
@@ -58,9 +59,15 @@ public class Auto3Shot_ShootLoadLoadShootShoot extends SequentialCommandGroup {
                                         shooter, intakeCover);
                 }
 
-                Command shootFirst = new ShootAuto(OIConstants.kTargetBumpedNear, intake, conveyor, feeder, shooter);
-                Command shootSecond = new ShootAuto(OIConstants.kTargetBumpedTBD, intake, conveyor, feeder, shooter);
-                Command shootThird = new ShootAuto(OIConstants.kTargetBumpedTBD, intake, conveyor, feeder, shooter);
+                // TODO: Definet he setpoint for starting point
+                int setpointAtStart = kShooterTargetRPM[kTargetBumpedNear];
+                Command shootFirst = new ShootAuto(setpointAtStart, intake, conveyor, feeder, shooter);
+
+                // TODO: Define the setpoint for third cargo location
+                int setpointAtThirdCargo = kShooterTargetRPM[kTargetBumpedTBD];
+
+                Command shootSecond = new ShootAuto(setpointAtThirdCargo, intake, conveyor, feeder, shooter);
+                Command shootThird = new ShootAuto(setpointAtThirdCargo, intake, conveyor, feeder, shooter);
 
                 addCommands(shootFirst, driveAndLoadSecond, driveAndLoadThird, shootSecond, shootThird);
         }

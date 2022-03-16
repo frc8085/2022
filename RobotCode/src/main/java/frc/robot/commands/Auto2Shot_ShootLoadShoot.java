@@ -8,7 +8,8 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Trajectories;
-import frc.robot.Constants.OIConstants;
+import static frc.robot.Constants.OIConstants.*;
+import static frc.robot.Constants.ShooterConstants.*;
 import frc.robot.Trajectories.TrajectoryType;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
@@ -44,9 +45,9 @@ public class Auto2Shot_ShootLoadShoot extends SequentialCommandGroup {
                     shooter, intakeCover);
         }
 
-        Command firstShot = new ShootAuto(OIConstants.kTargetBumpedNear, intake, conveyor, feeder, shooter);
-        Command secondShot = new ShootAuto(OIConstants.kTargetBumpedTBD, intake, conveyor, feeder, shooter);
+        Command shootFirst = new ShootAuto(kShooterTargetRPM[kTargetBumpedNear], intake, conveyor, feeder, shooter);
+        Command shootSecond = new ShootAuto(kShooterTargetRPM[kTargetBumpedTBD], intake, conveyor, feeder, shooter);
 
-        addCommands(firstShot, driveAndLoadSecond, secondShot);
+        addCommands(shootFirst, driveAndLoadSecond, shootSecond);
     }
 }

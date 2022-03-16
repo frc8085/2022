@@ -28,6 +28,7 @@ import frc.robot.commands.Auto1Shot;
 import frc.robot.commands.Auto2Shot_ShootLoadShoot;
 import frc.robot.commands.Auto3Shot_LoadShootWhileLoadLoadShootShoot;
 import frc.robot.commands.Auto3Shot_ShootLoadLoadShootShoot;
+import frc.robot.commands.Auto4Shot_LoadShootShootLoadLoadReturnShoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
@@ -109,6 +110,9 @@ public class RobotContainer {
         private final Command auto3B = new Auto3Shot_LoadShootWhileLoadLoadShootShoot(TrajectoryType.SAFETY, drive,
                         intake,
                         conveyor, feeder, shooter, intakeCover);
+        private final Command auto4 = new Auto4Shot_LoadShootShootLoadLoadReturnShoot(TrajectoryType.SAFETY, drive,
+                        intake,
+                        conveyor, feeder, shooter, intakeCover);
 
         private final Command auto2APathweaver = new Auto2Shot_ShootLoadShoot(TrajectoryType.PATHWEAVER,
                         drive,
@@ -121,6 +125,11 @@ public class RobotContainer {
                         intake,
                         conveyor, feeder, shooter, intakeCover);
         private final Command auto3BPathweaver = new Auto3Shot_LoadShootWhileLoadLoadShootShoot(
+                        TrajectoryType.PATHWEAVER,
+                        drive,
+                        intake,
+                        conveyor, feeder, shooter, intakeCover);
+        private final Command auto4Pathweaver = new Auto4Shot_LoadShootShootLoadLoadReturnShoot(
                         TrajectoryType.PATHWEAVER,
                         drive,
                         intake,
@@ -142,6 +151,8 @@ public class RobotContainer {
                 autoSelection.addOption("PATHWEAVER 2B  - Shoot, Load, Shoot", auto2APathweaver);
                 autoSelection.addOption("PATHWEAVER 3A  - Shoot, Load, Load, Shoot, Shoot", auto3APathweaver);
                 autoSelection.addOption("PATHWEAVER 3B  - Load, ShootWhileLoad, Load, Shoot, Shoot", auto3BPathweaver);
+                autoSelection.addOption("PATHWEAVER 4  - Load, Shoot, Shoot, Load, Load, Return, Shoot, Shoot",
+                                auto4Pathweaver);
 
                 /**
                  * SAFETY trajectories have constraints on the max speed, acceleration, and
@@ -152,7 +163,8 @@ public class RobotContainer {
                 autoSelection.addOption("AUTO 2B - Load, Shoot, Shoot", auto2B);
                 autoSelection.addOption("AUTO 3A  - Shoot, Load, Load, Shoot, Shoot", auto3A);
                 autoSelection.addOption("AUTO 3B  - Load, ShootWhileLoad, Load, Shoot, Shoot", auto3B);
-
+                autoSelection.addOption("AUTO 4  - Load, Shoot, Shoot, Load, Load, Return, Shoot, Shoot",
+                                auto4);
                 /**
                  * MANUAL trajectories we added without using Ramsete controllers
                  */

@@ -5,7 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.Constants.OIConstants;
+import static frc.robot.Constants.OIConstants.*;
+import static frc.robot.Constants.ShooterConstants.*;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.Intake;
@@ -21,6 +22,6 @@ public class Auto1Shot extends SequentialCommandGroup {
             Conveyor conveyor,
             Feeder feeder,
             Shooter shooter) {
-        addCommands(new ShootAuto(OIConstants.kTargetBumpedNear, intake, conveyor, feeder, shooter));
+        addCommands(new ShootAuto(kShooterTargetRPM[kTargetBumpedNear], intake, conveyor, feeder, shooter));
     }
 }

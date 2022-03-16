@@ -133,4 +133,23 @@ public final class Trajectories {
                         // Pass config
                         config);
 
+        /** RETURN path */
+        public static final Trajectory kReturn = TrajectoryGenerator.generateTrajectory(
+                        // Start at the origin facing the +X direction
+                        new Pose2d(Units.inchesToMeters(58.572),
+                                        Units.inchesToMeters(-269.576),
+                                        new Rotation2d(0)),
+                        // Pass through this interior waypoint
+                        List.of(new Translation2d(
+                                        Units.inchesToMeters(75.55046859421734),
+                                        Units.inchesToMeters(-250.23912263210372))),
+
+                        // End end at the second cargo pickup spot
+                        new Pose2d(
+                                        Units.inchesToMeters(269.38839481555334),
+                                        Units.inchesToMeters(-233.7322432701894),
+                                        new Rotation2d(0)),
+                        // Pass config
+                        config.setReversed(true));
+
 }

@@ -7,6 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import static frc.robot.Constants.ShooterConstants.*;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
@@ -35,7 +36,8 @@ public class AutoBaseSequence extends SequentialCommandGroup {
                         Feeder feeder,
                         Shooter shooter) {
                 addCommands(
-                                /* 1 */ new ShootAuto(shootingMode1, intake, conveyor, feeder, shooter),
+                                /* 1 */ new ShootAuto(kShooterTargetRPM[shootingMode1], intake,
+                                                conveyor, feeder, shooter),
                                 new WaitCommand(.25),
                                 /* 2 */ new DriveStraight(driveDistance1, drive),
                                 /* 3 */ !pickUp1 ? new InstantCommand()
@@ -43,7 +45,8 @@ public class AutoBaseSequence extends SequentialCommandGroup {
                                                                 .andThen(new WaitCommand(2))
                                                                 .andThen(new HoldCargo(intake, conveyor, feeder)),
                                 /* 4 */ new DriveStraight(driveDistance2, drive),
-                                /* 5 */ new ShootAuto(shootingMode2, intake, conveyor, feeder, shooter),
+                                /* 5 */ new ShootAuto(kShooterTargetRPM[shootingMode2], intake,
+                                                conveyor, feeder, shooter),
                                 /* 6 */ new TurnToDegreeGyro(turnDegrees1, drive),
                                 /* 7 */ new DriveStraight(driveDistance3, drive),
                                 /* 8 */ !pickUp2 ? new InstantCommand()
@@ -53,7 +56,8 @@ public class AutoBaseSequence extends SequentialCommandGroup {
                                 /*   */ new WaitCommand(2),
                                 /*   */ new HoldCargo(intake, conveyor, feeder),
                                 /* 9 */ new DriveStraight(driveDistance4, drive),
-                                /* 10 */ new ShootAuto(shootingMode3, intake, conveyor, feeder, shooter),
+                                /* 10 */ new ShootAuto(kShooterTargetRPM[shootingMode3], intake,
+                                                conveyor, feeder, shooter),
                                 /* 11 */ new DriveStraight(0, drive)); // Force it to stop
 
                 /// 305.66-116.17 (distance)

@@ -34,8 +34,6 @@ public class Auto3Shot_LoadShootWhileLoadLoadShootShoot extends SequentialComman
         private final Command driveToSecond;
         private final Command driveToThird;
 
-        private final double m_intakeDurationSeconds = 2;
-
         public Auto3Shot_LoadShootWhileLoadLoadShootShoot(
                         TrajectoryType type,
                         GTADrive drive,
@@ -63,10 +61,10 @@ public class Auto3Shot_LoadShootWhileLoadLoadShootShoot extends SequentialComman
                 Command prepareShot = new InstantCommand(
                                 () -> shooter.setSetpoint(setpointAtDestination));
                 Command pickupSecond = new PickupAuto(intake, intakeCover, conveyor, feeder, shooter);
-                Command shootFirst = new ShootAuto(kTargetBumpedTBD, intake, conveyor, feeder, shooter);
+                Command shootFirst = new ShootAuto(setpointAtDestination, intake, conveyor, feeder, shooter);
                 Command pickupThird = new PickupAuto(intake, intakeCover, conveyor, feeder, shooter);
-                Command shootSecond = new ShootAuto(kTargetBumpedTBD, intake, conveyor, feeder, shooter);
-                Command shootThird = new ShootAuto(kTargetBumpedTBD, intake, conveyor, feeder, shooter);
+                Command shootSecond = new ShootAuto(setpointAtDestination, intake, conveyor, feeder, shooter);
+                Command shootThird = new ShootAuto(setpointAtDestination, intake, conveyor, feeder, shooter);
 
                 addCommands(driveToSecond,
                                 pickupSecond, // Load second cargo
