@@ -17,13 +17,13 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeCover;
 import frc.robot.subsystems.Shooter;
 
-/** The shooting routine if we shoot before picking up second cargo */
-public class AutoLoadShootShoot extends SequentialCommandGroup {
+/** Routine: Load second, shoot first and second */
+public class Auto2Shot_LoadShootShoot extends SequentialCommandGroup {
     private final Trajectory m_constrainedTrajectory = Trajectories.kPickupSecond;
     private final String trajectoryJSON = "paths/1-pickupSecond.wpilib.json";
     private final Command driveAndLoadSecond;
 
-    public AutoLoadShootShoot(
+    public Auto2Shot_LoadShootShoot(
             TrajectoryType type,
             GTADrive drive,
             Intake intake,
@@ -35,7 +35,7 @@ public class AutoLoadShootShoot extends SequentialCommandGroup {
         // If we're using the exported pathweaver JSON, load it. Otherwise follow the
         // safety constrainted trajectory created in code
         if (type == TrajectoryType.PATHWEAVER) {
-            driveAndLoadSecond = new DriveAndLoadAutoFromJSON(trajectoryJSON, drive, intake, conveyor,
+            driveAndLoadSecond = new DriveAndLoadAuto(trajectoryJSON, drive, intake, conveyor,
                     feeder,
                     shooter, intakeCover);
         } else {

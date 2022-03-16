@@ -12,11 +12,11 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 
 /** The shooting routine if we shoot before picking up second cargo */
-public class AutoOneShot extends SequentialCommandGroup {
+public class Auto1Shot extends SequentialCommandGroup {
     /**
      * If we just plan to make one shot, shoot right away
      */
-    public AutoOneShot(
+    public Auto1Shot(
             Intake intake,
             Conveyor conveyor,
             Feeder feeder,

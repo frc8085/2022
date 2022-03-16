@@ -23,9 +23,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Trajectories.TrajectoryType;
 import frc.robot.commands.AutoBaseSequence;
-import frc.robot.commands.AutoLoadShootShoot;
-import frc.robot.commands.AutoOneShot;
-import frc.robot.commands.AutoShootLoadShoot;
+import frc.robot.commands.Auto2Shot_LoadShootShoot;
+import frc.robot.commands.Auto1Shot;
+import frc.robot.commands.Auto2Shot_ShootLoadShoot;
+import frc.robot.commands.Auto3Shot_LoadShootWhileLoadLoadShootShoot;
+import frc.robot.commands.Auto3Shot_ShootLoadLoadShootShoot;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
@@ -49,24 +51,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 public class RobotContainer {
         // Add Auto Selection chooser to Dashboard
-        protected SendableChooser<Command> m_autoSelection = new SendableChooser<>();
+        protected SendableChooser<Command> autoSelection = new SendableChooser<>();
 
         // Drive train and driver controller
-        private final XboxController m_driverController = new XboxController(kDriverControllerPort);
-        private final GTADrive m_drive = new GTADrive(m_driverController);
+        private final XboxController driverController = new XboxController(kDriverControllerPort);
+        private final GTADrive drive = new GTADrive(driverController);
 
         // Operator controller and subsystems
-        private final XboxController m_operatorController = new XboxController(
+        private final XboxController operatorController = new XboxController(
                         kOperatorControllerPort);
-        private final Shooter m_shooter = new Shooter();
-        private final Feeder m_feeder = new Feeder();
-        private final Conveyor m_conveyor = new Conveyor();
-        private final IntakeCover m_intakeCover = new IntakeCover();
-        private final Intake m_intake = new Intake();
-        private final ClimberBrake m_climberBrake = new ClimberBrake();
+        private final Shooter shooter = new Shooter();
+        private final Feeder feeder = new Feeder();
+        private final Conveyor conveyor = new Conveyor();
+        private final IntakeCover intakeCover = new IntakeCover();
+        private final Intake intake = new Intake();
+        private final ClimberBrake climberBrake = new ClimberBrake();
 
         // The robot's subsystems and commands
-        private final Climber m_climber = new Climber(m_operatorController);
+        private final Climber climber = new Climber(operatorController);
 
         private final Command autoUpAgainstHub = new AutoBaseSequence(
                         kTargetBumpedTBD, // shoot to desired target
@@ -79,7 +81,7 @@ public class RobotContainer {
                         kPickupCargo, // pick up new cargo
                         kStandStill, // 🚫 DON'T drive
                         kShooterOff, // 🚫 don't shoot (set setpoint to 0)
-                        m_drive, m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter);
+                        drive, intake, intakeCover, conveyor, feeder, shooter);
 
         private final Command autoSecondLocation = new AutoBaseSequence(
                         kTargetBumpedTBD, // shoot to desired target
@@ -92,53 +94,75 @@ public class RobotContainer {
                         kDontPickupCargo, // 🚫 don't pick up new cargo
                         kStandStill, // 🚫 don't drive
                         kTargetBumpedTBD, // shoot to desired target
-                        m_drive, m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter);
+                        drive, intake, intakeCover, conveyor, feeder, shooter);
 
-        private final Command autoOneShot = new AutoOneShot(m_intake, m_conveyor, m_feeder, m_shooter);
-        private final Command autoShootLoadShoot = new AutoShootLoadShoot(TrajectoryType.SAFETY, m_drive, m_intake,
-                        m_conveyor, m_feeder,
-                        m_shooter, m_intakeCover);
-        private final Command autoLoadShootShoot = new AutoLoadShootShoot(TrajectoryType.SAFETY, m_drive, m_intake,
-                        m_conveyor, m_feeder, m_shooter, m_intakeCover);
+        private final Command auto1 = new Auto1Shot(intake, conveyor, feeder, shooter);
+        private final Command auto2A = new Auto2Shot_ShootLoadShoot(TrajectoryType.SAFETY, drive,
+                        intake,
+                        conveyor, feeder,
+                        shooter, intakeCover);
+        private final Command auto2B = new Auto2Shot_LoadShootShoot(TrajectoryType.SAFETY, drive,
+                        intake,
+                        conveyor, feeder, shooter, intakeCover);
+        private final Command auto3A = new Auto3Shot_ShootLoadLoadShootShoot(TrajectoryType.SAFETY, drive, intake,
+                        conveyor, feeder, shooter, intakeCover);
+        private final Command auto3B = new Auto3Shot_LoadShootWhileLoadLoadShootShoot(TrajectoryType.SAFETY, drive,
+                        intake,
+                        conveyor, feeder, shooter, intakeCover);
 
-        private final Command autoShootLoadShootPathweaver = new AutoShootLoadShoot(TrajectoryType.PATHWEAVER, m_drive,
-                        m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
-        private final Command autoLoadShootShootPathweaver = new AutoLoadShootShoot(TrajectoryType.PATHWEAVER, m_drive,
-                        m_intake, m_conveyor, m_feeder, m_shooter, m_intakeCover);
+        private final Command auto2APathweaver = new Auto2Shot_ShootLoadShoot(TrajectoryType.PATHWEAVER,
+                        drive,
+                        intake, conveyor, feeder, shooter, intakeCover);
+        private final Command auto2BPathweaver = new Auto2Shot_LoadShootShoot(TrajectoryType.PATHWEAVER,
+                        drive,
+                        intake, conveyor, feeder, shooter, intakeCover);
+
+        private final Command auto3APathweaver = new Auto3Shot_ShootLoadLoadShootShoot(TrajectoryType.PATHWEAVER, drive,
+                        intake,
+                        conveyor, feeder, shooter, intakeCover);
+        private final Command auto3BPathweaver = new Auto3Shot_LoadShootWhileLoadLoadShootShoot(
+                        TrajectoryType.PATHWEAVER,
+                        drive,
+                        intake,
+                        conveyor, feeder, shooter, intakeCover);
 
         public RobotContainer() {
                 configureButtonBindings();
 
-                m_drive.setDefaultCommand(new Drive(m_drive));
-                m_climber.setDefaultCommand(new Climb(m_climber, m_intakeCover, m_climberBrake));
+                drive.setDefaultCommand(new Drive(drive));
+                climber.setDefaultCommand(new Climb(climber, intakeCover, climberBrake));
 
                 // Add commands to the autonomous command chooser
-
-                /**
-                 * SAFETY trajectories have constraints on the max speed, acceleration, and
-                 * voltage
-                 */
-                m_autoSelection.setDefaultOption("SAFELY - Load, Shoot, Shoot", autoLoadShootShoot);
-                m_autoSelection.addOption("SAFELY - Shoot, Load, Shoot", autoShootLoadShoot);
-                m_autoSelection.addOption("SAFELY - Shoot once", autoOneShot);
 
                 /**
                  * PATHWEAVER trajectories are read directly from pathewaver output JSON files
                  * We can't more constraints to these paths
                  */
-                m_autoSelection.addOption("PATHWEAVER - Load, Shoot, Shoot", autoLoadShootShootPathweaver);
-                m_autoSelection.addOption("PATHWEAVER - Shoot, Load, Shoot", autoShootLoadShootPathweaver);
+                autoSelection.setDefaultOption("PATHWEAVER 2A - Load, Shoot, Shoot", auto2BPathweaver);
+                autoSelection.addOption("PATHWEAVER 2B  - Shoot, Load, Shoot", auto2APathweaver);
+                autoSelection.addOption("PATHWEAVER 3A  - Shoot, Load, Load, Shoot, Shoot", auto3APathweaver);
+                autoSelection.addOption("PATHWEAVER 3B  - Load, ShootWhileLoad, Load, Shoot, Shoot", auto3BPathweaver);
+
+                /**
+                 * SAFETY trajectories have constraints on the max speed, acceleration, and
+                 * voltage
+                 */
+                autoSelection.addOption("AUTO 1- Shoot once", auto1);
+                autoSelection.addOption("AUTO 2A - Shoot, Load, Shoot", auto2A);
+                autoSelection.addOption("AUTO 2B - Load, Shoot, Shoot", auto2B);
+                autoSelection.addOption("AUTO 3A  - Shoot, Load, Load, Shoot, Shoot", auto3A);
+                autoSelection.addOption("AUTO 3B  - Load, ShootWhileLoad, Load, Shoot, Shoot", auto3B);
 
                 /**
                  * MANUAL trajectories we added without using Ramsete controllers
                  */
-                m_autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
-                m_autoSelection.addOption("MANUAL - Across Line 2nd Ball High", autoSecondLocation);
+                autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
+                autoSelection.addOption("MANUAL - Across Line 2nd Ball High", autoSecondLocation);
 
                 // Put the chooser on the dashboard
 
                 Shuffleboard.getTab("Operator")
-                                .add("Auto routine", m_autoSelection)
+                                .add("Auto routine", autoSelection)
                                 .withPosition(1, 0)
                                 .withSize(4, 1);
 
@@ -146,44 +170,44 @@ public class RobotContainer {
 
         private void configureButtonBindings() {
                 // Create some buttons
-                final JoystickButton shooterOffButton = new JoystickButton(m_operatorController, Button.kX.value);
-                final JoystickButton setTargetFar = new JoystickButton(m_operatorController, Button.kY.value);
-                final JoystickButton setTargetTBD = new JoystickButton(m_operatorController, Button.kB.value);
-                final JoystickButton setTargetNear = new JoystickButton(m_operatorController, Button.kA.value);
-                final JoystickButton bumpTargetSpeeds = new JoystickButton(m_operatorController,
+                final JoystickButton shooterOffButton = new JoystickButton(operatorController, Button.kX.value);
+                final JoystickButton setTargetFar = new JoystickButton(operatorController, Button.kY.value);
+                final JoystickButton setTargetTBD = new JoystickButton(operatorController, Button.kB.value);
+                final JoystickButton setTargetNear = new JoystickButton(operatorController, Button.kA.value);
+                final JoystickButton bumpTargetSpeeds = new JoystickButton(operatorController,
                                 Button.kRightBumper.value);
 
                 // Create fake button to correspond to right trigger pressed
                 final JoystickAxisButton shootButton = new JoystickAxisButton("Shoot",
-                                m_operatorController::getRightTriggerAxis, 0.5);
+                                operatorController::getRightTriggerAxis, 0.5);
 
                 // Create fake buttons to correspond to right joystick up / down
                 final JoystickAxisButton cargoLoadControl = new JoystickAxisButton("Load",
-                                m_operatorController::getLeftY, 0.25);
+                                operatorController::getLeftY, 0.25);
                 final JoystickAxisButton cargoEjectControl = new JoystickAxisButton("Eject",
-                                m_operatorController::getLeftY, -0.25);
+                                operatorController::getLeftY, -0.25);
 
-                final JoystickButton unlockClimberButton = new JoystickButton(m_operatorController,
+                final JoystickButton unlockClimberButton = new JoystickButton(operatorController,
                                 Button.kBack.value);
-                final JoystickButton lockClimberButton = new JoystickButton(m_operatorController,
+                final JoystickButton lockClimberButton = new JoystickButton(operatorController,
                                 Button.kStart.value);
 
                 // Create fake buttons from POV Dpad Values
-                final DPadButton closeIntakeCoverButton = new DPadButton("Close intakeCover", m_operatorController,
+                final DPadButton closeIntakeCoverButton = new DPadButton("Close intakeCover", operatorController,
                                 DPadButton.Value.kDPadUp);
-                final DPadButton openIntakeCoverButton = new DPadButton("Open intakeCover", m_operatorController,
+                final DPadButton openIntakeCoverButton = new DPadButton("Open intakeCover", operatorController,
                                 DPadButton.Value.kDPadDown);
 
                 /**
                  * SET SHOOTING TARGET
                  * Setting the shooting target will update the shooter motor setpoint
                  */
-                bumpTargetSpeeds.whenPressed(new InstantCommand(m_shooter::setBumped, m_shooter))
-                                .whenReleased(new InstantCommand(m_shooter::setNormal, m_shooter));
+                bumpTargetSpeeds.whenPressed(new InstantCommand(shooter::setBumped, shooter))
+                                .whenReleased(new InstantCommand(shooter::setNormal, shooter));
 
-                setTargetFar.whenPressed(new InstantCommand(() -> m_shooter.setShootingMode(kTargetFar)));
-                setTargetTBD.whenPressed(new InstantCommand(() -> m_shooter.setShootingMode(kTargetTBD)));
-                setTargetNear.whenPressed(new InstantCommand(() -> m_shooter.setShootingMode(kTargetNear)));
+                setTargetFar.whenPressed(new InstantCommand(() -> shooter.setShootingMode(kTargetFar)));
+                setTargetTBD.whenPressed(new InstantCommand(() -> shooter.setShootingMode(kTargetTBD)));
+                setTargetNear.whenPressed(new InstantCommand(() -> shooter.setShootingMode(kTargetNear)));
 
                 /**
                  * SHOOT ACTION
@@ -195,10 +219,10 @@ public class RobotContainer {
                 // TODO: Set time to automatically turn off the shooter motor
                 // See Timer.getFPGATimestamp
 
-                shootButton.whenPressed(new Shoot(m_intake, m_feeder, m_shooter, m_conveyor));
+                shootButton.whenPressed(new Shoot(intake, feeder, shooter, conveyor));
 
-                shooterOffButton.whenPressed(new InstantCommand(m_shooter::stopShooter, m_shooter)
-                                .andThen(() -> m_shooter.setShootingMode(kShooterOff)));
+                shooterOffButton.whenPressed(new InstantCommand(shooter::stopShooter, shooter)
+                                .andThen(() -> shooter.setShootingMode(kShooterOff)));
 
                 /**
                  * LOAD CARGO
@@ -207,47 +231,47 @@ public class RobotContainer {
                  * Close the intake cover after 2 seconds without loading cargo
                  */
                 cargoLoadControl.whenHeld(
-                                new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter))
+                                new LoadCargo(intake, intakeCover, conveyor, feeder, shooter))
                                 .whenReleased(
-                                                new LoadCargo(m_intake, m_intakeCover, m_conveyor, m_feeder, m_shooter)
+                                                new LoadCargo(intake, intakeCover, conveyor, feeder, shooter)
                                                                 .withTimeout(kLoadLagSecs)
-                                                                .andThen(new HoldCargo(m_intake, m_conveyor, m_feeder))
+                                                                .andThen(new HoldCargo(intake, conveyor, feeder))
                                                                 .andThen(new WaitCommand(10)
                                                                                 .andThen(new InstantCommand(
-                                                                                                m_intakeCover::closeIntake,
-                                                                                                m_intakeCover))));
+                                                                                                intakeCover::closeIntake,
+                                                                                                intakeCover))));
 
                 /**
                  * EJECT CARGO
                  * When you release cargo eject, hold any remaining cargo by stopping all motors
                  */
-                cargoEjectControl.whenPressed(new EjectCargo(m_intake, m_conveyor, m_feeder, m_intakeCover))
-                                .whenReleased(new HoldCargo(m_intake, m_conveyor, m_feeder));
+                cargoEjectControl.whenPressed(new EjectCargo(intake, conveyor, feeder, intakeCover))
+                                .whenReleased(new HoldCargo(intake, conveyor, feeder));
 
                 /** INTAKE COVER MANUAL OPEN/CLOSE */
-                openIntakeCoverButton.whenPressed(new InstantCommand(m_intakeCover::openIntake, m_intakeCover));
+                openIntakeCoverButton.whenPressed(new InstantCommand(intakeCover::openIntake, intakeCover));
 
                 closeIntakeCoverButton.whenPressed(
                                 new ConditionalCommand(
                                                 // If the climber is locked, you'e free to close the intake
-                                                new InstantCommand(m_intakeCover::closeIntake, m_intakeCover),
+                                                new InstantCommand(intakeCover::closeIntake, intakeCover),
                                                 // If the climber is UNLOCKED, do not close intake
                                                 new InstantCommand(),
                                                 // Check if the climber locked
-                                                m_climber::isLocked));
+                                                climber::isLocked));
 
                 /** LOCK AND UNLOCK CLIMBER AND BRAKE */
-                unlockClimberButton.whenPressed(new InstantCommand(m_climber::unlockClimber, m_climber)
-                                .andThen(new InstantCommand(m_climberBrake::unlockClimber, m_climberBrake)));
+                unlockClimberButton.whenPressed(new InstantCommand(climber::unlockClimber, climber)
+                                .andThen(new InstantCommand(climberBrake::unlockClimber, climberBrake)));
                 lockClimberButton.whenPressed(
-                                new InstantCommand(m_climber::lockClimber, m_climber)
-                                                .andThen(new InstantCommand(m_climberBrake::lockClimber,
-                                                                m_climberBrake)));
+                                new InstantCommand(climber::lockClimber, climber)
+                                                .andThen(new InstantCommand(climberBrake::lockClimber,
+                                                                climberBrake)));
 
         }
 
         public Command getAutonomousCommand() {
                 // Command to run in autonomous. Stop at the end
-                return m_autoSelection.getSelected().andThen(() -> m_drive.stop());
+                return autoSelection.getSelected().andThen(() -> drive.stop());
         }
 }

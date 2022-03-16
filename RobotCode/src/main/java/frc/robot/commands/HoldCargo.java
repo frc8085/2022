@@ -14,8 +14,9 @@ import frc.robot.subsystems.Intake;
 // Make sure that the feeder is not running
 public class HoldCargo extends SequentialCommandGroup {
     public HoldCargo(Intake intake, Conveyor conveyor, Feeder feeder) {
-        addCommands(new InstantCommand(intake::stopIntake, intake)
-                .alongWith(new InstantCommand(feeder::stopFeeder, feeder))
-                .alongWith(new InstantCommand(conveyor::stopConveyor, conveyor)));
+        addCommands(parallel(
+                new InstantCommand(intake::stopIntake, intake),
+                new InstantCommand(feeder::stopFeeder, feeder),
+                new InstantCommand(conveyor::stopConveyor, conveyor)));
     }
 }
