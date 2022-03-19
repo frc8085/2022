@@ -7,7 +7,6 @@ package frc.robot;
 // Constants
 import static frc.robot.Constants.IntakeConstants.*;
 import static frc.robot.Constants.OIConstants.*;
-
 import static frc.robot.Constants.AutoConstants.*;
 
 // Inputs
