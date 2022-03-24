@@ -45,13 +45,13 @@ public class Shooter extends SubsystemBase {
         {
             put(kShooterOff, "Shooting mode not selected");
 
-            put(kTargetNear, "▔ Near");
-            put(kTargetFar, "▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔▔ Far");
-            put(kTargetTBD, "▔▔/tbd/▔▔");
+            put(kTargetNear, "Near");
+            put(kTargetFar, "------------------------- Far");
+            put(kTargetTBD, "---Mid---");
 
-            put(kTargetBumpedNear, "↑bump _ Near");
-            put(kTargetBumpedFar, "↑bump ____________________ Far");
-            put(kTargetBumpedTBD, "↑bump __/tbd/__");
+            put(kTargetBumpedNear, "High - Near");
+            put(kTargetBumpedFar, "High -------------------- Far");
+            put(kTargetBumpedTBD, "High ---Mid---");
         }
     };
 

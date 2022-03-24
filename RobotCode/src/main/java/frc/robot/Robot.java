@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // Camera server
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.UsbCamera;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.util.net.PortForwarder;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,6 +48,15 @@ public class Robot extends TimedRobot {
             camera1 = CameraServer.startAutomaticCapture(0);
             camera2 = CameraServer.startAutomaticCapture(1);
         }
+
+        // Setup Port Forwarding to enable Limelight communication
+        // while tethered to our robot over USB
+        PortForwarder.add(5800, "limelight.local", 5800);
+        PortForwarder.add(5801, "limelight.local", 5801);
+        PortForwarder.add(5802, "limelight.local", 5802);
+        PortForwarder.add(5803, "limelight.local", 5803);
+        PortForwarder.add(5804, "limelight.local", 5804);
+        PortForwarder.add(5805, "limelight.local", 5805);
     }
 
     /**
