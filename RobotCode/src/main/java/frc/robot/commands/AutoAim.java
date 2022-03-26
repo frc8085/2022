@@ -14,8 +14,11 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
 public class AutoAim extends SequentialCommandGroup {
-  public AutoAim(DoubleSupplier turnToDegree, Limelight limelight, GTADrive drive) {
-    SmartDashboard.putNumber("What to do", turnToDegree.getAsDouble());
-    addCommands(new TurnToDegreeGyro(turnToDegree.getAsDouble(), drive));
-  }
+    private DoubleSupplier m_turnToDegree;
+
+    public AutoAim(DoubleSupplier turnToDegree, Limelight limelight, GTADrive drive) {
+        m_turnToDegree = turnToDegree;
+        SmartDashboard.putNumber("What to do", m_turnToDegree.getAsDouble());
+        addCommands(new TurnToDegreeGyro(m_turnToDegree.getAsDouble(), drive));
+    }
 }
