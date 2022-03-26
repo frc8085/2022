@@ -84,6 +84,7 @@ public class GTADrive extends SubsystemBase {
     public void log() {
         SmartDashboard.putNumber("Distance traveled", getDistance());
         SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
+        SmartDashboard.putNumber("Positon", m_leftEncoder.getPosition());
     }
 
     /** Call log method every loop. */
