@@ -52,7 +52,7 @@ public class Climber extends SubsystemBase {
             if (Math.abs(rightY) < .1) {
                 stopClimb();
             } else {
-                m_climberMotor.set(rightY * 0.8);
+                m_climberMotor.set(rightY);
             }
         }
     }
