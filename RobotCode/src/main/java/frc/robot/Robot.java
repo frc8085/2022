@@ -49,6 +49,7 @@ public class Robot extends TimedRobot {
         if (Robot.isReal()) {
             camera1 = CameraServer.startAutomaticCapture(0);
             camera2 = CameraServer.startAutomaticCapture(1);
+
         }
 
         // Setup Port Forwarding to enable Limelight communication

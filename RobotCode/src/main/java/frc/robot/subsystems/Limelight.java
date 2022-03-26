@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.LimelightConfiguration.Advanced_Crosshair;
 import frc.robot.utilities.LimelightConfiguration.Advanced_Target;
@@ -25,6 +26,7 @@ public class Limelight extends SubsystemBase {
 
     class PeriodicRunnable implements java.lang.Runnable {
         public void run() {
+            log();
             resetPilelineLatency();
             try {
                 Thread.sleep(50);
@@ -41,6 +43,13 @@ public class Limelight extends SubsystemBase {
     }
 
     Notifier _hearBeat = new Notifier(new PeriodicRunnable());
+
+    /** The log method puts interesting information to the SmartDashboard. */
+    public void log() {
+        SmartDashboard.putNumber("Degree rotation to target", getdegRotationToTarget());
+        SmartDashboard.putNumber("Skew rotation to target", getSkew_Rotation());
+        SmartDashboard.putBoolean("Target found", getIsTargetFound());
+    }
 
     /**
      * Using the Default Lime Light NT table
