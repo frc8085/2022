@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoAim;
+import frc.robot.commands.AutoAimWithLimelight;
 import frc.robot.commands.AutoBaseSequence;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
@@ -162,7 +163,8 @@ public class RobotContainer {
                 /**
                  * AUTO AIM using limelight
                  */
-                autoAimButton.whenPressed(new AutoAim(m_limelight::getdegRotationToTarget, m_limelight, m_drive));
+                autoAimButton.whenPressed(
+                                new AutoAimWithLimelight(m_drive, m_limelight));
 
                 /**
                  * SHOOT ACTION

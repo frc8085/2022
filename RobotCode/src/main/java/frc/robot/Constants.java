@@ -147,7 +147,8 @@ public final class Constants {
         public static final int kNearSpeed = -2100;
 
         // Low shot speeds
-        public static final int kBumpedFarSpeed = -4000;
+        // public static final int kBumpedFarSpeed = -4000;
+        public static final int kBumpedFarSpeed = -3900;
         public static final int kBumpedTBDSpeed = -3500;
         public static final int kBumpedNearSpeed = -3100;
 

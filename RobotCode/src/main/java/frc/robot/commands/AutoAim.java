@@ -18,7 +18,7 @@ public class AutoAim extends SequentialCommandGroup {
     public AutoAim(DoubleSupplier turnToDegree, Limelight limelight, GTADrive drive) {
         addCommands(
                 new InstantCommand(() -> SmartDashboard.putNumber("Turn to", turnToDegree.getAsDouble())),
-                new TurnToDegreeGyro(turnToDegree.getAsDouble(), drive));
+                new TurnToDegreeGyro(-1 * turnToDegree.getAsDouble(), drive));
     }
 
 }
