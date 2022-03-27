@@ -4,13 +4,9 @@
 
 package frc.robot;
 
-import java.util.HashMap;
-import java.util.Map;
-
 // Constants
 import static frc.robot.Constants.IntakeConstants.*;
 import static frc.robot.Constants.OIConstants.*;
-import static frc.robot.Constants.ShooterConstants.*;
 import static frc.robot.Constants.AutoConstants.*;
 
 // Inputs
@@ -163,7 +159,11 @@ public class RobotContainer {
                 setTargetTBD.whenPressed(new InstantCommand(() -> m_shooter.setShootingMode(kTargetTBD)));
                 setTargetNear.whenPressed(new InstantCommand(() -> m_shooter.setShootingMode(kTargetNear)));
 
+                /**
+                 * AUTO AIM using limelight
+                 */
                 autoAimButton.whenPressed(new AutoAim(m_limelight::getdegRotationToTarget, m_limelight, m_drive));
+
                 /**
                  * SHOOT ACTION
                  * Shooting will run the feeder, but only if the shooter is up to speed.

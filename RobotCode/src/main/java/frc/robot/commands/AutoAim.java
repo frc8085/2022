@@ -10,15 +10,15 @@ import frc.robot.subsystems.Limelight;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 
 /** An example command that uses an example subsystem. */
 public class AutoAim extends SequentialCommandGroup {
-    private DoubleSupplier m_turnToDegree;
-
     public AutoAim(DoubleSupplier turnToDegree, Limelight limelight, GTADrive drive) {
-        m_turnToDegree = turnToDegree;
-        SmartDashboard.putNumber("What to do", m_turnToDegree.getAsDouble());
-        addCommands(new TurnToDegreeGyro(m_turnToDegree.getAsDouble(), drive));
+        addCommands(
+                new InstantCommand(() -> SmartDashboard.putNumber("Turn to", turnToDegree.getAsDouble())),
+                new TurnToDegreeGyro(turnToDegree.getAsDouble(), drive));
     }
+
 }
