@@ -12,16 +12,12 @@ package frc.robot.utilities;
  * distance
  */
 public class GetSetpointFromDistance {
-    private double distanceToTarget, kHMaxFeet, kGFeetPerSecondSquared, vX;
     private double setpointRPM;
+    private double distanceFeet;
 
-    public double setpointFromDistance(double distance) {
-        this.distanceToTarget = distance;
-        kHMaxFeet = 10;
-        kGFeetPerSecondSquared = 32.2;
-        vX = (distanceToTarget + 1.5) / Math.sqrt(kHMaxFeet / kGFeetPerSecondSquared);
-        setpointRPM = vX;
-
+    public double setpointFromDistance(double distanceInches) {
+        distanceFeet = distanceInches / 12;
+        setpointRPM = 53.255 * Math.pow(distanceFeet, 2) - 336.68 * distanceFeet + 4133.5;
         return setpointRPM;
     }
 }
