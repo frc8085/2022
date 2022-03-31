@@ -12,7 +12,7 @@ package frc.robot.utilities;
  * distance
  */
 public final class GetSetpointFromDistance {
-    public double setpointFromDistance(double dInches) {
+    public static double setpointFromDistance(double dInches) {
         double d = dInches;
         double setpointRPM = dInches < 100 ? 3550 : 0.1607 * Math.pow(d, 2) - 28.274 * d + 4991.1;
         return setpointRPM;

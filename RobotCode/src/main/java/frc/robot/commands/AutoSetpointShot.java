@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Limelight;
 
@@ -37,13 +38,14 @@ public class AutoSetpointShot extends SequentialCommandGroup {
             Shooter shooter,
             Conveyor conveyor) {
 
-        double distanceToTargetInches = limelight.getDistanceToTarget();
-        double autoSetpoint = setpointFromDistance(distanceToTargetInches);
+        double dInches = limelight.getDistanceToTarget();
+        double autoSetpoint = dInches < 100 ? 3550 : 0.1607 * Math.pow(dInches, 2) - 28.274 * dInches + 4991.1;
 
         addCommands(new ConditionalCommand(
                 sequence(new AutoAimWithLimelight(drive, limelight),
-                        new AutoSetpointWithLimelight(drive, shooter, limelight),
+                        new InstantCommand(() -> shooter.setSetpoint(autoSetpoint)),
                         new InstantCommand(conveyor::runConveyor, conveyor),
+                        new WaitUntilCommand(shooter::atSetpoint),
                         new Shoot(intake, feeder, shooter, conveyor),
                         new HoldCargo(intake, conveyor, feeder),
                         new InstantCommand(shooter::stopShooter, shooter)),
