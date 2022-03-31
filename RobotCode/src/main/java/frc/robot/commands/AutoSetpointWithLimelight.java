@@ -12,6 +12,8 @@ import static frc.robot.Constants.DriveConstants.*;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.GTADrive;
 import frc.robot.subsystems.Limelight;
+import frc.robot.subsystems.Shooter;
+import frc.robot.utilities.GetSetpointFromDistance;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
@@ -22,39 +24,35 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
  * input is the
  * averaged values of the left and right encoders.
  */
-public class AutoAimWithLimelight extends CommandBase {
+public class AutoSetpointWithLimelight extends CommandBase {
     private final GTADrive m_drive;
     private final Limelight m_limelight;
+    private final Shooter m_shooter;
+    private double setpoint;
 
-    public AutoAimWithLimelight(GTADrive drive, Limelight limelight) {
+    public AutoSetpointWithLimelight(GTADrive drive, Shooter shooter, Limelight limelight) {
         // Require the drive and limelight
         m_drive = drive;
         m_limelight = limelight;
+        m_shooter = shooter;
+        double distance = m_limelight.getDistanceToTarget();
+        setpoint = GetSetpointFromDistance.setpointFromDistance(distance);
         addRequirements(m_drive, m_limelight);
-    }
-
-    @Override
-    public void execute() {
-        super.execute();
-        double turnToDegree = m_limelight.getdegRotationToTarget();
-        double turnSpeed = turnToDegree * DriveConstants.kTurnFactor;
-        m_drive.turn(turnSpeed);
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
         // Get everything in a safe starting state.
-        m_drive.reset();
         super.initialize();
+        m_drive.reset();
+        m_shooter.setSetpoint(setpoint);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        boolean targetVisible = m_limelight.getIsTargetFound();
-        boolean withinTolerance = Math.abs(m_limelight.getdegRotationToTarget()) <= 2.5;
-        // End this Command if we reached our setpoint OR we don't have a target visible
-        return !targetVisible || withinTolerance;
+        boolean atSetpoint = m_shooter.atSetpoint();
+        return atSetpoint;
     }
 }
