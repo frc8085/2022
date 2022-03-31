@@ -23,18 +23,18 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
  * averaged values of the left and right encoders.
  */
 public class AutoAimWithLimelight extends CommandBase {
-    private final GTADrive m_drivetrain;
+    private final GTADrive m_drive;
     private final Limelight m_limelight;
 
     static double kP = 0.01;
     static double kI = 0;
     static double kD = 0.001;
 
-    public AutoAimWithLimelight(GTADrive drivetrain, Limelight limelight) {
+    public AutoAimWithLimelight(GTADrive drive, Limelight limelight) {
         // Require the drive and limelight
-        m_drivetrain = drivetrain;
+        m_drive = drive;
         m_limelight = limelight;
-        addRequirements(m_drivetrain, m_limelight);
+        addRequirements(m_drive, m_limelight);
     }
 
     @Override
@@ -42,20 +42,23 @@ public class AutoAimWithLimelight extends CommandBase {
         super.execute();
         double turnToDegree = m_limelight.getdegRotationToTarget();
         double turnSpeed = turnToDegree * DriveConstants.kTurnFactor;
-        m_drivetrain.turn(turnSpeed);
+        m_drive.turn(turnSpeed);
     }
 
     // Called just before this Command runs the first time
     @Override
     public void initialize() {
         // Get everything in a safe starting state.
-        m_drivetrain.reset();
+        m_drive.reset();
         super.initialize();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        return Math.abs(m_limelight.getdegRotationToTarget()) <= 2.5;
+        boolean targetVisible = m_limelight.getIsTargetFound();
+        boolean withinTolerance = Math.abs(m_limelight.getdegRotationToTarget()) <= 2.5;
+        // End this Command if we reached our setpoint OR we don't have a target visible
+        return !targetVisible || withinTolerance;
     }
 }

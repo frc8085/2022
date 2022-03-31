@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.LimelightConfiguration.Advanced_Crosshair;
@@ -12,6 +13,7 @@ import frc.robot.utilities.LimelightConfiguration.CamMode;
 import frc.robot.utilities.LimelightConfiguration.LedMode;
 import frc.robot.utilities.LimelightConfiguration.Snapshot;
 import frc.robot.utilities.LimelightConfiguration.StreamType;
+import static frc.robot.utilities.GetSetpointFromDistance.setpointFromDistance;
 
 /**
  * Lime Light Class was started by Corey Applegate of Team 3244
@@ -19,15 +21,21 @@ import frc.robot.utilities.LimelightConfiguration.StreamType;
  * Camera.
  */
 public class Limelight extends SubsystemBase {
+    private boolean TUNING_MODE = true;
     private NetworkTable m_table;
     private String m_tableName;
     private Boolean isConnected = false;
     private double _hearBeatPeriod = 0.1;
+    private NetworkTableEntry targetVisible;
+    private NetworkTableEntry distanceToTarget;
+    private NetworkTableEntry rotationToTarget;
+    private NetworkTableEntry setpointForTarget;
 
     class PeriodicRunnable implements java.lang.Runnable {
         public void run() {
-            log();
             resetPilelineLatency();
+            log();
+
             try {
                 Thread.sleep(50);
             } catch (InterruptedException e) {
@@ -46,9 +54,33 @@ public class Limelight extends SubsystemBase {
 
     /** The log method puts interesting information to the SmartDashboard. */
     public void log() {
-        SmartDashboard.putNumber("Degree rotation to target", getdegRotationToTarget());
-        SmartDashboard.putNumber("Skew rotation to target", getSkew_Rotation());
-        SmartDashboard.putBoolean("Target found", getIsTargetFound());
+        // Things to show only in tuninig mode
+        if (TUNING_MODE) {
+            targetVisible.setBoolean(getIsTargetFound());
+            distanceToTarget.setNumber(getDistanceToTarget());
+            rotationToTarget.setNumber(getdegRotationToTarget());
+        }
+
+        // Things we always show
+        setpointForTarget.setNumber(setpointFromDistance(getDistanceToTarget()));
+    }
+
+    private void configureOperatorDashboard() {
+        targetVisible = Shuffleboard.getTab("Operator")
+                .add("Target visible", getIsTargetFound())
+                .getEntry();
+
+        distanceToTarget = Shuffleboard.getTab("Operator")
+                .add("Distance to target", getDistanceToTarget())
+                .getEntry();
+
+        rotationToTarget = Shuffleboard.getTab("Operator")
+                .add("Rotation to target", getdegRotationToTarget())
+                .getEntry();
+
+        setpointForTarget = Shuffleboard.getTab("Operator")
+                .add("Setpoint for target", "")
+                .getEntry();
     }
 
     /**
@@ -58,6 +90,7 @@ public class Limelight extends SubsystemBase {
         m_tableName = "limelight";
         m_table = NetworkTableInstance.getDefault().getTable(m_tableName);
         _hearBeat.startPeriodic(_hearBeatPeriod);
+        configureOperatorDashboard();
     }
 
     /**
@@ -75,12 +108,33 @@ public class Limelight extends SubsystemBase {
     public Limelight(NetworkTable table) {
         m_table = table;
         _hearBeat.startPeriodic(_hearBeatPeriod);
-
     }
 
     // This is a test
     public boolean isConnected() {
         return isConnected;
+    }
+
+    /**
+     * Use the area of the bounding rectagle to calculate our distance to the target
+     * (from the camera)
+     * polynomial function determined empricially based on the following data
+     * gathered
+     * --- | -----
+     * in. | ta
+     * --- | -----
+     * 132 | 0.31%
+     * 108 | 0.46%
+     * 084 | 0.65%
+     * 060 | 0.90%
+     * 019 | 1.36%
+     */
+    public double getDistanceToTarget() {
+        double targetArea = getTargetArea();
+        double distanceToTargetInches = 38.3225 * Math.pow(targetArea, 2) - 169.91 * targetArea + 179.71;
+
+        // Return the distance to the target
+        return targetArea > 0 ? distanceToTargetInches : 0;
     }
 
     /**

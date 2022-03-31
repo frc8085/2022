@@ -11,13 +11,10 @@ package frc.robot.utilities;
  * A utility class to calculate the shooter motor setpoint given the target's
  * distance
  */
-public class GetSetpointFromDistance {
-    private double setpointRPM;
-    private double distanceFeet;
-
-    public double setpointFromDistance(double distanceInches) {
-        distanceFeet = distanceInches / 12;
-        setpointRPM = 53.255 * Math.pow(distanceFeet, 2) - 336.68 * distanceFeet + 4133.5;
+public final class GetSetpointFromDistance {
+    public static double setpointFromDistance(double distanceInches) {
+        double distanceFeet = distanceInches / 12;
+        double setpointRPM = 53.255 * Math.pow(distanceFeet, 2) - 336.68 * distanceFeet + 4133.5;
         return setpointRPM;
     }
 }
