@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Trajectories.TrajectoryType;
 import frc.robot.commands.AutoBaseSequence;
+import frc.robot.commands.BasicRamsete;
 import frc.robot.commands.Auto2Shot_LoadShootShoot;
 import frc.robot.commands.Auto1Shot;
 import frc.robot.commands.Auto2Shot_ShootLoadShoot;
@@ -96,6 +97,8 @@ public class RobotContainer {
                         kTargetBumpedTBD, // shoot to desired target
                         drive, intake, intakeCover, conveyor, feeder, shooter);
 
+        private final Command basicRamsete = new BasicRamsete(drive, intake, conveyor, feeder, shooter, intakeCover);
+
         private final Command auto1 = new Auto1Shot(intake, conveyor, feeder, shooter);
         private final Command auto2A = new Auto2Shot_ShootLoadShoot(TrajectoryType.SAFETY, drive,
                         intake,
@@ -113,27 +116,6 @@ public class RobotContainer {
                         intake,
                         conveyor, feeder, shooter, intakeCover);
 
-        private final Command auto2APathweaver = new Auto2Shot_ShootLoadShoot(TrajectoryType.PATHWEAVER,
-                        drive,
-                        intake, conveyor, feeder, shooter, intakeCover);
-        private final Command auto2BPathweaver = new Auto2Shot_LoadShootShoot(TrajectoryType.PATHWEAVER,
-                        drive,
-                        intake, conveyor, feeder, shooter, intakeCover);
-
-        private final Command auto3APathweaver = new Auto3Shot_ShootLoadLoadShootShoot(TrajectoryType.PATHWEAVER, drive,
-                        intake,
-                        conveyor, feeder, shooter, intakeCover);
-        private final Command auto3BPathweaver = new Auto3Shot_LoadShootWhileLoadLoadShootShoot(
-                        TrajectoryType.PATHWEAVER,
-                        drive,
-                        intake,
-                        conveyor, feeder, shooter, intakeCover);
-        private final Command auto4Pathweaver = new Auto4Shot_LoadShootShootLoadLoadReturnShoot(
-                        TrajectoryType.PATHWEAVER,
-                        drive,
-                        intake,
-                        conveyor, feeder, shooter, intakeCover);
-
         public RobotContainer() {
                 configureButtonBindings();
 
@@ -143,20 +125,10 @@ public class RobotContainer {
                 // Add commands to the autonomous command chooser
 
                 /**
-                 * PATHWEAVER trajectories are read directly from pathewaver output JSON files
-                 * We can't more constraints to these paths
-                 */
-                autoSelection.setDefaultOption("PATHWEAVER 2A - Load, Shoot, Shoot", auto2BPathweaver);
-                autoSelection.addOption("PATHWEAVER 2B  - Shoot, Load, Shoot", auto2APathweaver);
-                autoSelection.addOption("PATHWEAVER 3A  - Shoot, Load, Load, Shoot, Shoot", auto3APathweaver);
-                autoSelection.addOption("PATHWEAVER 3B  - Load, ShootWhileLoad, Load, Shoot, Shoot", auto3BPathweaver);
-                autoSelection.addOption("PATHWEAVER 4  - Load, Shoot, Shoot, Load, Load, Return, Shoot, Shoot",
-                                auto4Pathweaver);
-
-                /**
                  * SAFETY trajectories have constraints on the max speed, acceleration, and
                  * voltage
                  */
+                autoSelection.addOption("BASIC", basicRamsete);
                 autoSelection.addOption("AUTO 1- Shoot once", auto1);
                 autoSelection.addOption("AUTO 2A - Shoot, Load, Shoot", auto2A);
                 autoSelection.addOption("AUTO 2B - Load, Shoot, Shoot", auto2B);
