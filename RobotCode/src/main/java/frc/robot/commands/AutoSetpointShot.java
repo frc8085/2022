@@ -41,16 +41,12 @@ public class AutoSetpointShot extends SequentialCommandGroup {
         double dInches = limelight.getDistanceToTarget();
         double autoSetpoint = dInches < 100 ? 3550 : 0.1607 * Math.pow(dInches, 2) - 28.274 * dInches + 4991.1;
 
-        addCommands(new ConditionalCommand(
-                sequence(new AutoAimWithLimelight(drive, limelight),
-                        new InstantCommand(() -> shooter.setSetpoint(autoSetpoint)),
-                        new InstantCommand(conveyor::runConveyor, conveyor),
-                        new WaitUntilCommand(shooter::atSetpoint),
-                        new Shoot(intake, feeder, shooter, conveyor),
-                        new HoldCargo(intake, conveyor, feeder),
-                        new InstantCommand(shooter::stopShooter, shooter)),
-                // Do nothing if we don't actually see a target
-                new InstantCommand(),
-                limelight::getIsTargetFound));
+        addCommands(new AutoAimWithLimelight(drive, limelight),
+                new InstantCommand(() -> shooter.setSetpoint(3500)),
+                // new InstantCommand(conveyor::runConveyor, conveyor),
+                new WaitUntilCommand(shooter::atSetpoint),
+                new Shoot(intake, feeder, shooter, conveyor),
+                new HoldCargo(intake, conveyor, feeder),
+                new InstantCommand(shooter::stopShooter, shooter));
     }
 }
