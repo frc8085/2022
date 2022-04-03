@@ -8,6 +8,7 @@ import static frc.robot.Constants.ShooterConstants.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.DoubleSupplier;
 
 import static frc.robot.Constants.OIConstants.*;
 
@@ -185,8 +186,20 @@ public class Shooter extends SubsystemBase {
         }
     }
 
+    public void setSetpointFromDistance(DoubleSupplier distanceSupplier) {
+        // Empirically derived formula
+        double distance = distanceSupplier.getAsDouble() + 15;
+        double autoSetpoint = 0.1607 * Math.pow(distance, 2) - 28.274 * distance +
+                4991.1;
+
+        // When we're too close the setpoint formla is unreliable. Fix the speed
+        // instead.
+        double setpoint = distance < 100 ? 3550 : autoSetpoint;
+        setSetpoint(-1 * setpoint);
+    }
+
     public void setSetpoint(double setPoint) {
-        kSetPoint = setPoint;
+        kSetPoint = Math.min(setPoint, 5300);
         m_pidController.setReference(kSetPoint, CANSparkMax.ControlType.kVelocity);
     }
 

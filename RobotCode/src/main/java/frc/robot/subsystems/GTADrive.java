@@ -78,7 +78,6 @@ public class GTADrive extends SubsystemBase {
         SmartDashboard.putNumber("Raw encoder read", m_left1Encoder.getPosition());
         SmartDashboard.putNumber("Distance traveled", getDistance());
         SmartDashboard.putNumber("Gyro", m_gyro.getAngle());
-
     }
 
     /** Call log method every loop. */
@@ -89,7 +88,6 @@ public class GTADrive extends SubsystemBase {
 
     // Tank drive for autonomous
     public void drive(double left, double right) {
-
         // TODO: Fix this hack using a better util
         int directionL = left >= 0 ? 1 : -1;
         int directionR = right >= 0 ? 1 : -1;
