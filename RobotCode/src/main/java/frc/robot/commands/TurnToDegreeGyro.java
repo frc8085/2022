@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
  * averaged values of the left and right encoders.
  */
 public class TurnToDegreeGyro extends PIDCommand {
-    private final GTADrive m_drivetrain;
+    private final GTADrive m_drive;
 
     static double kP = 0.01;
     static double kI = 0;
@@ -28,18 +28,18 @@ public class TurnToDegreeGyro extends PIDCommand {
      *
      * @param distance The distance to drive (inches)
      */
-    public TurnToDegreeGyro(double degree, GTADrive drivetrain) {
+    public TurnToDegreeGyro(double degree, GTADrive drive) {
         super(new PIDController(kP, kI, kD),
                 // Close loop on heading
-                drivetrain::getHeading,
+                drive::getHeading,
                 // Set reference to target
                 degree,
                 // Pipe output to turn robot
-                output -> drivetrain.turn(output));
+                output -> drive.turn(output));
 
         // Require the drive
-        m_drivetrain = drivetrain;
-        addRequirements(m_drivetrain);
+        m_drive = drive;
+        addRequirements(m_drive);
 
         getController().setTolerance(kAutoGyroTolerance);
     }
@@ -53,7 +53,7 @@ public class TurnToDegreeGyro extends PIDCommand {
     @Override
     public void initialize() {
         // Get everything in a safe starting state.
-        m_drivetrain.reset();
+        m_drive.reset();
         super.initialize();
     }
 

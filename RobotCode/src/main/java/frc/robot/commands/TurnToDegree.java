@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
  * encoders.
  */
 public class TurnToDegree extends PIDCommand {
-    private final GTADrive m_drivetrain;
+    private final GTADrive m_drive;
 
     static double kP = 0.1;
     static double kI = 0;
@@ -27,15 +27,15 @@ public class TurnToDegree extends PIDCommand {
      *
      * @param distance The distance to drive (inches)
      */
-    public TurnToDegree(double degree, GTADrive drivetrain) {
+    public TurnToDegree(double degree, GTADrive drive) {
         super(
                 new PIDController(kP, kI, kD),
-                drivetrain::getTurnedInches,
+                drive::getTurnedInches,
                 degree * kTurnFactor, // Convert degrees to distance
-                d -> drivetrain.turn(d));
+                d -> drive.turn(d));
 
-        m_drivetrain = drivetrain;
-        addRequirements(m_drivetrain);
+        m_drive = drive;
+        addRequirements(m_drive);
 
         getController().setTolerance(kAutoPositionTolerance);
     }
@@ -49,7 +49,7 @@ public class TurnToDegree extends PIDCommand {
     @Override
     public void initialize() {
         // Get everything in a safe starting state.
-        m_drivetrain.reset();
+        m_drive.reset();
         super.initialize();
     }
 

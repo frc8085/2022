@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
  * right encoders.
  */
 public class DriveStraight extends PIDCommand {
-    private final GTADrive m_drivetrain;
+    private final GTADrive m_drive;
 
     // worked at kP=.01 kD=.001
     static double kP = 0.045;
@@ -28,18 +28,18 @@ public class DriveStraight extends PIDCommand {
      *
      * @param distance The distance to drive (inches)
      */
-    public DriveStraight(double distance, GTADrive drivetrain) {
+    public DriveStraight(double distance, GTADrive drive) {
         super(
                 new PIDController(kP, kI, kD),
                 // Close loop on distance
-                drivetrain::getDistance,
+                drive::getDistance,
                 // Set reference to target distance
                 distance,
                 // Pipe output to drive the robot
-                output -> drivetrain.drive(output, output));
+                output -> drive.drive(output, output));
 
-        m_drivetrain = drivetrain;
-        addRequirements(m_drivetrain);
+        m_drive = drive;
+        addRequirements(m_drive);
 
         getController().setTolerance(kAutoPositionTolerance);
 
@@ -54,7 +54,7 @@ public class DriveStraight extends PIDCommand {
     @Override
     public void initialize() {
         // Get everything in a safe starting state.
-        m_drivetrain.reset();
+        m_drive.reset();
         super.initialize();
     }
 
