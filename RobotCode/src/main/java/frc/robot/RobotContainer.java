@@ -119,8 +119,9 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /** AUTOMATIC OPERATION (using limelight) */
         // Driver can auto aim to target
-        final JoystickButton autoAimButton = new JoystickButton(driverController, Button.kRightBumper.value);
-        autoAimButton.whenPressed(new AutoAimWithLimelight(drive, limelight));
+        final JoystickButton autoShootDriverButton = new JoystickButton(driverController, Button.kRightBumper.value);
+        autoShootDriverButton.whenPressed(
+            new AutoSetpointShot(drive, limelight, intake, feeder, shooter, conveyor))
 
         // Operator can auto shoot. This also auto aims.
         final JoystickButton autoShootButton = new JoystickButton(operatorController, Button.kLeftBumper.value);
