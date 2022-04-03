@@ -73,30 +73,22 @@ public class RobotContainer {
     private final Climber climber = new Climber(operatorController);
 
     private final Command autoUpAgainstHub = new AutoBaseSequence(
-            kTargetBumpedTBD, // shoot to desired target
-            40, // drive
+            40,
             kPickupCargo, // pick up new cargo
             -50, // drive back
-            kTargetBumpedTBD, // shoot to desired target
             75, // turn
             70, // drive
-            kPickupCargo, // pick up new cargo
-            kStandStill, // 🚫 DON'T drive
-            kShooterOff, // 🚫 don't shoot (set setpoint to 0)
-            drive, intake, conveyor, feeder, shooter, intakeCover);
+            kPickupCargo,
+            limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
 
     private final Command autoSecondLocation = new AutoBaseSequence(
-            kTargetBumpedTBD, // shoot to desired target
             40, // drive
             kPickupCargo, // pick up new cargo
             20, // drive forward
-            kShooterOff, // 🚫 don't shoot (set setpoint to 0)
             kStandStill, // 🚫 don't turn
             -85, // drive backwards
-            kDontPickupCargo, // 🚫 don't pick up new cargo
-            kStandStill, // 🚫 don't drive
-            kTargetBumpedTBD, // shoot to desired target
-            drive, intake, conveyor, feeder, shooter, intakeCover);
+            kPickupCargo,
+            limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
 
     public RobotContainer() {
         configureButtonBindings();

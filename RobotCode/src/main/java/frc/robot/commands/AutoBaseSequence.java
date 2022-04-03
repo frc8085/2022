@@ -13,22 +13,20 @@ import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.IntakeCover;
+import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
 
 // Run feeder and conveyor in the same direction at a set speed.
 // Make sure that the feeder is not running
 public class AutoBaseSequence extends SequentialCommandGroup {
     public AutoBaseSequence(
-            int shootingMode1,
             double driveDistance1,
             boolean pickUp1,
             double driveDistance2,
-            int shootingMode2,
             double turnDegrees1,
             double driveDistance3,
             boolean pickUp2,
-            double driveDistance4,
-            int shootingMode3,
+            Limelight limelight,
             GTADrive drive,
             Intake intake,
             Conveyor conveyor,
@@ -36,25 +34,20 @@ public class AutoBaseSequence extends SequentialCommandGroup {
             Shooter shooter,
             IntakeCover intakeCover) {
         addCommands(
-                /* 1 */ new ShootAuto(() -> kShooterTargetRPM[shootingMode1], intake, feeder, shooter, conveyor),
-                new WaitCommand(.25),
-                /* 2 */ new DriveStraight(driveDistance1, drive),
-                /* 3 */ !pickUp1 ? new InstantCommand()
+                /* 1 */ new DriveStraight(driveDistance1, drive),
+                /* 2 */ !pickUp1 ? new InstantCommand()
                         : new LoadCargo(intake, intakeCover, conveyor, feeder, shooter).andThen(new WaitCommand(2))
                                 .andThen(new HoldCargo(intake, conveyor, feeder)),
                 /* 4 */ new DriveStraight(driveDistance2, drive),
-                /* 5 */ new ShootAuto(() -> kShooterTargetRPM[shootingMode2], intake, feeder, shooter,
-                        conveyor),
+                /* 4 */ new AutoAimWithLimelight(drive, limelight),
+                /* 4 */ new ShootAuto(limelight, intake, feeder, shooter, conveyor),
                 /* 6 */ new TurnToDegreeGyro(turnDegrees1, drive),
                 /* 7 */ new DriveStraight(driveDistance3, drive),
                 /* 8 */ !pickUp2 ? new InstantCommand()
                         : new LoadCargo(intake, intakeCover, conveyor, feeder, shooter).andThen(new WaitCommand(2))
                                 .andThen(new HoldCargo(intake, conveyor, feeder)),
-                /*   */ new WaitCommand(2),
-                /*   */ new HoldCargo(intake, conveyor, feeder),
-                /* 9 */ new DriveStraight(driveDistance4, drive),
-                /* 10 */ new ShootAuto(() -> kShooterTargetRPM[shootingMode3], intake, feeder, shooter,
-                        conveyor),
+                /* 4 */ new AutoAimWithLimelight(drive, limelight),
+                /* 4 */ new ShootAuto(limelight, intake, feeder, shooter, conveyor),
                 /* 11 */ new DriveStraight(0, drive)); // Force it to stop
 
         /// 305.66-116.17 (distance)
