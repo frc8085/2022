@@ -123,7 +123,9 @@ public class RobotContainer {
 
         // Operator can auto shoot. This also auto aims.
         final JoystickButton autoShootButton = new JoystickButton(operatorController, Button.kLeftBumper.value);
-        autoShootButton.whenPressed(new ShootAuto(limelight::getLiveSetpointTarget, intake, feeder, shooter, conveyor));
+        autoShootButton.whenPressed(
+                new ShootAuto(limelight::getLiveSetpointTarget, intake, feeder, shooter, conveyor));
+
         /** MANUAL OPERATION */
         final JoystickButton shooterOffButton = new JoystickButton(operatorController, Button.kX.value);
         final JoystickButton setTargetFar = new JoystickButton(operatorController, Button.kY.value);
