@@ -36,6 +36,7 @@ public class Limelight extends SubsystemBase {
     class PeriodicRunnable implements java.lang.Runnable {
         public void run() {
             resetPilelineLatency();
+            setpointTarget = getSetpointToTarget();
             log();
 
             try {
@@ -262,12 +263,6 @@ public class Limelight extends SubsystemBase {
         double led = ledMode.getDouble(0.0);
         LedMode mode = LedMode.getByValue(led);
         return mode;
-    }
-
-    /** Call log method every loop. */
-    @Override
-    public void periodic() {
-        setpointTarget = getSetpointToTarget();
     }
 
     /**
