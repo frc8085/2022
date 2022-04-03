@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoAimWithLimelight;
 import frc.robot.commands.AutoBaseSequence;
 import frc.robot.commands.AutoSetpointShot;
+import frc.robot.commands.AutoSetpointWithLimelight;
 import frc.robot.commands.Climb;
 import frc.robot.commands.Drive;
 import frc.robot.commands.EjectCargo;
@@ -124,7 +125,7 @@ public class RobotContainer {
         // Operator can auto shoot. This also auto aims.
         final JoystickButton autoShootButton = new JoystickButton(operatorController, Button.kLeftBumper.value);
         autoShootButton.whenPressed(
-                new ShootAuto(limelight::getLiveSetpointTarget, intake, feeder, shooter, conveyor));
+                new AutoSetpointWithLimelight(shooter, limelight));
 
         /** MANUAL OPERATION */
         final JoystickButton shooterOffButton = new JoystickButton(operatorController, Button.kX.value);

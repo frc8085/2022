@@ -185,6 +185,17 @@ public class Shooter extends SubsystemBase {
         }
     }
 
+    public void setSetpointFromDistance(double distance) {
+        // Empirically derived formula
+        double autoSetpoint = 0.1607 * Math.pow(distance, 2) - 28.274 * distance +
+                4991.1;
+
+        // When we're too close the setpoint formla is unreliable. Fix the speed
+        // instead.
+        double setpoint = distance < 100 ? 3550 : autoSetpoint;
+        setSetpoint(setpoint);
+    }
+
     public void setSetpoint(double setPoint) {
         kSetPoint = setPoint;
         m_pidController.setReference(kSetPoint, CANSparkMax.ControlType.kVelocity);

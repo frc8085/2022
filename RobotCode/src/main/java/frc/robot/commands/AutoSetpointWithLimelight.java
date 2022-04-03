@@ -4,19 +4,11 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-
-import static frc.robot.Constants.DriveConstants.*;
-
-import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.GTADrive;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Shooter;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /**
  * Automatically determine the correct shooting setpoint
@@ -42,42 +34,14 @@ public class AutoSetpointWithLimelight extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        double dInches = m_limelight.getDistanceToTarget();
 
-        // Empirically derived formula
-        double autoSetpoint = 0.1607 * Math.pow(dInches, 2) - 28.274 * dInches + 4991.1;
-
-        // When we're too close the setpoint formla is unreliable. Fix the speed
-        // instead.
-        setpoint = dInches < 100 ? 3550 : autoSetpoint;
-
-        // Display setpoint on the operator dashboard
-        setpointForTarget.setNumber(setpoint);
-
-        m_shooter.setSetpoint(setpoint);
-
-        setpointForTarget = Shuffleboard.getTab("Operator")
-                .add("Setpoint for target", 0)
-                .getEntry();
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        // double dInches = m_limelight.getDistanceToTarget();
-
-        // // Empirically derived formula
-        // double autoSetpoint = 0.1607 * Math.pow(dInches, 2) - 28.274 * dInches +
-        // 4991.1;
-
-        // // When we're too close the setpoint formla is unreliable. Fix the speed
-        // // instead.
-        // setpoint = dInches < 100 ? 3550 : autoSetpoint;
-
-        // // Display setpoint on the operator dashboard
-        // setpointForTarget.setNumber(setpoint);
-
-        // m_shooter.setSetpoint(setpoint);
+        double distance = m_limelight.getDistanceToTarget();
+        m_shooter.setSetpointFromDistance(distance);
     }
 
     // Make this return true when this Command no longer needs to run execute()
