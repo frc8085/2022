@@ -50,7 +50,6 @@ public class AutoSetpointWithLimelight extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        super.execute();
         double dInches = m_limelight.getDistanceToTarget();
 
         // Empirically derived formula
@@ -70,6 +69,7 @@ public class AutoSetpointWithLimelight extends CommandBase {
     @Override
     public boolean isFinished() {
         // End when we're at setpoint, unless setpoint is 0
-        return setpoint > 0 && m_shooter.atSetpoint();
+        // return setpoint > 0 && m_shooter.atSetpoint();
+        return false;
     }
 }

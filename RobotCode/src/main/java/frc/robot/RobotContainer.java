@@ -29,7 +29,7 @@ import frc.robot.commands.EjectCargo;
 import frc.robot.commands.HoldCargo;
 import frc.robot.commands.LoadCargo;
 import frc.robot.commands.Shoot;
-
+import frc.robot.commands.ShootAuto;
 // Subsystems
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
@@ -123,9 +123,7 @@ public class RobotContainer {
 
         // Operator can auto shoot. This also auto aims.
         final JoystickButton autoShootButton = new JoystickButton(operatorController, Button.kLeftBumper.value);
-        autoShootButton.whenPressed(
-                new AutoSetpointShot(drive, limelight, intake, feeder, shooter, conveyor));
-
+        autoShootButton.whenPressed(new ShootAuto(3000, intake, feeder, shooter, conveyor));
         /** MANUAL OPERATION */
         final JoystickButton shooterOffButton = new JoystickButton(operatorController, Button.kX.value);
         final JoystickButton setTargetFar = new JoystickButton(operatorController, Button.kY.value);

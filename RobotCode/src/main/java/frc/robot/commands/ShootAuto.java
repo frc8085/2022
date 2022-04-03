@@ -18,11 +18,11 @@ import frc.robot.subsystems.Shooter;
 // by the operator. We need to automatically run the shooter to speed
 // and add an extra conveyor run to make sure the cargo is loaded
 public class ShootAuto extends SequentialCommandGroup {
-    public ShootAuto(int shootingMode, Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
+    public ShootAuto(double setpoint, Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
         addCommands(
-                new InstantCommand(() -> shooter.setSetpoint(kShooterTargetRPM[shootingMode])),
+                new InstantCommand(() -> shooter.setSetpoint(setpoint)),
                 new InstantCommand(conveyor::runConveyor, conveyor),
-                new WaitCommand(kShooterTargetDelay[shootingMode]),
+                new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
                 new HoldCargo(intake, conveyor, feeder),
                 new InstantCommand(shooter::stopShooter, shooter));
