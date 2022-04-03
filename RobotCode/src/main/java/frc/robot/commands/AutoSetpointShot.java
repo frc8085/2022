@@ -36,7 +36,7 @@ public class AutoSetpointShot extends SequentialCommandGroup {
             Conveyor conveyor) {
         addCommands(
                 new AutoAimWithLimelight(drive, limelight),
-                new AutoSetpointWithLimelight(shooter, limelight),
+                new InstantCommand(() -> shooter.setSetpointFromDistance(limelight::getDistanceToTarget)),
                 new InstantCommand(conveyor::runConveyor, conveyor),
                 new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
