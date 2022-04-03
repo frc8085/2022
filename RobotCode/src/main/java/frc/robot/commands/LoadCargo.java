@@ -16,17 +16,16 @@ import frc.robot.subsystems.Shooter;
 
 // Run feeder and conveyor in the same direction at a set speed.
 // Make sure that the feeder is not running
-
 public class LoadCargo extends SequentialCommandGroup {
     public LoadCargo(Intake intake, IntakeCover intakeCover, Conveyor conveyor, Feeder feeder, Shooter shooter) {
-        addCommands
-        // (new InstantCommand(shooter::stopShooter, shooter).andThen
-        (new ConditionalCommand(
-                new InstantCommand(),
-                new InstantCommand(intakeCover::openIntake, intakeCover).andThen(new WaitCommand(1)),
-                intakeCover::isIntakeCoverDown)
-                        .andThen(new InstantCommand(intake::runIntake, intake))
-                        .andThen(new InstantCommand(conveyor::runConveyor, conveyor)));
+        addCommands(
+                new InstantCommand(feeder::stopFeeder, feeder),
+                new ConditionalCommand(
+                        new InstantCommand(),
+                        new InstantCommand(intakeCover::openIntake, intakeCover).andThen(new WaitCommand(1)),
+                        intakeCover::isIntakeCoverDown),
+                new InstantCommand(intake::runIntake, intake),
+                new InstantCommand(conveyor::runConveyor, conveyor));
 
     }
 
