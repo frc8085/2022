@@ -17,16 +17,13 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
 import frc.robot.subsystems.Shooter;
-import static frc.robot.utilities.GetSetpointFromDistance.setpointFromDistance;
 
 /**
- * Automatically determine the correct shooting setpoint, get to it, and shoot.
+ * Automatically turn to the target, determine the shooting setpoint, get to it,
+ * and shoot.
  * 1. Use Limelight to turn to the target
- * 2. Use Limelight to estimate the area of the target
- * 3. Estimate our distance to the target based on the area on the Limelight
- * image
- * 4. Calculate the setpoint based on estimated distance
- * 5. Turn to the target, get up to speed and shoot
+ * 2. Use Limelight to get up to shooting speed based on target disatnce
+ * 3. Turn to the target, get up to speed and shoot
  */
 
 public class AutoSetpointShot extends SequentialCommandGroup {
@@ -37,13 +34,9 @@ public class AutoSetpointShot extends SequentialCommandGroup {
             Feeder feeder,
             Shooter shooter,
             Conveyor conveyor) {
-
-        double dInches = limelight.getDistanceToTarget();
-        double autoSetpoint = dInches < 100 ? 3550 : 0.1607 * Math.pow(dInches, 2) - 28.274 * dInches + 4991.1;
-
         addCommands(new AutoAimWithLimelight(drive, limelight),
-                new InstantCommand(() -> shooter.setSetpoint(3500)),
-                // new InstantCommand(conveyor::runConveyor, conveyor),
+                new AutoSetpointWithLimelight(shooter, limelight),
+                new InstantCommand(conveyor::runConveyor, conveyor),
                 new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
                 new HoldCargo(intake, conveyor, feeder),

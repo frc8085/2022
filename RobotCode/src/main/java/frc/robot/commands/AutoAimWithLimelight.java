@@ -16,11 +16,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /**
- * Drive the given distance straight (negative values go backwards). Uses a
- * local PID controller to
- * run a simple PID loop that is only enabled while this command is running. The
- * input is the
- * averaged values of the left and right encoders.
+ * Aim using the limelight degree rotation to target
  */
 public class AutoAimWithLimelight extends CommandBase {
     private final GTADrive m_drive;

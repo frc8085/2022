@@ -7,14 +7,13 @@ import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.utilities.GetSetpointFromDistance;
+
 import frc.robot.utilities.LimelightConfiguration.Advanced_Crosshair;
 import frc.robot.utilities.LimelightConfiguration.Advanced_Target;
 import frc.robot.utilities.LimelightConfiguration.CamMode;
 import frc.robot.utilities.LimelightConfiguration.LedMode;
 import frc.robot.utilities.LimelightConfiguration.Snapshot;
 import frc.robot.utilities.LimelightConfiguration.StreamType;
-import frc.robot.utilities.GetSetpointFromDistance;
 
 /**
  * Lime Light Class was started by Corey Applegate of Team 3244
@@ -30,7 +29,6 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry targetVisible;
     private NetworkTableEntry distanceToTarget;
     private NetworkTableEntry rotationToTarget;
-    private NetworkTableEntry setpointForTarget;
 
     class PeriodicRunnable implements java.lang.Runnable {
         public void run() {
@@ -61,11 +59,6 @@ public class Limelight extends SubsystemBase {
             distanceToTarget.setNumber(getDistanceToTarget());
             rotationToTarget.setNumber(getdegRotationToTarget());
         }
-        GetSetpointFromDistance getter = new GetSetpointFromDistance();
-
-        double setpoint = getter.setpointFromDistance(getDistanceToTarget());
-        // Things we always show
-        setpointForTarget.setNumber(setpoint);
     }
 
     private void configureOperatorDashboard() {
@@ -81,9 +74,6 @@ public class Limelight extends SubsystemBase {
                 .add("Rotation to target", getdegRotationToTarget())
                 .getEntry();
 
-        setpointForTarget = Shuffleboard.getTab("Operator")
-                .add("Setpoint for target", 0)
-                .getEntry();
     }
 
     /**
