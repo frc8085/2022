@@ -84,7 +84,7 @@ public class Limelight extends SubsystemBase {
                 .add("ty", getdegVerticalToTarget())
                 .getEntry();
 
-        ty = Shuffleboard.getTab("Operator")
+        targetSetpoint = Shuffleboard.getTab("Operator")
                 .add("Setpoint target", getSetpointToTarget())
                 .getEntry();
 
