@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.MedianFilter;
 import edu.wpi.first.wpilibj.DriverStation;
 
 import static frc.robot.Constants.DriveConstants.*;
@@ -21,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 public class AutoAimWithLimelight extends CommandBase {
     private final GTADrive m_drive;
     private final Limelight m_limelight;
+    // Creates a MedianFilter with a window size of 5 samples
+    MedianFilter filter = new MedianFilter(5);
 
     public AutoAimWithLimelight(GTADrive drive, Limelight limelight) {
         // Require the drive and limelight
@@ -33,7 +36,12 @@ public class AutoAimWithLimelight extends CommandBase {
     public void execute() {
         super.execute();
         double turnToDegree = m_limelight.getdegRotationToTarget();
-        double turnSpeed = turnToDegree * DriveConstants.kTurnFactor;
+
+        // Use the median from the last 5 readings
+        // We do this because the input can be erratic
+        // Median is more robust than average
+        double medianDegree = filter.calculate(turnToDegree);
+        double turnSpeed = medianDegree * DriveConstants.kTurnFactor;
         m_drive.turn(turnSpeed);
     }
 
