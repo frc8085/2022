@@ -6,9 +6,12 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Limelight;
+import static frc.robot.Constants.ShooterConstants.*;
+
+import java.util.function.DoubleSupplier;
 
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
@@ -18,9 +21,11 @@ import frc.robot.subsystems.Shooter;
 // by the operator. We need to automatically run the shooter to speed
 // and add an extra conveyor run to make sure the cargo is loaded
 public class ShootAuto extends SequentialCommandGroup {
-    public ShootAuto(Limelight limelight, Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
+    public ShootAuto(DoubleSupplier setpointGetter, Intake intake, Feeder feeder, Shooter shooter, Conveyor conveyor) {
+        double setpoint = setpointGetter.getAsDouble();
+
         addCommands(
-                new InstantCommand(() -> shooter.setSetpointFromDistance(limelight::getDistanceToTarget)),
+                new InstantCommand(() -> shooter.setSetpoint(setpoint)),
                 new InstantCommand(conveyor::runConveyor, conveyor),
                 new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
