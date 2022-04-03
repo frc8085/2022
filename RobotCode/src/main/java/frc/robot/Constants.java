@@ -142,15 +142,15 @@ public final class Constants {
         public static final int kShooterOffSpeed = 0;
 
         // High shot speeds
-        public static final int kFarSpeed = -3600;
-        public static final int kTBDSpeed = -3500;
-        public static final int kNearSpeed = -3500;
+        public static final int kFarSpeed = -3550;
+        public static final int kTBDSpeed = -2800;
+        public static final int kNearSpeed = -2600;
 
         // Low shot speeds
         // public static final int kBumpedFarSpeed = -4000;
-        public static final int kBumpedFarSpeed = -5800;
-        public static final int kBumpedTBDSpeed = -5200;
-        public static final int kBumpedNearSpeed = -4600;
+        public static final int kBumpedFarSpeed = -2500;
+        public static final int kBumpedTBDSpeed = -2500;
+        public static final int kBumpedNearSpeed = -2500;
 
         // High shot delays
         public static final double kShooterOffDelay = 0;
