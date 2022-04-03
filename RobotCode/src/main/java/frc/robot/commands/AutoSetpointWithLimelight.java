@@ -34,14 +34,13 @@ public class AutoSetpointWithLimelight extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        double distance = m_limelight.getDistanceToTarget();
-        m_shooter.setSetpointFromDistance(distance);
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-
+        double distance = m_limelight.getDistanceToTarget();
+        // m_shooter.setSetpointFromDistance(distance);
     }
 
     // Make this return true when this Command no longer needs to run execute()

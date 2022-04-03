@@ -8,6 +8,7 @@ import static frc.robot.Constants.ShooterConstants.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.DoubleSupplier;
 
 import static frc.robot.Constants.OIConstants.*;
 
@@ -185,8 +186,9 @@ public class Shooter extends SubsystemBase {
         }
     }
 
-    public void setSetpointFromDistance(double distance) {
+    public void setSetpointFromDistance(DoubleSupplier distanceSupplier) {
         // Empirically derived formula
+        double distance = distanceSupplier.getAsDouble();
         double autoSetpoint = 0.1607 * Math.pow(distance, 2) - 28.274 * distance +
                 4991.1;
 
