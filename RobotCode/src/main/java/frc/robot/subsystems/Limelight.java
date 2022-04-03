@@ -29,6 +29,7 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry targetVisible;
     private NetworkTableEntry distanceToTarget;
     private NetworkTableEntry rotationToTarget;
+    private NetworkTableEntry ty;
 
     class PeriodicRunnable implements java.lang.Runnable {
         public void run() {
@@ -58,6 +59,7 @@ public class Limelight extends SubsystemBase {
             targetVisible.setBoolean(getIsTargetFound());
             distanceToTarget.setNumber(getDistanceToTarget());
             rotationToTarget.setNumber(getdegRotationToTarget());
+            ty.setNumber(getdegVerticalToTarget());
         }
     }
 
@@ -72,6 +74,10 @@ public class Limelight extends SubsystemBase {
 
         rotationToTarget = Shuffleboard.getTab("Operator")
                 .add("Rotation to target", getdegRotationToTarget())
+                .getEntry();
+
+        ty = Shuffleboard.getTab("Operator")
+                .add("ty", getdegVerticalToTarget())
                 .getEntry();
 
     }
@@ -115,19 +121,22 @@ public class Limelight extends SubsystemBase {
      * gathered
      * --- | -----
      * in. | ta
-     * --- | -----
-     * 132 | 0.31%
-     * 108 | 0.46%
-     * 084 | 0.65%
-     * 060 | 0.90%
-     * 019 | 1.36%
+     * 
      */
-    public double getDistanceToTarget() {
+    public double getDistanceToTargetWithArea() {
         double targetArea = getTargetArea();
         double distanceToTargetInches = 38.3225 * Math.pow(targetArea, 2) - 169.91 * targetArea + 179.71;
 
         // Return the distance to the target
         return targetArea > 0 ? distanceToTargetInches - 20 : 0;
+    }
+
+    public double getDistanceToTarget() {
+        double tY = getdegVerticalToTarget();
+        double distanceToTargetInches = -3.5429 * tY + 94.438;
+
+        // Return the distance to the target
+        return distanceToTargetInches;
     }
 
     /**
