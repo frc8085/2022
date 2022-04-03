@@ -42,14 +42,6 @@ public class AutoSetpointWithLimelight extends CommandBase {
     // Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        setpointForTarget = Shuffleboard.getTab("Operator")
-                .add("Setpoint for target", 0)
-                .getEntry();
-    }
-
-    // Called every time the scheduler runs while the command is scheduled.
-    @Override
-    public void execute() {
         double dInches = m_limelight.getDistanceToTarget();
 
         // Empirically derived formula
@@ -63,6 +55,29 @@ public class AutoSetpointWithLimelight extends CommandBase {
         setpointForTarget.setNumber(setpoint);
 
         m_shooter.setSetpoint(setpoint);
+
+        setpointForTarget = Shuffleboard.getTab("Operator")
+                .add("Setpoint for target", 0)
+                .getEntry();
+    }
+
+    // Called every time the scheduler runs while the command is scheduled.
+    @Override
+    public void execute() {
+        // double dInches = m_limelight.getDistanceToTarget();
+
+        // // Empirically derived formula
+        // double autoSetpoint = 0.1607 * Math.pow(dInches, 2) - 28.274 * dInches +
+        // 4991.1;
+
+        // // When we're too close the setpoint formla is unreliable. Fix the speed
+        // // instead.
+        // setpoint = dInches < 100 ? 3550 : autoSetpoint;
+
+        // // Display setpoint on the operator dashboard
+        // setpointForTarget.setNumber(setpoint);
+
+        // m_shooter.setSetpoint(setpoint);
     }
 
     // Make this return true when this Command no longer needs to run execute()
