@@ -31,6 +31,7 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry rotationToTarget;
     private NetworkTableEntry ty;
     private NetworkTableEntry targetSetpoint;
+    private double setpointTarget = 0;
 
     class PeriodicRunnable implements java.lang.Runnable {
         public void run() {
@@ -145,6 +146,10 @@ public class Limelight extends SubsystemBase {
         return distanceToTargetInches;
     }
 
+    public double getLiveSetpointTarget() {
+        return setpointTarget;
+    }
+
     public double getSetpointToTarget() {
         double distance = getDistanceToTarget();
         // Empirically derived formula
@@ -257,6 +262,12 @@ public class Limelight extends SubsystemBase {
         double led = ledMode.getDouble(0.0);
         LedMode mode = LedMode.getByValue(led);
         return mode;
+    }
+
+    /** Call log method every loop. */
+    @Override
+    public void periodic() {
+        setpointTarget = getSetpointToTarget();
     }
 
     /**
