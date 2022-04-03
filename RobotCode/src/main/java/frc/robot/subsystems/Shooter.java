@@ -195,7 +195,7 @@ public class Shooter extends SubsystemBase {
         // When we're too close the setpoint formla is unreliable. Fix the speed
         // instead.
         double setpoint = distance < 100 ? 3550 : autoSetpoint;
-        setSetpoint(setpoint);
+        setSetpoint(-1 * setpoint);
     }
 
     public void setSetpoint(double setPoint) {
