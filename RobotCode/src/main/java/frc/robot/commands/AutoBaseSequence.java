@@ -7,7 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants.ShooterConstants;
+import static frc.robot.Constants.ShooterConstants.*;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
@@ -36,15 +36,14 @@ public class AutoBaseSequence extends SequentialCommandGroup {
             Shooter shooter,
             IntakeCover intakeCover) {
         addCommands(
-                /* 1 */ new ShootAuto(
-                        ShooterConstants.kShooterTargetRPM[shootingMode1], intake, feeder, shooter, conveyor),
+                /* 1 */ new ShootAuto(() -> kShooterTargetRPM[shootingMode1], intake, feeder, shooter, conveyor),
                 new WaitCommand(.25),
                 /* 2 */ new DriveStraight(driveDistance1, drive),
                 /* 3 */ !pickUp1 ? new InstantCommand()
                         : new LoadCargo(intake, intakeCover, conveyor, feeder, shooter).andThen(new WaitCommand(2))
                                 .andThen(new HoldCargo(intake, conveyor, feeder)),
                 /* 4 */ new DriveStraight(driveDistance2, drive),
-                /* 5 */ new ShootAuto(ShooterConstants.kShooterTargetRPM[shootingMode2], intake, feeder, shooter,
+                /* 5 */ new ShootAuto(() -> kShooterTargetRPM[shootingMode2], intake, feeder, shooter,
                         conveyor),
                 /* 6 */ new TurnToDegreeGyro(turnDegrees1, drive),
                 /* 7 */ new DriveStraight(driveDistance3, drive),
@@ -54,7 +53,7 @@ public class AutoBaseSequence extends SequentialCommandGroup {
                 /*   */ new WaitCommand(2),
                 /*   */ new HoldCargo(intake, conveyor, feeder),
                 /* 9 */ new DriveStraight(driveDistance4, drive),
-                /* 10 */ new ShootAuto(ShooterConstants.kShooterTargetRPM[shootingMode3], intake, feeder, shooter,
+                /* 10 */ new ShootAuto(() -> kShooterTargetRPM[shootingMode3], intake, feeder, shooter,
                         conveyor),
                 /* 11 */ new DriveStraight(0, drive)); // Force it to stop
 

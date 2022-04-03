@@ -30,6 +30,7 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry distanceToTarget;
     private NetworkTableEntry rotationToTarget;
     private NetworkTableEntry ty;
+    private NetworkTableEntry targetSetpoint;
 
     class PeriodicRunnable implements java.lang.Runnable {
         public void run() {
@@ -60,6 +61,7 @@ public class Limelight extends SubsystemBase {
             distanceToTarget.setNumber(getDistanceToTarget());
             rotationToTarget.setNumber(getdegRotationToTarget());
             ty.setNumber(getdegVerticalToTarget());
+            targetSetpoint.setNumber(getSetpointToTarget());
         }
     }
 
@@ -78,6 +80,10 @@ public class Limelight extends SubsystemBase {
 
         ty = Shuffleboard.getTab("Operator")
                 .add("ty", getdegVerticalToTarget())
+                .getEntry();
+
+        ty = Shuffleboard.getTab("Operator")
+                .add("Setpoint target", getSetpointToTarget())
                 .getEntry();
 
     }
@@ -137,6 +143,19 @@ public class Limelight extends SubsystemBase {
 
         // Return the distance to the target
         return distanceToTargetInches;
+    }
+
+    public double getSetpointToTarget() {
+        double distance = getDistanceToTarget();
+        // Empirically derived formula
+        double autoSetpoint = 0.1607 * Math.pow(distance, 2) - 28.274 * distance + 4991.1;
+
+        // When we're too close the setpoint formla is unreliable. Fix the speed
+        // instead.
+        double setpoint = distance < 100 ? 3550 : autoSetpoint;
+
+        // Return the distance to the target
+        return setpoint;
     }
 
     /**
