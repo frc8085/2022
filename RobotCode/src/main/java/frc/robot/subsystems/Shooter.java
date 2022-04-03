@@ -199,7 +199,7 @@ public class Shooter extends SubsystemBase {
     }
 
     public void setSetpoint(double setPoint) {
-        kSetPoint = setPoint;
+        kSetPoint = Math.min(setPoint, 5300);
         m_pidController.setReference(kSetPoint, CANSparkMax.ControlType.kVelocity);
     }
 
