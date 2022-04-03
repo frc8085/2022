@@ -188,7 +188,7 @@ public class Shooter extends SubsystemBase {
 
     public void setSetpointFromDistance(DoubleSupplier distanceSupplier) {
         // Empirically derived formula
-        double distance = distanceSupplier.getAsDouble() + 5;
+        double distance = distanceSupplier.getAsDouble() + 15;
         double autoSetpoint = 0.1607 * Math.pow(distance, 2) - 28.274 * distance +
                 4991.1;
 

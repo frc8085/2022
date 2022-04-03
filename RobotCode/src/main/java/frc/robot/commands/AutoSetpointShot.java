@@ -39,6 +39,8 @@ public class AutoSetpointShot extends SequentialCommandGroup {
                 new InstantCommand(conveyor::runConveyor, conveyor),
                 new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
+                new WaitUntilCommand(shooter::atSetpoint),
+                new Shoot(intake, feeder, shooter, conveyor),
                 new HoldCargo(intake, conveyor, feeder),
                 new InstantCommand(shooter::stopShooter, shooter));
     }
