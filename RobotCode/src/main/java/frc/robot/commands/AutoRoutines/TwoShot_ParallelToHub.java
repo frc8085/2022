@@ -39,8 +39,8 @@ public class TwoShot_ParallelToHub extends SequentialCommandGroup {
                 // The ShootAndWaitAuto can take a setpoint OR the limelight
                 // Here we shoot first so use setpoint (limelight can't see the target)
                 Command shootFirst = new ShootAndWaitAuto(-2800, drive, intake, conveyor, feeder, shooter);
-                Command driveToSecond = new DriveStraight(40, drive);
-                Command pickupSecond = new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover);
+                Command prepareSecondAndThirdPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
+                Command driveToAndPickupSecond = new DriveStraight(40, drive);
                 Command driveToThird = new DriveStraight(-65, drive);
                 Command pickupThird = new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover);
                 Command shootSecondAndThird = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
@@ -48,7 +48,7 @@ public class TwoShot_ParallelToHub extends SequentialCommandGroup {
 
                 addCommands(
                                 shootFirst,
-                                driveToSecond, pickupSecond,
+                                prepareSecondAndThirdPickup, driveToAndPickupSecond,
                                 driveToThird, pickupThird,
                                 shootSecondAndThird,
                                 stop);
