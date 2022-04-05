@@ -26,8 +26,8 @@ import frc.robot.subsystems.Shooter;
 
 // Two Shot Auto. ???? What's the starting position?
 
-public class TwoShot_ParallelToHub extends SequentialCommandGroup {
-        public TwoShot_ParallelToHub(
+public class TwoShot_FacingHangarOrLaunch extends SequentialCommandGroup {
+        public TwoShot_FacingHangarOrLaunch(
                         Limelight limelight,
                         GTADrive drive,
                         Intake intake,
@@ -39,18 +39,18 @@ public class TwoShot_ParallelToHub extends SequentialCommandGroup {
                 // The ShootAndWaitAuto can take a setpoint OR the limelight
                 // Here we shoot first so use setpoint (limelight can't see the target)
                 Command shootFirst = new ShootAndWaitAuto(-2800, drive, intake, conveyor, feeder, shooter);
-                Command prepareSecondAndThirdPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
-                Command driveToAndPickupSecond = new DriveStraight(40, drive);
-                Command driveToThird = new DriveStraight(-65, drive);
-                Command pickupThird = new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover);
-                Command shootSecondAndThird = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
-                Command stop = new InstantCommand(() -> drive.drive(0, 0));
+                Command parepareAndPickupSecond = new SequentialCommandGroup(
+                                new LoadCargo(intake, intakeCover, conveyor, feeder, shooter),
+                                new DriveStraight(40, drive));
+                Command shootSecond = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
+                Command stop = new InstantCommand(() -> {
+                        drive.drive(0, 0);
+                        shooter.stopShooter();
+                });
 
                 addCommands(
                                 shootFirst,
-                                prepareSecondAndThirdPickup, driveToAndPickupSecond,
-                                driveToThird, pickupThird,
-                                shootSecondAndThird,
+                                parepareAndPickupSecond, shootSecond,
                                 stop);
         }
 }

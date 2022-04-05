@@ -30,21 +30,23 @@ public class ThreeShot_ParallelToWall extends SequentialCommandGroup {
                         IntakeCover intakeCover) {
 
                 Command prepareSecondPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
-                Command driveToSecond = new DriveStraight(27, drive);
-                Command pickupSecond = new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover);
+                Command driveAndPickupSecond = new DriveStraight(40, drive);
                 Command shootFirstAndSecond = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
                 Command prepareThirdPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
-                Command driveToThird = new SequentialCommandGroup(
-                                new DriveStraight(-37, drive),
+                Command driveAndPickupThird = new SequentialCommandGroup(
+                                new DriveStraight(-60, drive),
                                 new TurnToDegreeGyro(75, drive),
-                                new DriveStraight(70, drive));
-                Command pickupThird = new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover);
+                                new DriveStraight(77, drive));
+                Command turnToShootThird = new TurnToDegreeGyro(-20, drive);
                 Command shootThird = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
-                Command stop = new InstantCommand(() -> drive.drive(0, 0));
+                Command stop = new InstantCommand(() -> {
+                        drive.drive(0, 0);
+                        shooter.stopShooter();
+                });
 
                 addCommands(
-                                prepareSecondPickup, driveToSecond, pickupSecond, shootFirstAndSecond,
-                                prepareThirdPickup, driveToThird, pickupThird, shootThird,
+                                prepareSecondPickup, driveAndPickupSecond, shootFirstAndSecond,
+                                prepareThirdPickup, driveAndPickupThird, turnToShootThird, shootThird,
                                 stop);
         }
 }

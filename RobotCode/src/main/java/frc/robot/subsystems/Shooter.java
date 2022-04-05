@@ -16,9 +16,6 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -33,11 +30,8 @@ public class Shooter extends SubsystemBase {
      * Shooting Mode definition
      * shootMode is an integer corresponding to the different types of targets
      * shootingMode translates the integer into a string so we can display it
-     * in the Shuffleboard entry shotingModeDisplay
+     * in the dashboard
      */
-    private NetworkTableEntry shootingModeDisplay;
-    private NetworkTableEntry setpointDisplay;
-    private NetworkTableEntry readyToShoot;
 
     private int shootMode = kShooterOff;
     private boolean bumpShoot = false;
@@ -94,27 +88,15 @@ public class Shooter extends SubsystemBase {
 
     private void configureOperatorDashboard() {
         // Add the selected shooting mode to the Operator dashboard
-        shootingModeDisplay = Shuffleboard.getTab("Operator")
-                .add("Shooting Mode", shootingMode.get(shootMode))
-                .withPosition(6, 2)
-                .withSize(2, 1)
-                .getEntry();
+        SmartDashboard.putString("Shooting Mode", shootingMode.get(shootMode));
 
         // Add the setpoint but only if in TUNINGMODE
         if (TUNING_MODE) {
-            setpointDisplay = Shuffleboard.getTab("Operator")
-                    .add("Setpoint", kSetPoint)
-                    .withPosition(6, 3)
-                    .withSize(1, 1)
-                    .getEntry();
+            SmartDashboard.putNumber("Setpoint", kSetPoint);
         }
 
         // Add ready to shoot indicator to the Operator dashboard
-        readyToShoot = Shuffleboard.getTab("Operator")
-                .add("Ready to shoot", atSetpoint())
-                .withPosition(7, 3)
-                .withSize(2, 1)
-                .getEntry();
+        SmartDashboard.putBoolean("Ready to shoot", atSetpoint());
     }
 
     private void addPIDToDashboard() {
@@ -170,16 +152,6 @@ public class Shooter extends SubsystemBase {
 
     @Override
     public void periodic() {
-        // Display the current shooting mode and set point
-        shootingModeDisplay.setString(shootingMode.get(shootMode));
-
-        if (TUNING_MODE) {
-            setpointDisplay.setNumber(kSetPoint);
-        }
-
-        // Turn the display GREEN on the 'Shooter' tab if we're ready to shoot
-        readyToShoot.setBoolean(atSetpoint());
-
         // If we're fine-tuning PID Constants, read and apply updates from the dashboard
         if (TUNING_MODE) {
             readPIDTuningFromDashboard();

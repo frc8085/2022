@@ -10,8 +10,9 @@ package frc.robot.utilities;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
+import frc.robot.commands.Shoot;
 
 /**
  * Turns DPAD POV into buttons
@@ -22,6 +23,7 @@ public class DPadButton extends Button {
     private int dPadDegree;
     private XboxController controller;
     private NetworkTableEntry controlsDisplay;
+    private String label = "";
 
     public enum Value {
         kDPadRight, kDPadUpRight, kDPadUp, kDPadUpLeft,
@@ -37,6 +39,7 @@ public class DPadButton extends Button {
 
     public DPadButton(String label, XboxController controller, Value value) {
         this.controller = controller;
+        this.label = label;
         switch (value) {
             case kDPadRight:
                 this.dPadDegree = 90;
@@ -67,9 +70,7 @@ public class DPadButton extends Button {
         }
 
         if (DEBUG_MODE) {
-            controlsDisplay = Shuffleboard.getTab("Controls")
-                    .add(label, false)
-                    .getEntry();
+            SmartDashboard.putBoolean(label, false);
         }
     }
 
@@ -77,7 +78,7 @@ public class DPadButton extends Button {
     public boolean get() {
         boolean pressed = controller.getPOV() == dPadDegree;
         if (DEBUG_MODE) {
-            controlsDisplay.setBoolean(pressed);
+            SmartDashboard.putBoolean(label, pressed);
         }
         return pressed;
     }

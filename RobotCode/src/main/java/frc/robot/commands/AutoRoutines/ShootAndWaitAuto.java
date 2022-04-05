@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.commands.AutoAimWithLimelight;
 import frc.robot.commands.AutoSetpointShot;
+import frc.robot.commands.HoldCargo;
 import frc.robot.commands.Shoot;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
@@ -32,6 +33,7 @@ public class ShootAndWaitAuto extends SequentialCommandGroup {
             Shooter shooter) {
 
         addCommands(
+                new HoldCargo(intake, conveyor, feeder),
                 new AutoAimWithLimelight(drive, limelight),
                 new AutoSetpointShot(drive, limelight, intake, feeder, shooter, conveyor),
                 new WaitCommand(shootDurationSecs * 2));

@@ -4,7 +4,6 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Notifier;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -21,7 +20,7 @@ import frc.robot.utilities.LimelightConfiguration.StreamType;
  * Camera.
  */
 public class Limelight extends SubsystemBase {
-    private boolean TUNING_MODE = true;
+    private boolean TUNING_MODE = false;
     private NetworkTable m_table;
     private String m_tableName;
     private Boolean isConnected = false;
@@ -29,7 +28,6 @@ public class Limelight extends SubsystemBase {
     private NetworkTableEntry targetVisible;
     private NetworkTableEntry distanceToTarget;
     private NetworkTableEntry rotationToTarget;
-    private NetworkTableEntry ty;
     private NetworkTableEntry targetSetpoint;
     private double setpointTarget = 0;
 
@@ -59,35 +57,11 @@ public class Limelight extends SubsystemBase {
     public void log() {
         // Things to show only in tuninig mode
         if (TUNING_MODE) {
-            targetVisible.setBoolean(getIsTargetFound());
-            distanceToTarget.setNumber(getDistanceToTarget());
-            rotationToTarget.setNumber(getdegRotationToTarget());
-            ty.setNumber(getdegVerticalToTarget());
-            targetSetpoint.setNumber(getSetpointToTarget());
+            SmartDashboard.putBoolean("LL Sees target", getIsTargetFound());
+            SmartDashboard.putNumber("LL Distance", getDistanceToTarget());
+            SmartDashboard.putNumber("LL Rotation", getdegRotationToTarget());
+            SmartDashboard.putNumber("LL Setpoint", getSetpointToTarget());
         }
-    }
-
-    private void configureOperatorDashboard() {
-        targetVisible = Shuffleboard.getTab("Operator")
-                .add("Target visible", getIsTargetFound())
-                .getEntry();
-
-        distanceToTarget = Shuffleboard.getTab("Operator")
-                .add("Distance to target", getDistanceToTarget())
-                .getEntry();
-
-        rotationToTarget = Shuffleboard.getTab("Operator")
-                .add("Rotation to target", getdegRotationToTarget())
-                .getEntry();
-
-        ty = Shuffleboard.getTab("Operator")
-                .add("ty", getdegVerticalToTarget())
-                .getEntry();
-
-        targetSetpoint = Shuffleboard.getTab("Operator")
-                .add("Setpoint target", getSetpointToTarget())
-                .getEntry();
-
     }
 
     /**
@@ -97,7 +71,7 @@ public class Limelight extends SubsystemBase {
         m_tableName = "limelight";
         m_table = NetworkTableInstance.getDefault().getTable(m_tableName);
         _hearBeat.startPeriodic(_hearBeatPeriod);
-        configureOperatorDashboard();
+
     }
 
     /**

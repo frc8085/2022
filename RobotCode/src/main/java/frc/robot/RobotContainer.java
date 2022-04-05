@@ -12,7 +12,6 @@ import static frc.robot.Constants.AutoConstants.*;
 // Inputs
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 // Commands
@@ -30,8 +29,9 @@ import frc.robot.commands.HoldCargo;
 import frc.robot.commands.LoadCargo;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootAuto;
+import frc.robot.commands.AutoRoutines.FiveShot_ParallelToWall;
 import frc.robot.commands.AutoRoutines.ThreeShot_ParallelToWall;
-import frc.robot.commands.AutoRoutines.TwoShot_ParallelToHub;
+import frc.robot.commands.AutoRoutines.TwoShot_FacingHangarOrLaunch;
 // Subsystems
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
@@ -46,6 +46,7 @@ import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.ClimberBrake;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class RobotContainer {
         // Add Auto Selection chooser to Dashboard
@@ -74,11 +75,40 @@ public class RobotContainer {
 
         private final Climber climber = new Climber(operatorController);
 
-        private final Command threeShot_ParallelToWall = new ThreeShot_ParallelToWall(
+        /** LimeLight AUTOS */
+        private final Command fiveShot = new FiveShot_ParallelToWall(
+                        limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
+        private final Command threeShot = new ThreeShot_ParallelToWall(
+                        limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
+        private final Command twoShot = new TwoShot_FacingHangarOrLaunch(
                         limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
 
-        private final Command twoShot_ParallelToHub = new TwoShot_ParallelToHub(
-                        limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
+        /** MANUAL AUTOS */
+        private final Command autoUpAgainstHub = new AutoBaseSequence(
+                        kTargetBumpedTBD, // shoot to desired target
+                        40, // drive
+                        kPickupCargo, // pick up new cargo
+                        -50, // drive back
+                        kTargetBumpedTBD, // shoot to desired target
+                        75, // turn
+                        70, // drive
+                        kPickupCargo, // pick up new cargo
+                        kStandStill, // 🚫 DON'T drive
+                        kShooterOff, // 🚫 don't shoot (set setpoint to 0)
+                        drive, intake, conveyor, feeder, shooter, intakeCover);
+
+        private final Command autoSecondLocation = new AutoBaseSequence(
+                        kTargetBumpedTBD, // shoot to desired target
+                        40, // drive
+                        kPickupCargo, // pick up new cargo
+                        20, // drive forward
+                        kShooterOff, // 🚫 don't shoot (set setpoint to 0)
+                        kStandStill, // 🚫 don't turn
+                        -85, // drive backwards
+                        kDontPickupCargo, // 🚫 don't pick up new cargo
+                        kStandStill, // 🚫 don't drive
+                        kTargetBumpedTBD, // shoot to desired target
+                        drive, intake, conveyor, feeder, shooter, intakeCover);
 
         public RobotContainer() {
                 configureButtonBindings();
@@ -87,15 +117,14 @@ public class RobotContainer {
                 climber.setDefaultCommand(new Climb(climber, intakeCover, climberBrake));
                 // Add commands to the autonomous command chooser
 
-                autoSelection.setDefaultOption("3 Shot - Parallel to wall", threeShot_ParallelToWall);
-                autoSelection.addOption("2 Shot - ?? starting position", twoShot_ParallelToHub);
+                autoSelection.setDefaultOption("LIMELIGHT - 5 Shot - Parallel to wall", fiveShot);
+                autoSelection.addOption("LIMELIGHT - 3 Shot - Parallel to wall", threeShot);
+                autoSelection.addOption("LIMELIGHT - 2 Shot - Facing Hanger or Launch Pad", twoShot);
+                autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
+                autoSelection.addOption("MANUAL - Across Line 2nd Ball High", autoSecondLocation);
 
                 // Put the chooser on the dashboard
-
-                Shuffleboard.getTab("Operator")
-                                .add("Auto routine", autoSelection)
-                                .withSize(4, 1);
-
+                SmartDashboard.putData("Auto Routine", autoSelection);
         }
 
         private void configureButtonBindings() {

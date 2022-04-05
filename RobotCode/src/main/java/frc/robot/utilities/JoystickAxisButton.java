@@ -3,7 +3,7 @@ package frc.robot.utilities;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.button.Button;
 
 /**
@@ -13,9 +13,7 @@ public class JoystickAxisButton extends Button {
     private boolean DEBUG_MODE = false;
     private DoubleSupplier m_joystick_value;
     private double THRESHOLD = 0.5;
-
-    /** Dashboard tab to display control activations that are tied to buttons */
-    private NetworkTableEntry controlsDisplay;
+    private String label = "";
 
     /**
      * Create a button for triggering commands off a joystick's analog axis
@@ -24,10 +22,12 @@ public class JoystickAxisButton extends Button {
      */
     public JoystickAxisButton(String label, DoubleSupplier joystick_value) {
         m_joystick_value = joystick_value;
+        this.label = label;
 
-        controlsDisplay = Shuffleboard.getTab("Controls")
-                .add(label, false)
-                .getEntry();
+        if (DEBUG_MODE) {
+            SmartDashboard.putBoolean(label, false);
+        }
+
     }
 
     /**
@@ -39,12 +39,11 @@ public class JoystickAxisButton extends Button {
      */
     public JoystickAxisButton(String label, DoubleSupplier joystick_value, double threshold) {
         m_joystick_value = joystick_value;
+        this.label = label;
         THRESHOLD = threshold;
 
         if (DEBUG_MODE) {
-            controlsDisplay = Shuffleboard.getTab("Controls")
-                    .add(label, false)
-                    .getEntry();
+            SmartDashboard.putBoolean(label, false);
         }
     }
 
@@ -75,7 +74,7 @@ public class JoystickAxisButton extends Button {
             // threshold
             boolean pressed = m_joystick_value.getAsDouble() < THRESHOLD;
             if (DEBUG_MODE) {
-                controlsDisplay.setBoolean(pressed);
+                SmartDashboard.putBoolean(label, pressed);
             }
             return pressed;
         } else {
@@ -83,7 +82,7 @@ public class JoystickAxisButton extends Button {
             // positive threshold
             boolean pressed = m_joystick_value.getAsDouble() > THRESHOLD;
             if (DEBUG_MODE) {
-                controlsDisplay.setBoolean(pressed);
+                SmartDashboard.putBoolean(label, pressed);
             }
             return pressed;
         }
