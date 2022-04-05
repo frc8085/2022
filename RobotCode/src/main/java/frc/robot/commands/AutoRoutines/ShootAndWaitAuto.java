@@ -49,6 +49,7 @@ public class ShootAndWaitAuto extends SequentialCommandGroup {
             Shooter shooter) {
 
         addCommands(
+                new HoldCargo(intake, conveyor, feeder),
                 new InstantCommand(() -> shooter.setSetpoint(setpoint)),
                 new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
