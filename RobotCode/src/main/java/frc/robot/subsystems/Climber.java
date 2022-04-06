@@ -62,18 +62,17 @@ public class Climber extends SubsystemBase {
             if (Math.abs(rightY) < 0.1) {
                 stopClimb();
             } else {
-                if (limitSwitch.get()) {
-                    if ((rightY) > 0) {
+                if (!limitSwitch.get()) {
+                    if ((rightY) < 0) {
                         stopClimb();
                     } else {
-                        m_climberMotor.set(rightY * 0.8);
+                        m_climberMotor.set(rightY);
                     }
                 } else {
-                    m_climberMotor.set(rightY * 0.8);
+                    m_climberMotor.set(rightY);
                 }
             }
         }
-
     }
 
     // Stop the climber motor
