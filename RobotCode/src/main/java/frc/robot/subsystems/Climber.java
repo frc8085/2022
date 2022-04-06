@@ -66,10 +66,10 @@ public class Climber extends SubsystemBase {
                     if ((rightY) < 0) {
                         stopClimb();
                     } else {
-                        m_climberMotor.set(rightY);
+                        m_climberMotor.set(rightY * 0.85);
                     }
                 } else {
-                    m_climberMotor.set(rightY);
+                    m_climberMotor.set(rightY * 0.85);
                 }
             }
         }
