@@ -14,8 +14,7 @@ import static frc.robot.Constants.ClimberConstants.*;
 
 public class Climber extends SubsystemBase {
     private XboxController m_operatorController;
-    DigitalInput toplimitSwitch = new DigitalInput(0);
-    DigitalInput bottomlimitSwitch = new DigitalInput(1);
+    DigitalInput limitSwitch = new DigitalInput(0);
 
     // Climber is locked by default
     private boolean isLocked = true;
@@ -52,20 +51,29 @@ public class Climber extends SubsystemBase {
         // 1. Either it is locked
         // 2. Or the top limit switch is tripped
         // 3. Or the bottom limit switch is tripped
-        boolean blockClimb = isLocked || toplimitSwitch.get() || bottomlimitSwitch.get();
+        boolean blockClimb = isLocked;
+        // || toplimitSwitch.get() || bottomlimitSwitch.get();
 
         // Only climb if not blocked
-        if (blockClimb) {
+        if (isLocked) {
             stopClimb();
         } else {
             // Deadband to remove drift when climbing
             if (Math.abs(rightY) < 0.1) {
                 stopClimb();
             } else {
-                m_climberMotor.set(rightY * 0.8);
+                if (limitSwitch.get()) {
+                    if ((rightY) > 0) {
+                        stopClimb();
+                    } else {
+                        m_climberMotor.set(rightY * 0.8);
+                    }
+                } else {
+                    m_climberMotor.set(rightY * 0.8);
+                }
             }
-
         }
+
     }
 
     // Stop the climber motor
