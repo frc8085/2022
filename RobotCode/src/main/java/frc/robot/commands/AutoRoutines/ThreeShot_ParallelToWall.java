@@ -22,36 +22,34 @@ import frc.robot.subsystems.Shooter;
 
 // Three shot auto
 public class ThreeShot_ParallelToWall extends SequentialCommandGroup {
-        public ThreeShot_ParallelToWall(
-                        Limelight limelight,
-                        GTADrive drive,
-                        Intake intake,
-                        Conveyor conveyor,
-                        Feeder feeder,
-                        Shooter shooter,
-                        IntakeCover intakeCover) {
+    public ThreeShot_ParallelToWall(
+            Limelight limelight,
+            GTADrive drive,
+            Intake intake,
+            Conveyor conveyor,
+            Feeder feeder,
+            Shooter shooter,
+            IntakeCover intakeCover) {
 
-                Command prepareSecondPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
-                Command driveAndPickupSecond = new SequentialCommandGroup(new DriveStraight(40, drive),
-                                new LoadCargo(intake, intakeCover, conveyor, feeder, shooter));
+        Command prepareSecondPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
+        Command driveAndPickupSecond = new SequentialCommandGroup(new DriveStraight(40, drive),
+                new LoadCargo(intake, intakeCover, conveyor, feeder, shooter));
+        Command shootFirstAndSecond = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
+        Command prepareThirdPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
+        Command driveAndPickupThird = new SequentialCommandGroup(
+                new DriveStraight(-60, drive),
+                new TurnToDegreeGyro(75, drive),
+                new DriveStraight(77, drive));
+        Command turnToShootThird = new TurnToDegreeGyro(-20, drive);
+        Command shootThird = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
+        Command stop = new InstantCommand(() -> {
+            drive.drive(0, 0);
+            shooter.stopShooter();
+        });
 
-                Command shootFirstAndSecond = new ShootAuto(() -> -3550, intake, feeder, shooter, conveyor);
-                // new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
-                Command prepareThirdPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
-                Command driveAndPickupThird = new SequentialCommandGroup(
-                                new DriveStraight(-60, drive),
-                                new TurnToDegreeGyro(75, drive),
-                                new DriveStraight(77, drive));
-                Command turnToShootThird = new TurnToDegreeGyro(-20, drive);
-                Command shootThird = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
-                Command stop = new InstantCommand(() -> {
-                        drive.drive(0, 0);
-                        shooter.stopShooter();
-                });
-
-                addCommands(
-                                prepareSecondPickup, driveAndPickupSecond, shootFirstAndSecond,
-                                prepareThirdPickup, driveAndPickupThird, turnToShootThird, shootThird,
-                                stop);
-        }
+        addCommands(
+                prepareSecondPickup, driveAndPickupSecond, shootFirstAndSecond,
+                prepareThirdPickup, driveAndPickupThird, turnToShootThird, shootThird,
+                stop);
+    }
 }

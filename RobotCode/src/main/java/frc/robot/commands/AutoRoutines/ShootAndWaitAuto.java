@@ -35,6 +35,8 @@ public class ShootAndWaitAuto extends SequentialCommandGroup {
         addCommands(
                 new HoldCargo(intake, conveyor, feeder),
                 new AutoAimWithLimelight(drive, limelight),
+                new AutoAimWithLimelight(drive, limelight),
+                new AutoAimWithLimelight(drive, limelight),
                 new AutoSetpointShot(drive, limelight, intake, feeder, shooter, conveyor),
                 new WaitCommand(shootDurationSecs * 2));
     }
