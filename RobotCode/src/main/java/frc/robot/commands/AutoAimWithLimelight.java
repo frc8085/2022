@@ -60,8 +60,8 @@ public class AutoAimWithLimelight extends CommandBase {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     public boolean isFinished() {
-        boolean targetVisibile = m_limelight.getIsTargetFound();
+        boolean targetVisible = m_limelight.getIsTargetFound();
         // End this Command if we reached our setpoint OR we lost the target
-        return !targetVisibile || pidController.atSetpoint();
+        return !targetVisible || pidController.atSetpoint();
     }
 }
