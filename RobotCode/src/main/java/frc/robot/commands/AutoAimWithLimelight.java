@@ -24,6 +24,7 @@ public class AutoAimWithLimelight extends CommandBase {
     private final Limelight m_limelight;
     // Creates a MedianFilter with a window size of 5 samples
     MedianFilter filter = new MedianFilter(5);
+    MedianFilter setpointFilter = new MedianFilter(5);
 
     public AutoAimWithLimelight(GTADrive drive, Limelight limelight) {
         // Require the drive and limelight
@@ -35,14 +36,17 @@ public class AutoAimWithLimelight extends CommandBase {
     @Override
     public void execute() {
         super.execute();
+
         double turnToDegree = m_limelight.getdegRotationToTarget();
 
+        System.out.println("DEGREE " + turnToDegree);
         // Use the median from the last 5 readings
         // We do this because the input can be erratic
         // Median is more robust than average
         double medianDegree = filter.calculate(turnToDegree);
         double turnSpeed = medianDegree * DriveConstants.kTurnFactor;
         m_drive.turn(turnSpeed);
+
     }
 
     // Called just before this Command runs the first time
@@ -57,7 +61,8 @@ public class AutoAimWithLimelight extends CommandBase {
     @Override
     public boolean isFinished() {
         boolean targetVisible = m_limelight.getIsTargetFound();
-        boolean withinTolerance = Math.abs(m_limelight.getdegRotationToTarget()) <= 2.5;
+        double medianRotation = setpointFilter.calculate(m_limelight.getdegRotationToTarget());
+        boolean withinTolerance = Math.abs(medianRotation) <= 2.5;
         // End this Command if we reached our setpoint OR we don't have a target visible
         return !targetVisible || withinTolerance;
     }

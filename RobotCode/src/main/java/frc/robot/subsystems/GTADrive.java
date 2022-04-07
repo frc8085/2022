@@ -101,12 +101,13 @@ public class GTADrive extends SubsystemBase {
 
     // Turn
     public void turn(double speed) {
-        // Clamps the output to between 0.4 and 1.0
         int direction = speed >= 0 ? 1 : -1;
-        double clamped = MathUtil.clamp(speed, 0.4, 1.0);
-        double newSpeed = clamped * direction;
 
+        // Clamps the output to between 0.4 and 1.0
+        double clamped = 0.4;
+        double newSpeed = direction * clamped;
         m_drive.tankDrive(-newSpeed, newSpeed);
+        System.out.println("TURN TO " + newSpeed);
     }
 
     public void driveRobot() {

@@ -178,7 +178,7 @@ public class Shooter extends SubsystemBase {
     public boolean atSetpoint() {
         double encoderValue = m_encoder.getVelocity();
         // double tolerance = Math.abs(kShooterToleranceRPMPercent * kSetPoint);
-        double tolerance = 200;
+        double tolerance = 300;
         double setpoint = kSetPoint;
         double minLimit = setpoint - tolerance;
         double maxLimit = setpoint + tolerance;
