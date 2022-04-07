@@ -26,8 +26,8 @@ import frc.robot.subsystems.Shooter;
 
 // Two Shot Auto. ???? What's the starting position?
 
-public class TwoShot_FacingHangarOrLaunch extends SequentialCommandGroup {
-        public TwoShot_FacingHangarOrLaunch(
+public class TwoShot_ShootPickupShoot extends SequentialCommandGroup {
+        public TwoShot_ShootPickupShoot(
                         Limelight limelight,
                         GTADrive drive,
                         Intake intake,
