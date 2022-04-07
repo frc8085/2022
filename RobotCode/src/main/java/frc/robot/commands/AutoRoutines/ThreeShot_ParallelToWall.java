@@ -11,6 +11,7 @@ import frc.robot.commands.DriveStraight;
 import frc.robot.commands.LoadCargo;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootAuto;
+import frc.robot.commands.ShootTwiceAuto;
 import frc.robot.commands.TurnToDegreeGyro;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
@@ -34,7 +35,9 @@ public class ThreeShot_ParallelToWall extends SequentialCommandGroup {
         Command prepareSecondPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
         Command driveAndPickupSecond = new SequentialCommandGroup(new DriveStraight(40, drive),
                 new LoadCargo(intake, intakeCover, conveyor, feeder, shooter));
-        Command shootFirstAndSecond = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
+        Command shootFirstAndSecond = new ShootTwiceAuto(() -> -3550, intake, feeder, shooter, conveyor);
+
+        // ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
         Command prepareThirdPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
         Command driveAndPickupThird = new SequentialCommandGroup(
                 new DriveStraight(-60, drive),
