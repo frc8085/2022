@@ -92,7 +92,7 @@ public class GTADrive extends SubsystemBase {
         int directionL = left >= 0 ? 1 : -1;
         int directionR = right >= 0 ? 1 : -1;
 
-        // Clamps the output to between 0.4 and 1.0
+        // Clamps the output to between 0.5 and 1.0
         double speedL = MathUtil.clamp(left, 0.5, 1.0);
         double speedR = MathUtil.clamp(right, 0.5, 1.0);
 
