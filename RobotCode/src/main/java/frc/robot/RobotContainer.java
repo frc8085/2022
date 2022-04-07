@@ -85,11 +85,11 @@ public class RobotContainer {
 
         /** MANUAL AUTOS */
         private final Command autoUpAgainstHub = new AutoBaseSequence(
-                        kTargetBumpedTBD, // shoot to desired target
+                        kShooterOff, // shoot to desired target
                         40, // drive
                         kPickupCargo, // pick up new cargo
-                        -50, // drive back
-                        kTargetBumpedTBD, // shoot to desired target
+                        kStandStill, // drive back
+                        kTargetFar, // shoot to desired target
                         75, // turn
                         70, // drive
                         kPickupCargo, // pick up new cargo
