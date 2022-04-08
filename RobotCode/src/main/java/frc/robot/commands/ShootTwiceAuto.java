@@ -21,6 +21,8 @@ import frc.robot.subsystems.Shooter;
 // by the operator. We need to automatically run the shooter to speed
 // and add an extra conveyor run to make sure the cargo is loaded
 public class ShootTwiceAuto extends SequentialCommandGroup {
+    private double shootDurationSecs = 0.6;
+
     public ShootTwiceAuto(DoubleSupplier setpointGetter, Intake intake, Feeder feeder, Shooter shooter,
             Conveyor conveyor) {
         double setpoint = setpointGetter.getAsDouble();
@@ -33,6 +35,7 @@ public class ShootTwiceAuto extends SequentialCommandGroup {
                 new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
                 new HoldCargo(intake, conveyor, feeder),
+                new WaitCommand(shootDurationSecs * 2),
                 new InstantCommand(shooter::stopShooter, shooter));
     }
 }

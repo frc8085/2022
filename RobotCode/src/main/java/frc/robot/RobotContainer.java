@@ -33,6 +33,8 @@ import frc.robot.commands.ShootAuto;
 import frc.robot.commands.AutoRoutines.FiveShot_ParallelToWall;
 import frc.robot.commands.AutoRoutines.ThreeShot_ParallelToWall;
 import frc.robot.commands.AutoRoutines.TwoShot_FacingHangarOrLaunch;
+import frc.robot.commands.AutoRoutines.TwoShot_PickupShootShoot;
+import frc.robot.commands.AutoRoutines.TwoShot_ShootPickupShoot;
 // Subsystems
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
@@ -75,7 +77,9 @@ public class RobotContainer {
                         limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
         private final Command threeShot = new ThreeShot_ParallelToWall(
                         limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
-        private final Command twoShot = new TwoShot_FacingHangarOrLaunch(
+        private final Command twoShot = new TwoShot_PickupShootShoot(
+                        limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
+        private final Command twoShotB = new TwoShot_ShootPickupShoot(
                         limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
 
         /** MANUAL AUTOS */
@@ -117,7 +121,8 @@ public class RobotContainer {
 
                 autoSelection.setDefaultOption("LIMELIGHT - 5 Shot - Parallel to wall", fiveShot);
                 autoSelection.addOption("LIMELIGHT - 3 Shot - Parallel to wall", threeShot);
-                autoSelection.addOption("LIMELIGHT - 2 Shot - Facing Hanger or Launch Pad", twoShot);
+                autoSelection.addOption("LIMELIGHT - 2 Shot - Pickup then shoot twice", twoShot);
+                autoSelection.addOption("LIMELIGHT - 2 Shot - Shoot first, pickup, shoot", twoShot);
                 autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
                 autoSelection.addOption("MANUAL - Across Line 2nd Ball High", autoSecondLocation);
 
