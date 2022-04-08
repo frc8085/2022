@@ -46,7 +46,6 @@ public class AutoAimWithLimelight extends CommandBase {
         double medianDegree = filter.calculate(turnToDegree);
         double turnSpeed = medianDegree * DriveConstants.kTurnFactor;
         m_drive.turn(turnSpeed);
-
     }
 
     // Called just before this Command runs the first time

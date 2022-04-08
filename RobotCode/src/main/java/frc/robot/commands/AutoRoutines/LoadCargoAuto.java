@@ -16,7 +16,7 @@ import frc.robot.subsystems.Shooter;
 
 // Load cargo in Auto. This makes sure it runs for a min. amount of seconds
 public class LoadCargoAuto extends SequentialCommandGroup {
-    private double loadCargoSecs = 0.5;
+    private double loadCargoSecs = 1.0;
 
     public LoadCargoAuto(
             Intake intake,
