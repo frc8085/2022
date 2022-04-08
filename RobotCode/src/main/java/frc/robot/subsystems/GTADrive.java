@@ -15,7 +15,8 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.XboxController;
 
 public class GTADrive extends SubsystemBase {
-    private XboxController m_driverController;
+    private XboxController driverController;
+    private Climber climber;
     private double speed;
     private double turnRotation;
 
@@ -52,8 +53,9 @@ public class GTADrive extends SubsystemBase {
      * Right Josytick Right --- Move right
      */
 
-    public GTADrive(XboxController driverController) {
-        m_driverController = driverController;
+    public GTADrive(XboxController driverController, Climber climber) {
+        this.driverController = driverController;
+        this.climber = climber;
 
         // We need to restore the motors to defaults every time
         // they're initialized, otherwise the encoders go bezerk
@@ -111,21 +113,23 @@ public class GTADrive extends SubsystemBase {
     }
 
     public void driveRobot() {
-        double leftTrigger = m_driverController.getLeftTriggerAxis();
-        double rightTrigger = m_driverController.getRightTriggerAxis();
-        boolean leftBumper = m_driverController.getLeftBumper();
+        double leftTrigger = driverController.getLeftTriggerAxis();
+        double rightTrigger = driverController.getRightTriggerAxis();
+        boolean leftBumper = driverController.getLeftBumper();
+        boolean climbing = !climber.isLocked();
 
         // Transform the turn rotation based on Right Joystick X
-        turnRotation = Math.pow(m_driverController.getRightX(), 3) * -0.5;
+        turnRotation = Math.pow(driverController.getRightX(), 3) * -0.5;
 
         if (isStopped(leftTrigger, rightTrigger)) {
             // Even if it's stopped, let it turn
             m_drive.curvatureDrive(0, turnRotation, true);
         } else {
-            if (leftBumper) {
+            // Redudce speed if climbing or if left bumper's pressed
+            if (leftBumper || climbing) {
                 speed = .1;
             } else {
-                speed = m_driverController.getLeftY();
+                speed = driverController.getLeftY();
                 // Up is fast. Down is slow. Multiply value by .5 so that the max range is 0.5
                 // to -0.5
                 speed *= -0.5;

@@ -54,10 +54,6 @@ public class RobotContainer {
         // Add Auto Selection chooser to Dashboard
         protected SendableChooser<Command> autoSelection = new SendableChooser<>();
 
-        // Drive train and driver controller
-        private final XboxController driverController = new XboxController(kDriverControllerPort);
-        private final GTADrive drive = new GTADrive(driverController);
-        private final Limelight limelight = new Limelight();
         // Operator controller and subsystems
         private final XboxController operatorController = new XboxController(
                         kOperatorControllerPort);
@@ -67,15 +63,12 @@ public class RobotContainer {
         private final IntakeCover intakeCover = new IntakeCover();
         private final Intake intake = new Intake();
         private final ClimberBrake climberBrake = new ClimberBrake();
-
-        // The robot's subsystems and commands
-
-        // TODO: Is there a better way to do this?
-        // Because the Climber and Intake are using Joystick Axes, we're passing
-        // the operator controllers to them instead of setting them here
-        // shen using configureButtonBindings
-
         private final Climber climber = new Climber(operatorController);
+
+        // Drive train and driver controller
+        private final XboxController driverController = new XboxController(kDriverControllerPort);
+        private final GTADrive drive = new GTADrive(driverController, climber);
+        private final Limelight limelight = new Limelight();
 
         /** LimeLight AUTOS */
         private final Command fiveShot = new FiveShot_ParallelToWall(

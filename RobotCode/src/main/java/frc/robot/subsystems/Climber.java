@@ -47,13 +47,6 @@ public class Climber extends SubsystemBase {
     public void climb() {
         double rightY = m_operatorController.getRightY();
 
-        // Reasons for blocking climber:
-        // 1. Either it is locked
-        // 2. Or the top limit switch is tripped
-        // 3. Or the bottom limit switch is tripped
-        boolean blockClimb = isLocked;
-        // || toplimitSwitch.get() || bottomlimitSwitch.get();
-
         // Only climb if not blocked
         if (isLocked) {
             stopClimb();
@@ -62,6 +55,7 @@ public class Climber extends SubsystemBase {
             if (Math.abs(rightY) < 0.1) {
                 stopClimb();
             } else {
+                // Use limit switch to decide if we can keep going
                 if (!limitSwitch.get()) {
                     if ((rightY) < 0) {
                         stopClimb();
