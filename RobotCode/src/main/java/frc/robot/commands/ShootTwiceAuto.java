@@ -32,6 +32,9 @@ public class ShootTwiceAuto extends SequentialCommandGroup {
                 new Shoot(intake, feeder, shooter, conveyor),
                 new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
+                // This last getting up to setpoint is to make sure we complete the shot before
+                // we turn off the shooter
+                new WaitUntilCommand(shooter::atSetpoint),
                 new HoldCargo(intake, conveyor, feeder),
                 new InstantCommand(shooter::stopShooter, shooter));
     }
