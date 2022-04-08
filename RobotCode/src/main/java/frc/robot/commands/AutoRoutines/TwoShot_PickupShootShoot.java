@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.LoadCargo;
 import frc.robot.commands.ShootTwiceAuto;
+import frc.robot.commands.TurnToDegreeGyro;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
@@ -34,6 +35,13 @@ public class TwoShot_PickupShootShoot extends SequentialCommandGroup {
                 new DriveStraight(40, drive),
                 new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
         Command shootFirstAndSecond = new ShootTwiceAuto(() -> -3850, intake, feeder, shooter, conveyor);
+        Command prepareToDriveToFourthAndFifth = new TurnToDegreeGyro(-90, drive);
+        Command driveToFourthAndFifth = new DriveStraight(224, drive);
+        Command driveBackToShootFourthAndFifth = new SequentialCommandGroup(
+                new DriveStraight(-165, drive),
+                new TurnToDegreeGyro(40, drive));
+        Command shootFourthAndFifth = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
+
         Command stop = new InstantCommand(() -> {
             drive.drive(0, 0);
             shooter.stopShooter();
@@ -41,6 +49,8 @@ public class TwoShot_PickupShootShoot extends SequentialCommandGroup {
 
         addCommands(
                 prepareSecondPickup, driveAndPickupSecond, shootFirstAndSecond,
+                prepareToDriveToFourthAndFifth, driveToFourthAndFifth,
+                driveBackToShootFourthAndFifth, shootFourthAndFifth,
                 stop);
     }
 }

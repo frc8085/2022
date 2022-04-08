@@ -36,8 +36,11 @@ public class ThreeShot_ParallelToWall extends SequentialCommandGroup {
                         Shooter shooter,
                         IntakeCover intakeCover) {
 
-                Command shootFirstTwo = new TwoShot_PickupShootShoot(limelight, drive, intake, conveyor, feeder,
-                                shooter, intakeCover);
+                Command prepareSecondPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
+                Command driveAndPickupSecond = new SequentialCommandGroup(
+                                new DriveStraight(40, drive),
+                                new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
+                Command shootFirstAndSecond = new ShootTwiceAuto(() -> -3850, intake, feeder, shooter, conveyor);
                 Command prepareThirdPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
                 Command driveAndPickupThird = new SequentialCommandGroup(
                                 new DriveStraight(-60, drive),
@@ -58,7 +61,7 @@ public class ThreeShot_ParallelToWall extends SequentialCommandGroup {
                 });
 
                 addCommands(
-                                shootFirstTwo,
+                                prepareSecondPickup, driveAndPickupSecond, shootFirstAndSecond,
                                 prepareThirdPickup, driveAndPickupThird,
                                 // turnToShootThird,
                                 shootThird,
