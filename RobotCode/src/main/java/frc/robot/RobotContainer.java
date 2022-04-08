@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoAimWithLimelight;
 import frc.robot.commands.AutoBaseSequence;
@@ -41,6 +42,7 @@ import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.utilities.DPadButton;
 import frc.robot.utilities.JoystickAxisButton;
+import frc.robot.utilities.LimelightConfiguration.LedMode;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.ClimberBrake;
@@ -112,6 +114,9 @@ public class RobotContainer {
 
         public RobotContainer() {
                 configureButtonBindings();
+
+                // Make sure the limelight's on
+                limelight.setLEDMode(LedMode.kforceOn);
 
                 drive.setDefaultCommand(new Drive(drive));
                 climber.setDefaultCommand(new Climb(climber, intakeCover, climberBrake));
@@ -235,12 +240,17 @@ public class RobotContainer {
                                                 climber::isLocked));
 
                 /** LOCK AND UNLOCK CLIMBER AND BRAKE */
-                unlockClimberButton.whenPressed(new InstantCommand(climber::unlockClimber, climber)
-                                .andThen(new InstantCommand(climberBrake::unlockClimber, climberBrake)));
-                lockClimberButton.whenPressed(
-                                new InstantCommand(climber::lockClimber, climber)
-                                                .andThen(new InstantCommand(climberBrake::lockClimber,
-                                                                climberBrake)));
+                unlockClimberButton.whenPressed(new SequentialCommandGroup(
+                                new InstantCommand(climber::unlockClimber, climber),
+                                new InstantCommand(climberBrake::unlockClimber, climberBrake),
+                                // Turn off LL when climbing
+                                new InstantCommand(() -> limelight.setLEDMode(LedMode.kforceOff))));
+
+                lockClimberButton.whenPressed(new SequentialCommandGroup(
+                                new InstantCommand(climber::lockClimber, climber),
+                                new InstantCommand(climberBrake::lockClimber, climberBrake),
+                                // Turn on LL when not climbing
+                                new InstantCommand(() -> limelight.setLEDMode(LedMode.kforceOn))));
 
         }
 
