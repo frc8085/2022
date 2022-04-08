@@ -32,7 +32,6 @@ import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootAuto;
 import frc.robot.commands.AutoRoutines.FiveShot_ParallelToWall;
 import frc.robot.commands.AutoRoutines.ThreeShot_ParallelToWall;
-import frc.robot.commands.AutoRoutines.TwoShot_FacingHangarOrLaunch;
 import frc.robot.commands.AutoRoutines.TwoShot_PickupShootShoot;
 import frc.robot.commands.AutoRoutines.TwoShot_ShootPickupShoot;
 // Subsystems
