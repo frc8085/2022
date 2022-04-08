@@ -44,7 +44,7 @@ public class AutoAimWithLimelight extends CommandBase {
         double turnToDegree = filter.calculate(m_limelight.getdegRotationToTarget());
         System.out.println("DEGREE " + turnToDegree);
 
-        double turnSpeed = pidController.calculate(turnToDegree * kTurnFactor);
+        double turnSpeed = -pidController.calculate(turnToDegree * kTurnFactor);
         m_drive.turn(turnSpeed);
     }
 
