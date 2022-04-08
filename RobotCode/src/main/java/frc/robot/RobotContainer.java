@@ -31,6 +31,7 @@ import frc.robot.commands.LoadCargo;
 import frc.robot.commands.Shoot;
 import frc.robot.commands.ShootAuto;
 import frc.robot.commands.AutoRoutines.FiveShot_ParallelToWall;
+import frc.robot.commands.AutoRoutines.FourShot_PickupShootShoot;
 import frc.robot.commands.AutoRoutines.ThreeShot_ParallelToWall;
 import frc.robot.commands.AutoRoutines.TwoShot_PickupShootShoot;
 import frc.robot.commands.AutoRoutines.TwoShot_ShootPickupShoot;
@@ -80,6 +81,8 @@ public class RobotContainer {
                         limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
         private final Command twoShotB = new TwoShot_ShootPickupShoot(
                         limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
+        private final Command fourShot = new FourShot_PickupShootShoot(
+                        limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
 
         /** MANUAL AUTOS */
         private final Command autoUpAgainstHub = new AutoBaseSequence(
@@ -120,10 +123,11 @@ public class RobotContainer {
 
                 autoSelection.setDefaultOption("LIMELIGHT - 5 Shot - Parallel to wall", fiveShot);
                 autoSelection.addOption("LIMELIGHT - 3 Shot - Parallel to wall", threeShot);
-                autoSelection.addOption("LIMELIGHT - 2 Shot - Pickup then shoot twice", twoShot);
-                autoSelection.addOption("LIMELIGHT - 2 Shot - Shoot first, pickup, shoot", twoShot);
-                autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
-                autoSelection.addOption("MANUAL - Across Line 2nd Ball High", autoSecondLocation);
+                autoSelection.addOption("LIMELIGHT - 4 Shot - Start at 2-ball position", fourShot);
+                autoSelection.addOption("MANUAL - 2 Shot Defensive - Pickup then shoot twice", twoShot);
+                autoSelection.addOption("MANUAL - 2 Shot - Shoot first, pickup, shoot", twoShot);
+                // autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
+                // autoSelection.addOption("MANUAL - Across Line 2nd Ball High", autoSecondLocation);
 
                 // Put the chooser on the dashboard
                 SmartDashboard.putData("Auto Routine", autoSelection);
