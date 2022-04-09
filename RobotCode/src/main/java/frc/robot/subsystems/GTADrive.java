@@ -122,8 +122,12 @@ public class GTADrive extends SubsystemBase {
         turnRotation = Math.pow(driverController.getRightX(), 3) * -0.5;
 
         if (isStopped(leftTrigger, rightTrigger)) {
-            // Even if it's stopped, let it turn
-            m_drive.curvatureDrive(0, turnRotation, true);
+            if (leftBumper || climbing) {
+                m_drive.curvatureDrive(0, turnRotation / 4, true);
+            } else {
+                // Even if it's stopped, let it turn
+                m_drive.curvatureDrive(0, turnRotation, true);
+            }
         } else {
             // Redudce speed if climbing or if left bumper's pressed
             if (leftBumper || climbing) {
