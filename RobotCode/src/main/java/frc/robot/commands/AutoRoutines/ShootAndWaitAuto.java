@@ -38,7 +38,7 @@ public class ShootAndWaitAuto extends SequentialCommandGroup {
                 new AutoAimWithLimelight(drive, limelight, shooter),
                 new AutoAimWithLimelight(drive, limelight, shooter),
                 new AutoSetpointShot(drive, limelight, intake, feeder, shooter, conveyor),
-                new WaitCommand(shootDurationSecs * 3));
+                new WaitCommand(shootDurationSecs * 2));
     }
 
     // Doesn't use the limelight, and only shoots once

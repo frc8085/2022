@@ -35,7 +35,7 @@ public class FiveShot_ParallelToWall extends SequentialCommandGroup {
 
                 // Get the current heading and correct it (it was automatically set by the last
                 // auto aim)
-                Command correctTheHeading = new TurnToDegreeGyro(-1 * drive.getHeading(), drive);
+                Command correctTheHeading = new TurnToDegreeGyro(drive.getHeading(), drive);
                 Command prepareFourthAndFifthPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
                 Command driveAndPickupFourthAndFifth = new SequentialCommandGroup(
                                 new TurnToDegreeGyro(15, drive),
