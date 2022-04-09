@@ -4,17 +4,12 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.MedianFilter;
-import edu.wpi.first.wpilibj.DriverStation;
-
-import static frc.robot.Constants.DriveConstants.*;
-
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.subsystems.GTADrive;
 import frc.robot.subsystems.Limelight;
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.PIDCommand;
+import frc.robot.subsystems.Shooter;
 
 /**
  * Aim using the limelight degree rotation to target
@@ -22,14 +17,17 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 public class AutoAimWithLimelight extends CommandBase {
     private final GTADrive m_drive;
     private final Limelight m_limelight;
+    private final Shooter m_shooter;
+
     // Creates a MedianFilter with a window size of 5 samples
     MedianFilter filter = new MedianFilter(5);
     MedianFilter setpointFilter = new MedianFilter(5);
 
-    public AutoAimWithLimelight(GTADrive drive, Limelight limelight) {
+    public AutoAimWithLimelight(GTADrive drive, Limelight limelight, Shooter shooter) {
         // Require the drive and limelight
         m_drive = drive;
         m_limelight = limelight;
+        m_shooter = shooter;
         addRequirements(m_drive, m_limelight);
     }
 
@@ -53,6 +51,10 @@ public class AutoAimWithLimelight extends CommandBase {
     public void initialize() {
         // Get everything in a safe starting state.
         m_drive.reset();
+
+        // Any time we run the auto-aim, start by running the shooter
+        // WARNING: Operator needs to manually stop the shooter (press X)
+        m_shooter.setSetpoint(-3550);
         super.initialize();
     }
 
