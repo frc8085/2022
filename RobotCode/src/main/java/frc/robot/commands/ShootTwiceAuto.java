@@ -32,10 +32,11 @@ public class ShootTwiceAuto extends SequentialCommandGroup {
                 new InstantCommand(conveyor::runConveyor, conveyor),
                 new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
+                new WaitCommand(shootDurationSecs),
                 new WaitUntilCommand(shooter::atSetpoint),
                 new Shoot(intake, feeder, shooter, conveyor),
                 new HoldCargo(intake, conveyor, feeder),
-                new WaitCommand(shootDurationSecs * 2),
+                new WaitCommand(shootDurationSecs * 3),
                 new InstantCommand(shooter::stopShooter, shooter));
     }
 }
