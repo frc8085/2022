@@ -59,9 +59,9 @@ public class Shooter extends SubsystemBase {
         m_pidController = m_shooterMotor.getPIDController();
 
         // PID coefficients
-        kP = 0.0001;
+        kP = 0.0004;
         kI = 0;
-        kD = 0.001;
+        kD = 0.004;
         kIz = 0;
         kFF = 0.0001761804087;
         kMaxOutput = 0;
@@ -112,6 +112,7 @@ public class Shooter extends SubsystemBase {
     }
 
     private void readPIDTuningFromDashboard() {
+
         // Read PID coefficients from SmartDashboard
         double p = SmartDashboard.getNumber("P Gain", 0);
         double i = SmartDashboard.getNumber("I Gain", 0);
@@ -155,6 +156,8 @@ public class Shooter extends SubsystemBase {
         // If we're fine-tuning PID Constants, read and apply updates from the dashboard
         if (TUNING_MODE) {
             readPIDTuningFromDashboard();
+            SmartDashboard.putNumber("Encoder velocity Shooter", m_encoder.getVelocity());
+
         }
     }
 
