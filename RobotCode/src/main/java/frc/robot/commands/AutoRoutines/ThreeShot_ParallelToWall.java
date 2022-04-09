@@ -33,7 +33,10 @@ public class ThreeShot_ParallelToWall extends SequentialCommandGroup {
             Shooter shooter,
             IntakeCover intakeCover) {
 
-        Command prepareSecondPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
+        Command prepareSecondPickup = new SequentialCommandGroup(
+                new InstantCommand(() -> shooter.setSetpoint(-3850)),
+                new LoadCargo(intake, intakeCover, conveyor, feeder, shooter));
+
         Command driveAndPickupSecond = new SequentialCommandGroup(
                 new DriveStraight(40, drive),
                 new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
