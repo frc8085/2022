@@ -28,7 +28,7 @@ public class AutoAimWithLimelight extends CommandBase {
         m_drive = drive;
         m_limelight = limelight;
         m_shooter = shooter;
-        addRequirements(m_drive, m_limelight);
+        addRequirements(m_drive, m_limelight, m_shooter);
     }
 
     @Override
