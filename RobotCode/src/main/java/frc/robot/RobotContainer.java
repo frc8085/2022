@@ -114,8 +114,8 @@ public class RobotContainer {
     public RobotContainer() {
         configureButtonBindings();
 
-        // Make sure the limelight's on
-        limelight.setLEDMode(LedMode.kforceOn);
+        // Make sure the limelight's LED is off when we turn on
+        turnOffLimelightLED();
 
         drive.setDefaultCommand(new Drive(drive));
         climber.setDefaultCommand(new Climb(climber, intakeCover, climberBrake));
@@ -254,6 +254,14 @@ public class RobotContainer {
                 // Turn on LL when not climbing
                 new InstantCommand(() -> limelight.setLEDMode(LedMode.kforceOn))));
 
+    }
+
+    public void turnOffLimelightLED() {
+        limelight.setLEDMode(LedMode.kforceOff);
+    }
+
+    public void turnOnLimelightLED() {
+        limelight.setLEDMode(LedMode.kforceOn);
     }
 
     public Command getAutonomousCommand() {
