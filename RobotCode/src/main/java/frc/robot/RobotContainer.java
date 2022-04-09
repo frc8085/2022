@@ -125,7 +125,7 @@ public class RobotContainer {
         autoSelection.addOption("LIMELIGHT - 3 Shot - Parallel to wall", threeShot);
         autoSelection.addOption("LIMELIGHT - 4 Shot - Start at 2-ball position", fourShot);
         autoSelection.addOption("MANUAL - 2 Shot Defensive - Pickup then shoot twice", twoShot);
-        autoSelection.addOption("MANUAL - 2 Shot - Shoot first, pickup, shoot", twoShot);
+        autoSelection.addOption("MANUAL - 2 Shot - Shoot first, pickup, shoot", twoShotB);
         // autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
         // autoSelection.addOption("MANUAL - Across Line 2nd Ball High",
         // autoSecondLocation);
