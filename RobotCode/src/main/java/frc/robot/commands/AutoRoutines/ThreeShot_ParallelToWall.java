@@ -46,7 +46,7 @@ public class ThreeShot_ParallelToWall extends SequentialCommandGroup {
 
                 Command shootFirstAndSecond = new SequentialCommandGroup(
                                 new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter),
-                                new TurnToDegreeGyro(drive.getHeading(), drive));
+                                new TurnToDegreeGyro(-1 * drive.getHeading(), drive));
 
                 // new ShootTwiceAuto(() -> -3850, intake, feeder, shooter, conveyor);
 
