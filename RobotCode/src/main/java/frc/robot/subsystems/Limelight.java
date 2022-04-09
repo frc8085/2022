@@ -118,7 +118,7 @@ public class Limelight extends SubsystemBase {
         double distanceToTargetInches = -3.5429 * tY + 94.438;
 
         // Return the distance to the target
-        return distanceToTargetInches;
+        return distanceToTargetInches - 10;
     }
 
     public double getLiveSetpointTarget() {
