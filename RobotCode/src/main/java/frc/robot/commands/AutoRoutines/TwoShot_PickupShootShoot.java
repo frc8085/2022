@@ -7,6 +7,7 @@ package frc.robot.commands.AutoRoutines;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.LoadCargo;
 import frc.robot.commands.ShootAuto;
@@ -31,11 +32,26 @@ public class TwoShot_PickupShootShoot extends SequentialCommandGroup {
                         Shooter shooter,
                         IntakeCover intakeCover) {
 
-                Command prepareSecondPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
+                Command prepareSecondPickup = new SequentialCommandGroup(
+                                new InstantCommand(() -> shooter.setSetpoint(-3850)),
+                                new LoadCargo(intake, intakeCover, conveyor, feeder, shooter));
+
                 Command driveAndPickupSecond = new SequentialCommandGroup(
                                 new DriveStraight(40, drive),
-                                new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
-                Command shootFirstAndSecond = new ShootTwiceAuto(() -> -3850, intake, feeder, shooter, conveyor);
+                                new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover),
+                                new InstantCommand(() -> intakeCover.closeIntake()),
+                                new WaitCommand(.5));
+
+                // Command driveAndPickupSecond = new SequentialCommandGroup(
+                // new DriveStraight(40, drive),
+                // new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
+
+                Command shootFirstAndSecond = new SequentialCommandGroup(
+                                new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter),
+                                new TurnToDegreeGyro(-1 * drive.getHeading(), drive));
+
+                // Command shootFirstAndSecond = new ShootTwiceAuto(() -> -3850, intake, feeder,
+                // shooter, conveyor);
 
                 Command pickupOpponentCargo = new SequentialCommandGroup(
                                 new TurnToDegreeGyro(70, drive),
