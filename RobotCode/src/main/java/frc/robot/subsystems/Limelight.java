@@ -118,7 +118,7 @@ public class Limelight extends SubsystemBase {
         double distanceToTargetInches = -3.5429 * tY + 94.438;
 
         // Return the distance to the target
-        return distanceToTargetInches - 10;
+        return distanceToTargetInches - 7;
     }
 
     public double getLiveSetpointTarget() {
@@ -132,7 +132,7 @@ public class Limelight extends SubsystemBase {
 
         // When we're too close the setpoint formla is unreliable. Fix the speed
         // instead.
-        double setpoint = distance < 100 ? 3550 : autoSetpoint;
+        double setpoint = distance < 100 ? 3600 : autoSetpoint;
 
         // Return the distance to the target
         return setpoint;

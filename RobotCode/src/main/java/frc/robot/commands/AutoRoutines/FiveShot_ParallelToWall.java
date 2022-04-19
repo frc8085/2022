@@ -7,6 +7,7 @@ package frc.robot.commands.AutoRoutines;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.LoadCargo;
 import frc.robot.commands.TurnToDegreeGyro;
@@ -29,36 +30,31 @@ public class FiveShot_ParallelToWall extends SequentialCommandGroup {
                         Shooter shooter,
                         IntakeCover intakeCover) {
 
-                Command shootFirstThree = new ThreeShot_ParallelToWall(limelight, drive, intake, conveyor, feeder,
-                                shooter,
-                                intakeCover);
+                Command prepareShot = new SequentialCommandGroup(
+                                new InstantCommand(() -> shooter.setSetpoint(-3850)),
+                                new InstantCommand(() -> intakeCover.closeIntake()),
+                                new WaitCommand(.5));
 
-                // Get the current heading and correct it (it was automatically set by the last
-                // auto aim)
-                Command correctTheHeading = new TurnToDegreeGyro(-1 * drive.getHeading(), drive);
-                Command prepareFourthAndFifthPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
-                Command driveAndPickupFourthAndFifth = new SequentialCommandGroup(
-                                new TurnToDegreeGyro(15, drive),
-                                new DriveStraight(140, drive),
-                                prepareFourthAndFifthPickup, // Start running intake while we drive over
-                                new TurnToDegreeGyro(-40, drive),
-                                new DriveStraight(20, drive),
-                                new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
-                Command driveBackToShootFourthAndFifth = new SequentialCommandGroup(
-                                new DriveStraight(-155, drive),
-                                new TurnToDegreeGyro(20, drive));
-                Command shootFourthAndFifth = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
+                Command driveBack = new SequentialCommandGroup(
+                                new DriveStraight(40, drive),
+                                new WaitCommand(.5));
+
+                Command shootFirst = new SequentialCommandGroup(
+                                new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter),
+                                new TurnToDegreeGyro(-1 * drive.getHeading(), drive));
+
+                Command driveBackAgain = new SequentialCommandGroup(
+                                new DriveStraight(40, drive),
+                                new WaitCommand(.5));
+
                 Command stop = new InstantCommand(() -> {
                         drive.drive(0, 0);
                         shooter.stopShooter();
                 });
 
                 addCommands(
-                                shootFirstThree,
-                                correctTheHeading,
-                                driveAndPickupFourthAndFifth,
-                                driveBackToShootFourthAndFifth,
-                                shootFourthAndFifth,
+                                prepareShot, driveBack,
+                                shootFirst, driveBackAgain,
                                 stop);
         }
 }

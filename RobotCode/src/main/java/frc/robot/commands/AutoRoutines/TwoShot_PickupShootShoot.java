@@ -4,6 +4,8 @@
 
 package frc.robot.commands.AutoRoutines;
 
+import java.sql.PreparedStatement;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -52,12 +54,18 @@ public class TwoShot_PickupShootShoot extends SequentialCommandGroup {
 
                 // Command shootFirstAndSecond = new ShootTwiceAuto(() -> -3850, intake, feeder,
                 // shooter, conveyor);
+                Command prepareToPickupOpponentCargo = new SequentialCommandGroup(
+                                new InstantCommand(() -> shooter.setSetpoint(-3850)),
+                                new LoadCargo(intake, intakeCover, conveyor, feeder, shooter));
 
                 Command pickupOpponentCargo = new SequentialCommandGroup(
-                                new TurnToDegreeGyro(70, drive),
-                                new DriveStraight(40, drive));
+                                new TurnToDegreeGyro(100, drive),
+                                prepareToPickupOpponentCargo,
+                                new DriveStraight(40, drive),
+                                new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
+
                 Command shootAwayOpponentCargo = new SequentialCommandGroup(
-                                new TurnToDegreeGyro(-70, drive),
+                                new TurnToDegreeGyro(50, drive),
                                 new DriveStraight(-20, drive),
                                 new ShootAuto(() -> -2000, intake, feeder, shooter, conveyor));
 

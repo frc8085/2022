@@ -7,6 +7,7 @@ package frc.robot.commands.AutoRoutines;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.DriveStraight;
 import frc.robot.commands.LoadCargo;
 import frc.robot.commands.ShootTwiceAuto;
@@ -33,16 +34,19 @@ public class FourShot_PickupShootShoot extends SequentialCommandGroup {
         Command prepareSecondPickup = new SequentialCommandGroup(
                 new InstantCommand(() -> shooter.setSetpoint(-3850)),
                 new LoadCargo(intake, intakeCover, conveyor, feeder, shooter));
+
         Command driveAndPickupSecond = new SequentialCommandGroup(
                 new DriveStraight(40, drive),
-                new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
-        Command shootFirstAndSecond = new ShootTwiceAuto(() -> -3850, intake, feeder, shooter, conveyor);
-        Command prepareToDriveToFourthAndFifth = new TurnToDegreeGyro(-90, drive);
-        Command driveToFourthAndFifth = new DriveStraight(224, drive);
-        Command driveBackToShootFourthAndFifth = new SequentialCommandGroup(
-                new DriveStraight(-165, drive),
-                new TurnToDegreeGyro(40, drive));
-        Command shootFourthAndFifth = new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter);
+                new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover),
+                new InstantCommand(() -> intakeCover.closeIntake()),
+                new WaitCommand(.5));
+
+        Command shootFirstAndSecond = new SequentialCommandGroup(
+                new ShootAndWaitAuto(limelight, drive, intake, conveyor, feeder, shooter),
+                new TurnToDegreeGyro(-1 * drive.getHeading(), drive));
+
+        Command driveBack = new SequentialCommandGroup(
+                new DriveStraight(10, drive));
 
         Command stop = new InstantCommand(() -> {
             drive.drive(0, 0);
@@ -50,9 +54,7 @@ public class FourShot_PickupShootShoot extends SequentialCommandGroup {
         });
 
         addCommands(
-                prepareSecondPickup, driveAndPickupSecond, shootFirstAndSecond,
-                prepareToDriveToFourthAndFifth, driveToFourthAndFifth,
-                driveBackToShootFourthAndFifth, shootFourthAndFifth,
+                prepareSecondPickup, driveAndPickupSecond, shootFirstAndSecond, driveBack,
                 stop);
     }
 }

@@ -53,7 +53,7 @@ public class ThreeShot_ParallelToWall extends SequentialCommandGroup {
                 Command prepareThirdPickup = new LoadCargo(intake, intakeCover, conveyor, feeder, shooter);
                 Command driveAndPickupThird = new SequentialCommandGroup(
                                 new DriveStraight(-60, drive),
-                                new TurnToDegreeGyro(75, drive),
+                                new TurnToDegreeGyro(70, drive),
                                 new DriveStraight(80, drive),
                                 new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
 
