@@ -121,10 +121,10 @@ public class RobotContainer {
                 climber.setDefaultCommand(new Climb(climber, intakeCover, climberBrake));
                 // Add commands to the autonomous command chooser
 
-                autoSelection.setDefaultOption("LIMELIGHT - 5 Shot - Parallel to wall", fiveShot);
-                autoSelection.addOption("LIMELIGHT - 3 Shot - Parallel to wall", threeShot);
-                autoSelection.addOption("LIMELIGHT - 4 Shot - Start at 2-ball position", fourShot);
-                autoSelection.addOption("MANUAL - 2 Shot Defensive - Pickup then shoot twice", twoShot);
+                autoSelection.setDefaultOption("1 Shot - By Hangar No Cargo Pickup", fiveShot);
+                autoSelection.addOption("3 Shot - Parallel to wall", threeShot);
+                autoSelection.addOption("2 Shot - 3-Shot Position but no 3rd ball pickup", fourShot);
+                autoSelection.addOption("2 Shot Defensive - Pickup then shoot twice", twoShot);
                 autoSelection.addOption("MANUAL - 2 Shot - Shoot first, pickup, shoot", twoShotB);
                 // autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
                 // autoSelection.addOption("MANUAL - Across Line 2nd Ball High",
