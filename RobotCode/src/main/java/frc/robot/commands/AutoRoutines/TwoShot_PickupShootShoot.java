@@ -65,9 +65,8 @@ public class TwoShot_PickupShootShoot extends SequentialCommandGroup {
                                 new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
 
                 Command shootAwayOpponentCargo = new SequentialCommandGroup(
-                                new TurnToDegreeGyro(50, drive),
                                 new DriveStraight(-20, drive),
-                                new ShootAuto(() -> -2000, intake, feeder, shooter, conveyor));
+                                new ShootAuto(() -> -2800, intake, feeder, shooter, conveyor));
 
                 Command stop = new InstantCommand(() -> {
                         drive.drive(0, 0);
