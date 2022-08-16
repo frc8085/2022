@@ -15,6 +15,7 @@ import frc.robot.commands.LoadCargo;
 import frc.robot.commands.ShootAuto;
 import frc.robot.commands.ShootTwiceAuto;
 import frc.robot.commands.TurnToDegreeGyro;
+import frc.robot.commands.TurnToDegree;
 import frc.robot.subsystems.Conveyor;
 import frc.robot.subsystems.Feeder;
 import frc.robot.subsystems.GTADrive;
@@ -64,9 +65,18 @@ public class TwoShot_PickupShootShoot extends SequentialCommandGroup {
                                 new DriveStraight(40, drive),
                                 new LoadCargoAuto(intake, conveyor, feeder, shooter, intakeCover));
 
-                Command shootAwayOpponentCargo = new SequentialCommandGroup(
-                                new DriveStraight(-20, drive),
-                                new ShootAuto(() -> -2800, intake, feeder, shooter, conveyor));
+                // Command shootAwayOpponentCargo = new SequentialCommandGroup(
+                // new DriveStraight(-20, drive),
+                // new ShootAuto(() -> -2800, intake, feeder, shooter, conveyor));
+
+                Command liftIntakeAndRotate = new SequentialCommandGroup(
+                                new InstantCommand(() -> intakeCover.closeIntake()),
+                                new DriveStraight(-40, drive),
+                                new TurnToDegree(-120, drive));
+
+                Command ejectOpponentCargo = new SequentialCommandGroup(
+                                new InstantCommand(() -> intake.reverseIntake()),
+                                new WaitCommand(5));
 
                 Command stop = new InstantCommand(() -> {
                         drive.drive(0, 0);
@@ -75,7 +85,7 @@ public class TwoShot_PickupShootShoot extends SequentialCommandGroup {
 
                 addCommands(
                                 prepareSecondPickup, driveAndPickupSecond, shootFirstAndSecond,
-                                pickupOpponentCargo, shootAwayOpponentCargo,
+                                pickupOpponentCargo, liftIntakeAndRotate, ejectOpponentCargo,
                                 stop);
         }
 }

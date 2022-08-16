@@ -11,33 +11,37 @@ import edu.wpi.first.wpilibj2.command.PIDCommand;
 
 /**
  * Drive the given distance straight (negative values go backwards). Uses a
- * local PID controller to run a simple PID loop that is only enabled while t
- * is command is running. The input is the averaged values of the left and right
- * encoders.
+ * local PID controller to
+ * run a simple PID loop that is only enabled while this command is running. The
+ * input is the
+ * averaged values of the left and right encoders.
  */
 public class TurnToDegree extends PIDCommand {
     private final GTADrive m_drive;
 
-    static double kP = 0.1;
+    static double kP = 0.01;
     static double kI = 0;
     static double kD = 0.001;
 
     /**
-     * Create a new TurnToDegree command.
+     * Create a new TurnToDegreeGyro command.
      *
      * @param distance The distance to drive (inches)
      */
     public TurnToDegree(double degree, GTADrive drive) {
-        super(
-                new PIDController(kP, kI, kD),
-                drive::getTurnedInches,
-                degree * kTurnFactor, // Convert degrees to distance
-                d -> drive.turn(d));
+        super(new PIDController(kP, kI, kD),
+                // Close loop on heading
+                drive::getHeading,
+                // Set reference to target
+                degree,
+                // Pipe output to turn robot
+                output -> drive.turnFast(output));
 
+        // Require the drive
         m_drive = drive;
         addRequirements(m_drive);
 
-        getController().setTolerance(kAutoPositionTolerance);
+        getController().setTolerance(kAutoGyroTolerance);
     }
 
     @Override
