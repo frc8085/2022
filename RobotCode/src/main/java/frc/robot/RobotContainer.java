@@ -168,8 +168,9 @@ public class RobotContainer {
                 final JoystickAxisButton cargoEjectControl = new JoystickAxisButton("Eject",
                                 operatorController::getLeftY, -0.25);
 
-                final JoystickButton unlockClimberButton = new JoystickButton(operatorController,
-                                Button.kBack.value);
+                // final JoystickButton unlockClimberButton = new
+                // JoystickButton(operatorController,
+                // Button.kBack.value);
                 final JoystickButton lockClimberButton = new JoystickButton(operatorController,
                                 Button.kStart.value);
 
@@ -238,11 +239,11 @@ public class RobotContainer {
                                                 climber::isLocked));
 
                 /** LOCK AND UNLOCK CLIMBER AND BRAKE */
-                unlockClimberButton.whenPressed(new SequentialCommandGroup(
-                                new InstantCommand(climber::unlockClimber, climber),
-                                new InstantCommand(climberBrake::unlockClimber, climberBrake),
-                                // Turn off LL when climbing
-                                new InstantCommand(() -> limelight.setLEDMode(LedMode.kforceOff))));
+                // unlockClimberButton.whenPressed(new SequentialCommandGroup(
+                // new InstantCommand(climber::unlockClimber, climber),
+                // new InstantCommand(climberBrake::unlockClimber, climberBrake),
+                // // Turn off LL when climbing
+                // new InstantCommand(() -> limelight.setLEDMode(LedMode.kforceOff))));
 
                 lockClimberButton.whenPressed(new SequentialCommandGroup(
                                 new InstantCommand(climber::lockClimber, climber),
