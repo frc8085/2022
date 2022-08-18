@@ -178,10 +178,12 @@ public class RobotContainer {
                                 Button.kStart.value);
 
                 // Create fake buttons from POV Dpad Values
-                final DPadButton closeIntakeCoverButton = new DPadButton("Close intakeCover", operatorController,
-                                DPadButton.Value.kDPadUp);
-                final DPadButton openIntakeCoverButton = new DPadButton("Open intakeCover", operatorController,
-                                DPadButton.Value.kDPadDown);
+                // final DPadButton closeIntakeCoverButton = new DPadButton("Close intakeCover",
+                // operatorController,
+                // DPadButton.Value.kDPadUp);
+                // final DPadButton openIntakeCoverButton = new DPadButton("Open intakeCover",
+                // operatorController,
+                // DPadButton.Value.kDPadDown);
 
                 /**
                  * SET SHOOTING TARGET
@@ -230,16 +232,17 @@ public class RobotContainer {
                                 .whenReleased(new HoldCargo(intake, conveyor, feeder));
 
                 /** INTAKE COVER MANUAL OPEN/CLOSE */
-                openIntakeCoverButton.whenPressed(new InstantCommand(intakeCover::openIntake, intakeCover));
+                // openIntakeCoverButton.whenPressed(new InstantCommand(intakeCover::openIntake,
+                // intakeCover));
 
-                closeIntakeCoverButton.whenPressed(
-                                new ConditionalCommand(
-                                                // If the climber is locked, you'e free to close the intake
-                                                new InstantCommand(intakeCover::closeIntake, intakeCover),
-                                                // If the climber is UNLOCKED, do not close intake
-                                                new InstantCommand(),
-                                                // Check if the climber locked
-                                                climber::isLocked));
+                // closeIntakeCoverButton.whenPressed(
+                // new ConditionalCommand(
+                // // If the climber is locked, you'e free to close the intake
+                // new InstantCommand(intakeCover::closeIntake, intakeCover),
+                // // If the climber is UNLOCKED, do not close intake
+                // new InstantCommand(),
+                // // Check if the climber locked
+                // climber::isLocked));
 
                 /** LOCK AND UNLOCK CLIMBER AND BRAKE */
                 // unlockClimberButton.whenPressed(new SequentialCommandGroup(
