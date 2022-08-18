@@ -157,8 +157,9 @@ public class RobotContainer {
                 final JoystickButton setTargetFar = new JoystickButton(operatorController, Button.kY.value);
                 final JoystickButton setTargetTBD = new JoystickButton(operatorController, Button.kB.value);
                 final JoystickButton setTargetNear = new JoystickButton(operatorController, Button.kA.value);
-                final JoystickButton bumpTargetSpeeds = new JoystickButton(operatorController,
-                                Button.kRightBumper.value);
+                // final JoystickButton bumpTargetSpeeds = new
+                // JoystickButton(operatorController,
+                // Button.kRightBumper.value);
 
                 // Create fake button to correspond to right trigger pressed
                 final JoystickAxisButton shootButton = new JoystickAxisButton("Shoot",
@@ -186,8 +187,8 @@ public class RobotContainer {
                  * SET SHOOTING TARGET
                  * Setting the shooting target will update the shooter motor setpoint
                  */
-                bumpTargetSpeeds.whenPressed(new InstantCommand(shooter::setBumped, shooter))
-                                .whenReleased(new InstantCommand(shooter::setNormal, shooter));
+                // bumpTargetSpeeds.whenPressed(new InstantCommand(shooter::setBumped, shooter))
+                // .whenReleased(new InstantCommand(shooter::setNormal, shooter));
 
                 setTargetFar.whenPressed(new InstantCommand(() -> shooter.setShootingMode(kTargetFar)));
                 setTargetTBD.whenPressed(new InstantCommand(() -> shooter.setShootingMode(kTargetTBD)));
