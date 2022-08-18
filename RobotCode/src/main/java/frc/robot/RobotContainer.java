@@ -166,10 +166,17 @@ public class RobotContainer {
                                 operatorController::getRightTriggerAxis, 0.5);
 
                 // Create fake buttons to correspond to right joystick up / down
+                // final JoystickAxisButton cargoLoadControl = new JoystickAxisButton("Load",
+                // operatorController::getLeftY, 0.25);
+                // final JoystickAxisButton cargoEjectControl = new JoystickAxisButton("Eject",
+                // operatorController::getLeftY, -0.25);
+
+                // FOR OYSTER FESTIVAL
+                // Create fake buttons to correspond to right joystick up / down
                 final JoystickAxisButton cargoLoadControl = new JoystickAxisButton("Load",
-                                operatorController::getLeftY, 0.25);
+                                operatorController::getRightY, 0.25);
                 final JoystickAxisButton cargoEjectControl = new JoystickAxisButton("Eject",
-                                operatorController::getLeftY, -0.25);
+                                operatorController::getRightY, -0.25);
 
                 // final JoystickButton unlockClimberButton = new
                 // JoystickButton(operatorController,
