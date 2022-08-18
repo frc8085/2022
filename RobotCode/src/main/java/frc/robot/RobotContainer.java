@@ -69,7 +69,9 @@ public class RobotContainer {
 
         // Drive train and driver controller
         private final XboxController driverController = new XboxController(kDriverControllerPort);
-        private final GTADrive drive = new GTADrive(driverController, climber);
+        // private final GTADrive drive = new GTADrive(driverController, climber);
+        private final GTADrive drive = new GTADrive(operatorController, climber);
+
         private final Limelight limelight = new Limelight();
 
         /** LimeLight AUTOS */

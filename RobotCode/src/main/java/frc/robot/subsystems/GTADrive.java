@@ -112,7 +112,7 @@ public class GTADrive extends SubsystemBase {
         System.out.println("TURN TO " + newSpeed);
     }
 
-    public void driveRobot() {
+    public void driveRobotGTA() {
         double leftTrigger = driverController.getLeftTriggerAxis();
         double rightTrigger = driverController.getRightTriggerAxis();
         boolean leftBumper = driverController.getLeftBumper();
@@ -147,6 +147,23 @@ public class GTADrive extends SubsystemBase {
                 speed += .2;
             }
             speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
+            m_drive.curvatureDrive(speed, turnRotation, true);
+        }
+    }
+
+    // DRIVE for oyster fest
+    public void driveRobot() {
+        // Transform the turn rotation based on Right Joystick X
+        turnRotation = Math.pow(driverController.getRightX(), 3) * -0.5;
+
+        if (Math.abs(driverController.getLeftY()) < 0.5) {
+            m_drive.curvatureDrive(0, turnRotation, true);
+        } else {
+            if (driverController.getLeftY() > 0) {
+                speed = 0.2;
+            } else {
+                speed = -.2;
+            }
             m_drive.curvatureDrive(speed, turnRotation, true);
         }
     }
