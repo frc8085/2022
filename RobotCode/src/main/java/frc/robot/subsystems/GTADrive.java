@@ -154,15 +154,15 @@ public class GTADrive extends SubsystemBase {
     // DRIVE for oyster fest
     public void driveRobot() {
         // Transform the turn rotation based on Left Joystick X
-        turnRotation = Math.pow(driverController.getLeftX(), 3) * -0.5;
+        turnRotation = Math.pow(driverController.getLeftX(), 3) * -0.3;
 
         if (Math.abs(driverController.getLeftY()) < 0.5) {
             m_drive.curvatureDrive(0, turnRotation, true);
         } else {
             if (driverController.getLeftY() > 0) {
-                speed = 0.2;
+                speed = 0.18;
             } else {
-                speed = -.2;
+                speed = -.18;
             }
             m_drive.curvatureDrive(speed, turnRotation, true);
         }
