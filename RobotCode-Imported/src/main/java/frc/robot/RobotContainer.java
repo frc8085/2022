@@ -9,6 +9,7 @@ import static frc.robot.Constants.IntakeConstants.*;
 import static frc.robot.Constants.OIConstants.*;
 import static frc.robot.Constants.AutoConstants.*;
 
+import edu.wpi.first.wpilibj.Joystick;
 // Inputs
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.XboxController.Button;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.AutoAimWithLimelight;
@@ -44,6 +46,7 @@ import frc.robot.subsystems.IntakeCover;
 import frc.robot.subsystems.Limelight;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.TankDrive;
 import frc.robot.utilities.JoystickAxisButton;
 import frc.robot.utilities.LimelightConfiguration.LedMode;
 import frc.robot.subsystems.Climber;
@@ -70,48 +73,11 @@ public class RobotContainer {
     private final Climber climber = new Climber(operatorController);
 
     // Drive train and driver controller
-    private final XboxController driverController = new XboxController(kDriverControllerPort);
-    private final GTADrive drive = new GTADrive(driverController, climber);
+    private final Joystick leftJoystick = new Joystick(0);
+    private final Joystick rightJoystick = new Joystick(1);
+    // private final GTADrive drive = new GTADrive(driverController, climber);
+    private final TankDrive m_drive = new TankDrive();
     private final Limelight limelight = new Limelight();
-
-    /** LimeLight AUTOS */
-    private final Command fiveShot = new FiveShot_ParallelToWall(
-            limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
-    private final Command threeShot = new ThreeShot_ParallelToWall(
-            limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
-    private final Command twoShot = new TwoShot_PickupShootShoot(
-            limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
-    private final Command twoShotB = new TwoShot_ShootPickupShoot(
-            limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
-    private final Command fourShot = new FourShot_PickupShootShoot(
-            limelight, drive, intake, conveyor, feeder, shooter, intakeCover);
-
-    /** MANUAL AUTOS */
-    private final Command autoUpAgainstHub = new AutoBaseSequence(
-            kShooterOff, // shoot to desired target
-            40, // drive
-            kPickupCargo, // pick up new cargo
-            kStandStill, // drive back
-            kTargetFar, // shoot to desired target
-            75, // turn
-            70, // drive
-            kPickupCargo, // pick up new cargo
-            kStandStill, // 🚫 DON'T drive
-            kShooterOff, // 🚫 don't shoot (set setpoint to 0)
-            drive, intake, conveyor, feeder, shooter, intakeCover);
-
-    private final Command autoSecondLocation = new AutoBaseSequence(
-            kTargetBumpedTBD, // shoot to desired target
-            40, // drive
-            kPickupCargo, // pick up new cargo
-            20, // drive forward
-            kShooterOff, // 🚫 don't shoot (set setpoint to 0)
-            kStandStill, // 🚫 don't turn
-            -85, // drive backwards
-            kDontPickupCargo, // 🚫 don't pick up new cargo
-            kStandStill, // 🚫 don't drive
-            kTargetBumpedTBD, // shoot to desired target
-            drive, intake, conveyor, feeder, shooter, intakeCover);
 
     public RobotContainer() {
         configureButtonBindings();
@@ -119,18 +85,13 @@ public class RobotContainer {
         // Make sure the limelight's LED is off when we turn on
         turnOffLimelightLED();
 
-        drive.setDefaultCommand(new Drive(drive));
+        m_drive.setDefaultCommand(
+                new RunCommand(() -> m_drive.drive(
+                        leftJoystick.getY(),
+                        rightJoystick.getY()), m_drive));
+
         climber.setDefaultCommand(new Climb(climber, intakeCover, climberBrake));
         // Add commands to the autonomous command chooser
-
-        autoSelection.setDefaultOption("1 Shot - By Hangar No Cargo Pickup", fiveShot);
-        autoSelection.addOption("3 Shot - Parallel to wall", threeShot);
-        autoSelection.addOption("2 Shot - 3-Shot Position but no 3rd ball pickup", fourShot);
-        autoSelection.addOption("2 Shot Defensive - Pickup then shoot twice", twoShot);
-        autoSelection.addOption("MANUAL - 2 Shot - Shoot first, pickup, shoot", twoShotB);
-        // autoSelection.addOption("MANUAL - Up Against Hub", autoUpAgainstHub);
-        // autoSelection.addOption("MANUAL - Across Line 2nd Ball High",
-        // autoSecondLocation);
 
         // Put the chooser on the dashboard
         SmartDashboard.putData("Auto Routine", autoSelection);
@@ -139,17 +100,6 @@ public class RobotContainer {
     private void configureButtonBindings() {
         /** AUTOMATIC OPERATION (using limelight) */
         // Driver can auto aim to target
-
-        final JoystickButton autoAimButton = new JoystickButton(driverController, Button.kRightBumper.value);
-        autoAimButton.onTrue(new AutoAimWithLimelight(drive, limelight, shooter));
-
-        final JoystickButton autoShootDriverButton = new JoystickButton(driverController, Button.kB.value);
-        autoShootDriverButton.onTrue(
-                new AutoSetpointShot(drive, limelight, intake, feeder, shooter, conveyor));
-
-        // Operator can auto shoot. This also auto aims.
-        final Trigger autoShootButton = operatorController.leftBumper();
-        autoShootButton.onTrue(new AutoSetpointShot(drive, limelight, intake, feeder, shooter, conveyor));
 
         /** MANUAL OPERATION */
         final Trigger shooterOffButton = operatorController.x();
@@ -255,6 +205,6 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         // Command to run in autonomous
-        return autoSelection.getSelected();
+        return new InstantCommand();
     }
 }
