@@ -10,10 +10,12 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+
 import static frc.robot.Constants.ClimberConstants.*;
 
 public class Climber extends SubsystemBase {
-    private XboxController m_operatorController;
+    private CommandXboxController m_operatorController;
     DigitalInput limitSwitch = new DigitalInput(0);
 
     // Climber is locked by default
@@ -22,7 +24,7 @@ public class Climber extends SubsystemBase {
     private final CANSparkMax m_climberMotor = new CANSparkMax(kClimberMotorPort, MotorType.kBrushless);
 
     /** Creates a new Climber. */
-    public Climber(XboxController operatorController) {
+    public Climber(CommandXboxController operatorController) {
         m_operatorController = operatorController;
     }
 
