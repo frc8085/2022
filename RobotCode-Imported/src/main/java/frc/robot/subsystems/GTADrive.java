@@ -128,7 +128,7 @@ public class GTADrive extends SubsystemBase {
     boolean climbing = !climber.isLocked();
 
     // Transform the turn rotation based on Right Joystick X
-    turnRotation = Math.pow(driverController.getRightX(), 3) * -0.5;
+    turnRotation = Math.pow(driverController.getRightX(), 3) * 0.5;
 
     if (isStopped(leftTrigger, rightTrigger)) {
       if (leftBumper || climbing) {
@@ -153,7 +153,7 @@ public class GTADrive extends SubsystemBase {
         // change factor so that we can readjust scale such that slowest is .2, neutral
         // is .6, and fastest is 1 - edited to slow down
         speed *= .5;
-        speed += .2;
+        speed += .1;
       }
       speed = applyDirection(Math.abs(speed), leftTrigger, rightTrigger);
       m_drive.curvatureDrive(speed, turnRotation, true);
