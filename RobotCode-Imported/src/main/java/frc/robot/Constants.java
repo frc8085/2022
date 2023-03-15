@@ -141,8 +141,8 @@ public final class Constants {
     // Shooter off speed
     public static final int kShooterOffSpeed = 0;
 
-    // High shot speeds
-    public static final int kFarSpeed = -3800;
+    // High shot speeds = 4200 can shoot into basketball net
+    public static final int kFarSpeed = -4200;
     public static final int kTBDSpeed = -2500;
     public static final int kNearSpeed = -1900;
 
